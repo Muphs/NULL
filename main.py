@@ -57,6 +57,14 @@ async def on_message(message):
         embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
         await message.channel.send(embed=embed)
 
+#join server
+    if message.content.startswith('%joinserver'):
+        embed=discord.Embed(title="Join my server by clicking this link", color=0xff9efc)
+        embed.add_field(name="https://bit.ly/null-bot-join", value="‎‎‎‎‎‎‎ ", inline=False)
+        embed.set_footer(text="NULL.™")
+        embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
+        await message.channel.send(embed=embed)
+
 
 #botver
     if message.content.startswith('%botver'):
@@ -208,11 +216,11 @@ async def on_message(message):
         #8ball
         embed.add_field(name="%8ball(your question)", value="Magic 8ball :O", inline=False)
         #pick
-        embed.add_field(name="%pick", value="I pick from a list (separated by commas and spaces)", inline=False)
+        #embed.add_field(name="%pick", value="I pick from a list (separated by commas and spaces)", inline=False)
         #ping
-        embed.add_field(name="%ping", value="Lists current ping in miliseconds!", inline=False)
+        #embed.add_field(name="%ping", value="Lists current ping in miliseconds!", inline=False)
         #repeat
-        embed.add_field(name="%repeat", value="I repeat after you!", inline=False)
+        #embed.add_field(name="%repeat", value="I repeat after you!", inline=False)
         #cute anime
         embed.add_field(name="%cuteanime", value="Cute anime gifs", inline=False)
         #todoroki
@@ -221,8 +229,14 @@ async def on_message(message):
         embed.add_field(name="%zerotwo", value="for the simps ;)", inline=False)
         #ichigo
         embed.add_field(name="%ichigo", value="for the simps ;)", inline=False)
+        #head out
+        embed.add_field(name="%headout", value="Cya, Have fun", inline=False)
+        #head out
+        embed.add_field(name="%joinserver", value="Join my official server", inline=False)
         #easter eggs
         embed.add_field(name="easter eggs :smirk:", value="Read the code on Muphs' Github to find out :smirk:", inline=False)
+        #github
+        embed.add_field(name="Check out the source code here!", value="http://bit.ly/null-bot-source-code", inline=False)
         embed.set_footer(text="NULL.™")
         embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
         await message.channel.send(embed=embed)
