@@ -1,5 +1,5 @@
 # NULL.™
-
+![logo](NULL.png)
 NULL.™ Is a sofisticated Discord bot Programmed in Python with the use of Discord.py
 
 ## Usage
