@@ -3,7 +3,7 @@
 NULL.™ Is a sofisticated Discord bot Programmed in Python with the use of Discord.py
 
 <p align="center">
-  <img src="bannerrounded.png" width="1024" title="NULL.™ Banner">
+  <img src="NULL banner_rounded.png" width="1024" title="NULL.™ Banner">
 </p>
 
 ## Usage
