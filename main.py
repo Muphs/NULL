@@ -14,7 +14,7 @@ import random
 #lists
 client = discord.Client()
 
-response_list = ["definitely!", "As I see it, yes!", "Yes!", "No!", "Very likely!", "Not even close!", "Maybe!", "Very unlikely!", "Ask again later!", "Better not tell you now!", " It is certain!", "My sources say no!", "Outlook good!", "Very Doubtful!", "Without a doubt!"]
+response_list = ['100% sure!', 'definitely not', 'no :(', 'yes :)', 'hmmmmmmmmmmm, idk', 'maybe ask again', 'maybe ask someone else' "definitely!", "As I see it, yes!", "Yes!", "No!", "Very likely!", "Not even close!", "Maybe!", "Very unlikely!", "Ask again later!", "Better not tell you now!", " It is certain!", "My sources say no!", "Outlook good!", "Very Doubtful!", "Without a doubt!"]
 
 anime_list = ["https://media1.tenor.com/images/c925511d32350cc04411756d623ebad6/tenor.gif?itemid=13462237", "https://media1.tenor.com/images/89289af19b7dab4e21f28f03ec0faaff/tenor.gif?itemid=12801687", "https://media1.tenor.com/images/e1f44b9d914ba61cc60efd8d3cf439a5/tenor.gif?itemid=9975267", "https://media.tenor.com/images/1d37a873edfeb81a1f5403f4a3bfa185/tenor.gif", "https://media.tenor.com/images/8f711b12e00bc1816694bf51909f8b8f/tenor.gif", "https://media.tenor.com/images/84e609c97fc79323c572baa4e8486473/tenor.gif", "https://media.tenor.com/images/c67648bdadbece24eed182a401abf576/tenor.gif", "https://media.tenor.com/images/46a74ce6228e7bc535263e1464cce46b/tenor.gif", "https://media.tenor.com/images/a173f1c95d81855afd10d51f3fa277ab/tenor.gif", "https://media.tenor.com/images/e1c9ad053d4aa0471727fbf36c3a3868/tenor.gif", "https://media.tenor.com/images/3f6457f7235edf481d542b8074740401/tenor.gif"]
 
@@ -28,6 +28,11 @@ nickwilde_list = ['https://fsa.zobj.net/crop.php?r=o-a4ILNuzRn8YwRkD-QM0H7an2GTr
 
 headout_list = ['cya', 'peace out', 'stay safe', 'ttyl', 'have fun']
 
+roast_list = ['You’re the reason God created the middle finger.', 'You’re a grey sprinkle on a rainbow cupcake.', 'If your brain was dynamite, there wouldn’t be enough to blow your hat off.', 'You are more disappointing than an unsalted pretzel.', 'someday you’ll go far, stay there', 'Light travels faster than sound which is why you seemed bright until you spoke.', 'You have so many gaps in your teeth it looks like your tongue is in jail.', 'I wasn’t born with enough middle fingers to let you know how I feel about you', 'If I wanted to kill myself id climb your ego and jump to your IQ', 'Your face makes onions cry.', 'I would love to insult you, but I’m afraid I won’t do as well as nature did', 'If you’re going to be two-faced, at least make one of them pretty.', 'whenever you swim, you just add another piece of trash to the ocean', 'Zombies eat brains, you’re safe']
+
+pickup_list = ["Even if there was no gravity, i'd still fall for you", "Do you like raisins? How do you feel about a date?", "If I could rearrange the alphabet, I’d put ‘U’ and ‘I’ together.", "If you were a Transformer… you’d be Optimus Fine.", "Are you a parking ticket? Because you’ve got FINE written all over you.", "I'm no photographer, but I can picture us together.", "Are you related to Jean-Claude Van Damme? Because Jean-Claude Van Damme you’re sexy!", "are you from Tenesse? cus you are the only 10 i see", "Baby, if you were words on a page, you’d be fine print.", "You must be a high test score, because I want to take you home and show you to my mother", "I was blinded by your beauty; I’m going to need your name and phone number for insurance purposes.", "I was wondering if you had an extra heart. Because mine was just stolen.", "Is your name Google? Because you have everything I’ve been searching for.", "You’re so gorgeous you made me forget what my pick up line was", "Im learning of important dates in history, wanna be one?", "i must be in a museum, because you are truly a work of art"]
+
+
 #client
 @client.event
 async def on_ready():
@@ -39,7 +44,6 @@ async def on_ready():
 async def on_message(message):
     if message.author == client.user:
         return
-
 #commands
 
 #hello
@@ -47,7 +51,7 @@ async def on_message(message):
         embed=discord.Embed(title="Hello!", color=0xff9efc)
         embed.set_footer(text="NULL.™")
         embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
-        await message.channel.send(embed=embed)
+        await message.channel.reply(embed=embed, mention_author=True)
 
 #hepl
     if message.content.startswith('%hepl'):
@@ -146,6 +150,23 @@ async def on_message(message):
         embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
         await message.channel.send(embed=embed)
 
+#8ball
+    if message.content.startswith("%pickupline"):
+        lucky_num = random.randint(0,len(pickup_list) - 1)
+        embed=discord.Embed(title=(pickup_list[lucky_num]), color=0xff9efc)
+        embed.set_footer(text="NULL.™")
+        embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
+        await message.channel.send(embed=embed)
+
+#roast
+    if message.content.startswith("%roast"):
+        lucky_num = random.randint(0,len(roast_list) - 1)
+        embed=discord.Embed(title=(roast_list[lucky_num]), color=0xff9efc)
+        embed.set_footer(text="NULL.™")
+        embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
+        await message.channel.send(embed=embed)
+
+
 #cuteanime
     if message.content.startswith("%cuteanime"):
         lucky_num = random.randint(0,len(anime_list) - 1)
@@ -241,7 +262,11 @@ async def on_message(message):
         embed.add_field(name="%ichigo", value="for the simps ;)", inline=False)
         #head out
         embed.add_field(name="%headout", value="Cya, Have fun", inline=False)
-        #head out
+        #roast
+        embed.add_field(name="%roast", value="Let me roast you...", inline=False)
+        #pickup line
+        embed.add_field(name="%pickupline", value="Let me give you a pickup line :smirk:", inline=False)
+        #join server
         embed.add_field(name="%joinserver", value="Join my official server", inline=False)
         #easter eggs
         embed.add_field(name="easter eggs :smirk:", value="Read the code on Muphs' Github to find out :smirk:", inline=False)
