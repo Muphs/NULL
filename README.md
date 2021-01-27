@@ -1,5 +1,9 @@
 # NULL.™
-![logo](NULL.png)
+
+<p align="center">
+  <img src="NULL.png" width="40" title="hover text">
+</p>
+
 NULL.™ Is a sofisticated Discord bot Programmed in Python with the use of Discord.py
 
 ## Usage
