@@ -2,6 +2,10 @@
 
 NULL.™ Is a sofisticated Discord bot Programmed in Python with the use of Discord.py
 
+<p align="center">
+  <img src="banner rounded.png" width="350" title="NULL.™ Banner">
+</p>
+
 ## Usage
 
 Add NULL.™ to your server by clicking [this](https://bit.ly/null-bot-add) link
