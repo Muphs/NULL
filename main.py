@@ -49,6 +49,13 @@ async def on_message(message):
         embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
         await message.channel.send(embed=embed)
 
+#hepl
+    if message.content.startswith('%hepl'):
+        embed=discord.Embed(title="BRUH, U cant even spell...", color=0xff9efc)
+        embed.set_footer(text="NULL.™")
+        embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
+        await message.channel.send(embed=embed)
+
 #add bot
     if message.content.startswith('%addbot'):
         embed=discord.Embed(title="Add me to your server by clicking this link", color=0xff9efc)
@@ -148,13 +155,6 @@ async def on_message(message):
         embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-AMqGqMLEBnFQkD3l-w1370.gif')
         await message.channel.send(embed=embed)
 
-#todoroki
-    if message.content.startswith("%todoroki"):
-        lucky_num = random.randint(0,len(todoroki_list) - 1)
-        embed=discord.Embed(title=' ', color=0xff9efc)
-        embed.set_image(url=(todoroki_list[lucky_num]))
-        embed.set_footer(text="NULL.™")
-        embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-AMqGqMLEBnFQkD3l-w1370.gif')
 
 #zero two
     if message.content.startswith("%zerotwo"):
@@ -164,6 +164,16 @@ async def on_message(message):
         embed.set_footer(text="NULL.™")
         embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-AMqGqMLEBnFQkD3l-w1370.gif')
         await message.channel.send(embed=embed)
+
+#todoroki
+    if message.content.startswith("%todoroki"):
+        lucky_num = random.randint(0,len(todoroki_list) - 1)
+        embed=discord.Embed(title='Awww', color=0xff9efc)
+        embed.set_image(url=(todoroki_list[lucky_num]))
+        embed.set_footer(text="NULL.™")
+        embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-AMqGqMLEBnFQkD3l-w1370.gif')
+        await message.channel.send(embed=embed)
+
 
 #ichigo
     if message.content.startswith("%ichigo"):
