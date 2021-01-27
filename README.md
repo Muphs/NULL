@@ -11,6 +11,9 @@ Once you added it run the "%help" command to list the available bot commands
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
+## Join the official server
+[https://bit.ly/null-bot-join](https://bit.ly/null-bot-join)
+
 ## Credits
 Designed and programmed by Muphs#8148
 
