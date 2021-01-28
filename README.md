@@ -1,6 +1,6 @@
 # NULL.™ 
 
-NULL.™ Is a sofisticated Discord and Elegantly designed bot Programmed in Python with the use of Discord.py
+NULL.™ Is a sofisticated and Elegantly designed Discord bot Programmed in Python with Discord.py
 
 <p align="center">
   <img src="NULL banner_rounded.png" width="1024" title="NULL.™ Banner">
