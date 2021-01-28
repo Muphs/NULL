@@ -24,17 +24,24 @@ ichigo_list = ['https://media.tenor.com/images/d1fc46f2d0fd52740711b80b80a3c081/
 
 todoroki_list = ['https://pa1.narvii.com/6894/c584fe56b8dde82ac901aeb8e359cb2e157c3bdfr1-533-300_hq.gif', 'https://media1.tenor.com/images/30638e057d7c84c963619c3f9ab2a3df/tenor.gif?itemid=18024441', 'https://img.wattpad.com/e366789b1d68a2190987c27b2378395b6c0c7d66/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f776174747061642d6d656469612d736572766963652f53746f7279496d6167652f3152537645325f4f32366f6155673d3d2d3736373439353134382e313562376137353763303434343138363934363130373235393332302e676966?s=fit&w=720&h=720', 'https://i.pinimg.com/originals/2e/31/93/2e31935a326bdff0e6d1b91ae03d607f.gif', 'https://p.favim.com/orig/2018/08/01/boku-no-hero-academia-my-hero-academia-todoroki-shouto-Favim.com-6107451.gif']
 
-headout_list = ['cya', 'peace out', 'stay safe', 'ttyl', 'have fun']
+headout_list = ['cya', 'peace out', 'stay safe', 'ttyl', 'have fun', 'see you later', 'be happy :)']
 
 roast_list = ['You’re the reason God created the middle finger.', 'You’re a grey sprinkle on a rainbow cupcake.', 'If your brain was dynamite, there wouldn’t be enough to blow your hat off.', 'You are more disappointing than an unsalted pretzel.', 'someday you’ll go far, stay there', 'Light travels faster than sound which is why you seemed bright until you spoke.', 'You have so many gaps in your teeth it looks like your tongue is in jail.', 'I wasn’t born with enough middle fingers to let you know how I feel about you', 'If I wanted to kill myself id climb your ego and jump to your IQ', 'Your face makes onions cry.', 'I would love to insult you, but I’m afraid I won’t do as well as nature did', 'If you’re going to be two-faced, at least make one of them pretty.', 'whenever you swim, you just add another piece of trash to the ocean', 'Zombies eat brains, you’re safe']
 
 pickup_list = ["Even if there was no gravity, i'd still fall for you", "Do you like raisins? How do you feel about a date?", "If I could rearrange the alphabet, I’d put ‘U’ and ‘I’ together.", "If you were a Transformer… you’d be Optimus Fine.", "Are you a parking ticket? Because you’ve got FINE written all over you.", "I'm no photographer, but I can picture us together.", "Are you related to Jean-Claude Van Damme? Because Jean-Claude Van Damme you’re sexy!", "are you from Tenesse? cus you are the only 10 i see", "Baby, if you were words on a page, you’d be fine print.", "You must be a high test score, because I want to take you home and show you to my mother", "I was blinded by your beauty; I’m going to need your name and phone number for insurance purposes.", "I was wondering if you had an extra heart. Because mine was just stolen.", "Is your name Google? Because you have everything I’ve been searching for.", "You’re so gorgeous you made me forget what my pick up line was", "Im learning of important dates in history, wanna be one?", "i must be in a museum, because you are truly a work of art"]
 
+slap_list = []
+
+hug_list = []
+
+compliment_list = ['You have the best laugh.', 'Our system of inside jokes is so advanced that only you and I get it. And I like that.', 'Your perspective is refreshing.', 'You deserve a hug right now.', 'You’re more helpful than you realize.', 'You have a great sense of humor.', 'On a scale from 1 to 10, you’re an 11.', 'You’re even more beautiful on the inside than you are on the outside.', 'If cartoon bluebirds were real, a bunch of them would be sitting on your shoulders singing right now.', 'Your ability to recall random factoids at just the right time is impressive.', 'You may dance like no one’s watching, but everyone’s watching because you’re an amazing dancer!', 'You’re more fun than a ball pit filled with candy. (And seriously, what could be more fun than that?)', 'Everyday is just BLAH when I don’t see you fr! ', 'If you were a box of crayons, you’d be the giant name-brand one with the built-in sharpener.', 'Everyone gets knocked down sometimes, but you always get back up and keep going.', 'You’re gorgeous — and that’s the least interesting thing about you, too.', 'If you were a scented candle they’d call it Perfectly Imperfect (and it would smell like summer).']
 
 #client
 @client.event
 async def on_ready():
     print('logged in as {0.user}'.format(client))
+
+
 
 
 @client.event
@@ -44,12 +51,17 @@ async def on_message(message):
         return
 #commands
 
+#mock
+#    if message.content.startswith('%mock'):
+#        out = ''.join(random.choice((str.upper, str.lower))(c) for c in message)
+#        await message.channel.send(out)
+
 #hello
     if message.content.startswith('%hello'):
         embed=discord.Embed(title="Hello!", color=0xff9efc)
         embed.set_footer(text="NULL.™")
         embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
-        await message.channel.reply(embed=embed, mention_author=True)
+        await message.channel.send(embed=embed)
 
 #hepl
     if message.content.startswith('%hepl'):
@@ -102,6 +114,14 @@ async def on_message(message):
     if message.content.startswith("%8ball"):
         lucky_num = random.randint(0,len(response_list) - 1)
         embed=discord.Embed(title=(response_list[lucky_num]), color=0xff9efc)
+        embed.set_footer(text="NULL.™")
+        embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
+        await message.channel.send(embed=embed)
+
+#compliment
+    if message.content.startswith("%compliment"):
+        lucky_num = random.randint(0,len(compliment_list) - 1)
+        embed=discord.Embed(title=(compliment_list[lucky_num]), color=0xff9efc)
         embed.set_footer(text="NULL.™")
         embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
         await message.channel.send(embed=embed)
@@ -170,25 +190,12 @@ async def on_message(message):
         embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-AMqGqMLEBnFQkD3l-w1370.gif')
         await message.channel.send(embed=embed)
 
-#repeat
-    #if message.content.startswith("%repeat"):
-        #lucky_num = random.randint(0,len(response_list) - 1)
-        #embed=discord.Embed("{}".format(" ".join(args))), color=0xff9efc
-        #embed.set_footer(text="NULL.™")
-        #embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
-        #await message.channel.send(embed=embed)
-
-
-    #await channel.send("{}".format(" ".join(args)))
-
 
 #help
     if message.content.startswith('%help'):
         embed=discord.Embed(title="NULL.™ Help", color=0xff9efc)
         #hello
         embed.add_field(name="%hello", value="You're greeted by me!", inline=False)
-        #add bot
-        embed.add_field(name="%addbot", value="Add me to your server!", inline=False)
         #bot version
         embed.add_field(name="%botver", value="Get to know my current software version!", inline=False)
         #8ball
@@ -201,26 +208,24 @@ async def on_message(message):
         #embed.add_field(name="%repeat", value="I repeat after you!", inline=False)
         #cute anime
         embed.add_field(name="%cuteanime", value="Cute anime gifs", inline=False)
-        #todoroki
-        embed.add_field(name="%todoroki", value="for the simps ;)", inline=False)
-        #zero two
-        embed.add_field(name="%zerotwo", value="for the simps ;)", inline=False)
-        #ichigo
-        embed.add_field(name="%ichigo", value="for the simps ;)", inline=False)
         #head out
         embed.add_field(name="%headout", value="Cya, Have fun", inline=False)
         #roast
         embed.add_field(name="%roast", value="Let me roast you...", inline=False)
         #pickup line
         embed.add_field(name="%pickupline", value="Let me give you a pickup line :smirk:", inline=False)
-        #join server
-        embed.add_field(name="%joinserver", value="Join my official server", inline=False)
+        #compliment
+        embed.add_field(name="%compliment", value="Sweet compliments :)", inline=False)
+        #website
+        embed.add_field(name="Check out the official website here!", value="http://bit.ly/null-discord", inline=False)
+        #server
+        embed.add_field(name="Join the official server here!", value="http://bit.ly/null-bot-join", inline=False)
+        #add bot
+        embed.add_field(name="Add me to your server here!", value="http://bit.ly/null-bot-add", inline=False)
         #easter eggs
         embed.add_field(name="easter eggs :smirk:", value="Read the code on Muphs' Github to find out :smirk:", inline=False)
         #github
         embed.add_field(name="Check out the source code here!", value="http://bit.ly/null-bot-source-code", inline=False)
-        #website
-        embed.add_field(name="You can also check out the official website here!", value="http://bit.ly/null-discord", inline=False)
         embed.set_footer(text="NULL.™")
         embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
         await message.channel.send(embed=embed)
