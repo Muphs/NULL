@@ -24,8 +24,6 @@ ichigo_list = ['https://media.tenor.com/images/d1fc46f2d0fd52740711b80b80a3c081/
 
 todoroki_list = ['https://pa1.narvii.com/6894/c584fe56b8dde82ac901aeb8e359cb2e157c3bdfr1-533-300_hq.gif', 'https://media1.tenor.com/images/30638e057d7c84c963619c3f9ab2a3df/tenor.gif?itemid=18024441', 'https://img.wattpad.com/e366789b1d68a2190987c27b2378395b6c0c7d66/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f776174747061642d6d656469612d736572766963652f53746f7279496d6167652f3152537645325f4f32366f6155673d3d2d3736373439353134382e313562376137353763303434343138363934363130373235393332302e676966?s=fit&w=720&h=720', 'https://i.pinimg.com/originals/2e/31/93/2e31935a326bdff0e6d1b91ae03d607f.gif', 'https://p.favim.com/orig/2018/08/01/boku-no-hero-academia-my-hero-academia-todoroki-shouto-Favim.com-6107451.gif']
 
-nickwilde_list = ['https://fsa.zobj.net/crop.php?r=o-a4ILNuzRn8YwRkD-QM0H7an2GTrabiOjyMpROxtpiArleiFVaF6Fpmob4McDSJ93q3TqqQ00x3OoXqbLBl8bvMDwrnfI1wp7C_KNhsJGGAN-oQ3ZfRsouuic-dUowmbZU5cwncc1AETh4L', 'https://static.wikia.nocookie.net/zootropolis/images/6/6e/Nick_Wilde.png/revision/latest/scale-to-width-down/340?cb=20160326155400','https://pm1.narvii.com/6359/f79784f115daa6a84fda688b535c8330e0afd678_00.jpg', 'https://www.seekpng.com/png/detail/158-1582917_report-abuse-nick-wilde.png', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ80pNZPfmU6xPQIQnrRDfOYKLD-Xd0LykY4g&usqp=CAU']
-
 headout_list = ['cya', 'peace out', 'stay safe', 'ttyl', 'have fun']
 
 roast_list = ['You’re the reason God created the middle finger.', 'You’re a grey sprinkle on a rainbow cupcake.', 'If your brain was dynamite, there wouldn’t be enough to blow your hat off.', 'You are more disappointing than an unsalted pretzel.', 'someday you’ll go far, stay there', 'Light travels faster than sound which is why you seemed bright until you spoke.', 'You have so many gaps in your teeth it looks like your tongue is in jail.', 'I wasn’t born with enough middle fingers to let you know how I feel about you', 'If I wanted to kill myself id climb your ego and jump to your IQ', 'Your face makes onions cry.', 'I would love to insult you, but I’m afraid I won’t do as well as nature did', 'If you’re going to be two-faced, at least make one of them pretty.', 'whenever you swim, you just add another piece of trash to the ocean', 'Zombies eat brains, you’re safe']
@@ -79,47 +77,11 @@ async def on_message(message):
 
 #botver
     if message.content.startswith('%botver'):
-        embed=discord.Embed(title="I am currently on Development version 0.22!", color=0xff9efc)
+        embed=discord.Embed(title="I am currently on Development version 0.50!", color=0xff9efc)
         embed.set_footer(text="NULL.™")
         embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
         await message.channel.send(embed=embed)
 
-
-#icy
-    if message.content.startswith('%is Icy the best and cutest in the world?'):
-        embed=discord.Embed(title="I HOPE SO!", color=0xff9efc)
-        embed.set_footer(text="NULL.™")
-        embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
-        await message.channel.send(embed=embed)
-
-#icy
-    if message.content.startswith("%will Icy be Muphs' boo?"):
-        embed=discord.Embed(title="OF COURSE SHE IS!", color=0xff9efc)
-        embed.set_footer(text="NULL.™")
-        embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
-        await message.channel.send(embed=embed)
-
-
-#icy
-    if message.content.startswith("%should i rethink my life?"):
-        embed=discord.Embed(title="Yes!", color=0xff9efc)
-        embed.set_footer(text="NULL.™")
-        embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
-        await message.channel.send(embed=embed)
-
-#icy
-    if message.content.startswith("%should Muphs be Icy's boyfriend?"):
-        embed=discord.Embed(title="YES!", color=0xff9efc)
-        embed.set_footer(text="NULL.™")
-        embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
-        await message.channel.send(embed=embed)
-
-#laura
-    if message.content.startswith("%islaurasupercool?"):
-        embed=discord.Embed(title="idk, ask QNTM", color=0xff9efc)
-        embed.set_footer(text="NULL.™")
-        embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
-        await message.channel.send(embed=embed)
 
 #you
     if message.content.startswith("%amisupercool?"):
@@ -135,12 +97,6 @@ async def on_message(message):
         embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
         await message.channel.send(embed=embed)
 
-#paulo
-    if message.content.startswith("%ispaulosuperseggsyandsupercool?"):
-        embed=discord.Embed(title="nah fam, straight up cap", color=0xff9efc)
-        embed.set_footer(text="NULL.™")
-        embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
-        await message.channel.send(embed=embed)
 
 #8ball
     if message.content.startswith("%8ball"):
@@ -150,7 +106,7 @@ async def on_message(message):
         embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
         await message.channel.send(embed=embed)
 
-#8ball
+#pickupline
     if message.content.startswith("%pickupline"):
         lucky_num = random.randint(0,len(pickup_list) - 1)
         embed=discord.Embed(title=(pickup_list[lucky_num]), color=0xff9efc)
@@ -201,15 +157,6 @@ async def on_message(message):
         lucky_num = random.randint(0,len(ichigo_list) - 1)
         embed=discord.Embed(title='Awww', color=0xff9efc)
         embed.set_image(url=(ichigo_list[lucky_num]))
-        embed.set_footer(text="NULL.™")
-        embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-AMqGqMLEBnFQkD3l-w1370.gif')
-        await message.channel.send(embed=embed)
-
-#nick
-    if message.content.startswith("%nickwilde"):
-        lucky_num = random.randint(0,len(nickwilde_list) - 1)
-        embed=discord.Embed(title='Awww', color=0xff9efc)
-        embed.set_image(url=(nickwilde_list[lucky_num]))
         embed.set_footer(text="NULL.™")
         embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-AMqGqMLEBnFQkD3l-w1370.gif')
         await message.channel.send(embed=embed)
@@ -272,6 +219,8 @@ async def on_message(message):
         embed.add_field(name="easter eggs :smirk:", value="Read the code on Muphs' Github to find out :smirk:", inline=False)
         #github
         embed.add_field(name="Check out the source code here!", value="http://bit.ly/null-bot-source-code", inline=False)
+        #website
+        embed.add_field(name="You can also check out the official website here!", value="http://bit.ly/null-discord", inline=False)
         embed.set_footer(text="NULL.™")
         embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
         await message.channel.send(embed=embed)
