@@ -58,18 +58,21 @@ async def on_ready():
 async def on_message(message):
     if message.author == client.user:
         return
+
 #commands
-
-#await client.send_message(message.channel, "I'm in " + str(len(client.servers)) + " servers!")
-
-
-    if client.user.mention in message.content.split():
-        await message.reply('You mentioned me!', mention_author=True)
 
 
 #hello
     if message.content.startswith('%hello'):
         embed=discord.Embed(title="Hello!", color=0xff9efc)
+        embed.set_footer(text="NULL.™")
+        embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
+        await message.reply(embed=embed, mention_author=True)
+
+
+#ping
+    if message.content.startswith('%ping'):
+        embed=discord.Embed(title="Pong! :ping_pong:", color=0xff9efc, description=(f'My current ping is: {round(client.latency * 1000)}ms'))
         embed.set_footer(text="NULL.™")
         embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
         await message.reply(embed=embed, mention_author=True)
@@ -194,6 +197,16 @@ async def on_message(message):
         embed.set_footer(text="NULL.™")
         embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-AMqGqMLEBnFQkD3l-w1370.gif')
         await message.reply(embed=embed, mention_author=True)
+
+
+#slap
+    if message.content.startswith("%hug "):
+        lucky_num = random.randint(0,len(hug_list) - 1)
+        embed=discord.Embed(title='aww', color=0xff9efc)
+        embed.set_image(url=(hug_list[lucky_num]))
+        embed.set_footer(text="NULL.™")
+        embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-AMqGqMLEBnFQkD3l-w1370.gif')
+        await message.reply(embed=embed, mention_author=True)
         
 
 #head out
@@ -206,49 +219,10 @@ async def on_message(message):
         await message.reply(embed=embed, mention_author=True)
 
 
-#help
-    if message.content.startswith('%help'):
-        embed=discord.Embed(title="NULL.™ Help", color=0xff9efc)
-        #hello
-        embed.add_field(name="%hello", value="You're greeted by me!", inline=False)
-        #bot version
-        embed.add_field(name="%botver", value="Get to know my current software version!", inline=False)
-        #8ball
-        embed.add_field(name="%8ball(your question)", value="Magic 8ball :O", inline=False)
-        #pick
-        #embed.add_field(name="%pick", value="I pick from a list (separated by commas and spaces)", inline=False)
-        #ping
-        #embed.add_field(name="%ping", value="Lists current ping in miliseconds!", inline=False)
-        #repeat
-        #embed.add_field(name="%repeat", value="I repeat after you!", inline=False)
-        #cute anime
-        embed.add_field(name="%cuteanime", value="Cute anime gifs", inline=False)
-        #head out
-        embed.add_field(name="%headout", value="Cya, Have fun", inline=False)
-        #roast
-        embed.add_field(name="%roast", value="Let me roast you...", inline=False)
-        #pickup line
-        embed.add_field(name="%pickupline", value="Let me give you a pickup line :smirk:", inline=False)
-        #compliment
-        embed.add_field(name="%compliment", value="Sweet compliments :)", inline=False)
-        #website
-        embed.add_field(name="Check out the official website here!", value="http://bit.ly/null-discord", inline=False)
-        #server
-        embed.add_field(name="Join the official server here!", value="http://bit.ly/null-bot-join", inline=False)
-        #add bot
-        embed.add_field(name="Add me to your server here!", value="http://bit.ly/null-bot-add", inline=False)
-        #easter eggs
-        embed.add_field(name="easter eggs :smirk:", value="Read the code on Muphs' Github to find out :smirk:", inline=False)
-        #github
-        embed.add_field(name="Check out the source code here!", value="http://bit.ly/null-bot-source-code", inline=False)
-        embed.set_footer(text="NULL.™")
-        embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
-        await message.reply(embed=embed, mention_author=True)
-
-
 
 #credentials
 load_dotenv('.env')
 
 #run client
 client.run(os.getenv('BOT_TOKEN'))
+
