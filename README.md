@@ -1,6 +1,6 @@
 # NULL.
 
-NULL. Is a sofisticated and Elegantly designed Discord bot Programmed in Python with Discord.py
+NULL. Is a sophisticated and Elegantly designed Discord bot Programmed in Python with Discord.py
 
 <p align="center">
   <img src="NULL banner_rounded.png" width="1024" title="NULL.™ Banner">
