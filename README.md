@@ -1,6 +1,6 @@
-# NULL.™ 
+# NULL.
 
-NULL.™ Is a sofisticated and Elegantly designed Discord bot Programmed in Python with Discord.py
+NULL. Is a sofisticated and Elegantly designed Discord bot Programmed in Python with Discord.py
 
 <p align="center">
   <img src="NULL banner_rounded.png" width="1024" title="NULL.™ Banner">
@@ -8,7 +8,7 @@ NULL.™ Is a sofisticated and Elegantly designed Discord bot Programmed in Pyth
 
 ## Usage
 
-Add NULL.™ to your server by clicking [this](https://bit.ly/null-bot-add) link
+Add NULL. To your server by clicking [this](https://bit.ly/null-bot-add) link
 
 Once you added it run the "%help" command to list the available bot commands
 
