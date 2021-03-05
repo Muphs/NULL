@@ -2,6 +2,7 @@
 import discord
 from discord import user
 from discord import embeds
+from discord import message
 from discord.ext import commands
 import aiohttp
 import asyncio
@@ -18,8 +19,13 @@ from discord import member
 from discord import Embed
 from discord.utils import get
 
+#variables
 check = '☑️'
-description = 'NULL.'
+description = 'NULL. Prefix: %'
+color = 0xff9efc
+thumbnail = 'https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif'
+thumbnail_small = 'https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif'
+prefix = '%'
 
 #quote
 def get_quote():
@@ -27,13 +33,6 @@ def get_quote():
   json_data = json.loads(response.text)
   quote = json_data[0]['q'] + " -" + json_data[0]['a']
   return(quote)
-
-#random facts
-#def get_fact():
-#  response = requests.get("https://useless-facts.sameerkumar.website/api")
-#  json_data = json.loads(response.text)
-#  fact = json_data[0]['q'] + " -" + json_data[0]['a']
-#  return(fact)
 
 #client
 client = discord.Client()
@@ -49,51 +48,55 @@ class MyClient(discord.Client):
 async def on_ready():
     print('logged in as {0.user}'.format(client))
     #status
+    await client.change_presence(status=discord.Status.online, activity=discord.Game('Back online!'))
+    asyncio.wait(5)
     await client.change_presence(status=discord.Status.online, activity=discord.Game('bit.ly/null-discord'))
 
 @client.event
 async def on_message(message):
     if message.author == client.user:
         return
+    async def avatar(client, *,  avamember : discord.Member=None):
+        userAvatarUrl = avamember.avatar_url
 
 
 #commands
 #hello
-    authorID = message.author.id
-    if message.content.startswith('%hello'):
+    if message.content.startswith((prefix) + 'hello'):
         lucky_num = random.randint(0,len(greetings_list) - 1)
-        embed=discord.Embed(title=((greetings_list[lucky_num])), color=0xff9efc)
+        embed=discord.Embed(title=((greetings_list[lucky_num]) + '!'), color=(color))
         embed.set_footer(text=(description))
         embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
         await message.reply(embed=embed, mention_author=True)
 
 #info
 #ping
-    if message.content.startswith('%ping'):
-        embed=discord.Embed(title="Pong! :ping_pong:", color=0xff9efc, description=(f'Ponged back in {round(client.latency * 1000)}ms'))
+    if message.content.startswith((prefix) + 'ping'):
+        embed=discord.Embed(title="Pong! :ping_pong:", color=(color), description=(f'Ponged back in ``{round(client.latency * 1000)}ms``'))
         embed.set_footer(text=(description))
         embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
         await message.reply(embed=embed, mention_author=True)
 
 #add bot
-    if message.content.startswith('%addbot'):
-        embed=discord.Embed(title="Add me to your server by clicking this link", color=0xff9efc)
+    if message.content.startswith((prefix) + 'addbot'):
+        embed=discord.Embed(title="Add me to your server by clicking this link!", color=(color))
         embed.add_field(name="https://bit.ly/null-bot-add", value="‎‎‎‎‎‎‎ ", inline=False)
+        embed.add_field(name="Notice:", value="NULL. Is still in the development, which may cause commands to not work and the bot to be offline from now and then with no schedule.", inline=False)
         embed.set_footer(text=(description))
         embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
         await message.reply(embed=embed, mention_author=True)
 
 #join server
-    if message.content.startswith('%joinserver'):
-        embed=discord.Embed(title="Join my server by clicking this link", color=0xff9efc)
+    if message.content.startswith((prefix) + 'joinserver'):
+        embed=discord.Embed(title="Join my server by clicking this link", color=(color))
         embed.add_field(name="https://bit.ly/null-bot-join", value="‎‎‎‎‎‎‎ ", inline=False)
         embed.set_footer(text=(description))
         embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
         await message.reply(embed=embed, mention_author=True)
 
 #botver
-    if message.content.startswith('%botver'):
-        embed=discord.Embed(title="I am currently on Development version 1.33 pre release!", color=0xff9efc)
+    if message.content.startswith((prefix) + 'botver'):
+        embed=discord.Embed(title="I am currently on Development version 1.5 Open Beta!", color=(color))
         embed.set_footer(text=(description))
         embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
         await message.reply(embed=embed, mention_author=True)
@@ -101,40 +104,40 @@ async def on_message(message):
 
 
 #8ball
-    if message.content.startswith("%8ball"):
-        lucky_num = random.randint(0,len(response_list) - 1)
-        embed=discord.Embed(title=(response_list[lucky_num]), color=0xff9efc)
+    if message.content.startswith((prefix) + "8ball"):
+        lucky_num = random.randint(0,len(response_list)-1)
+        embed=discord.Embed(title=(response_list[lucky_num]), color=(color))
         embed.set_footer(text=(description))
         embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
         await message.reply(embed=embed, mention_author=True)
 
 #compliment
-    if message.content.startswith("%compliment"):
-        lucky_num = random.randint(0,len(compliment_list) - 1)
-        embed=discord.Embed(title=(compliment_list[lucky_num]), color=0xff9efc)
+    if message.content.startswith((prefix) + "compliment"):
+        lucky_num = random.randint(0,len(compliment_list)-1)
+        embed=discord.Embed(title=(compliment_list[lucky_num]), color=(color))
         embed.set_footer(text=(description))
         embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
         await message.reply(embed=embed, mention_author=True)
 
 #pickupline
-    if message.content.startswith("%pickupline"):
-        lucky_num = random.randint(0,len(pickup_list) - 1)
-        embed=discord.Embed(title=(pickup_list[lucky_num]), color=0xff9efc)
+    if message.content.startswith((prefix) + "pickupline"):
+        lucky_num = random.randint(0,len(pickup_list)-1)
+        embed=discord.Embed(title=(pickup_list[lucky_num]), color=(color))
         embed.set_footer(text=(description))
         embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
         await message.reply(embed=embed, mention_author=True)
 
 #roast
-    if message.content.startswith("%roast"):
-        lucky_num = random.randint(0,len(roast_list) - 1)
-        embed=discord.Embed(title=(roast_list[lucky_num]), color=0xff9efc)
+    if message.content.startswith((prefix) + "roast"):
+        lucky_num = random.randint(0,len(roast_list)-1)
+        embed=discord.Embed(title=(roast_list[lucky_num]), color=(color))
         embed.set_footer(text=(description))
         embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
         await message.reply(embed=embed, mention_author=True)
 
 #mario judah
-    if message.content.startswith("%milkyeet"):
-        embed=discord.Embed(title='YEEEEEEEEEEEEEEEEEEEEET', color=0xff9efc)
+    if message.content.startswith((prefix) + "milkyeet"):
+        embed=discord.Embed(title='YEEEEEEEEEEEEEEEEEEEEET', color=(color))
         embed.set_image(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/mario-judah-throws-milk-_-m2WjP9Gx6yHOB0J1-w1370.gif')
         embed.set_footer(text=(description))
         embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-AMqGqMLEBnFQkD3l-w1370.gif')
@@ -142,36 +145,36 @@ async def on_message(message):
 
 #anime
 #cuteanime
-    if message.content.startswith("%cuteanime"):
-        lucky_num = random.randint(0,len(anime_list) - 1)
-        embed=discord.Embed(title='Awww', color=0xff9efc)
+    if message.content.startswith((prefix) + "cuteanime"):
+        lucky_num = random.randint(0,len(anime_list)-1)
+        embed=discord.Embed(title='Awww', color=(color))
         embed.set_image(url=(anime_list[lucky_num]))
         embed.set_footer(text=(description))
         embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-AMqGqMLEBnFQkD3l-w1370.gif')
         await message.reply(embed=embed, mention_author=True)
 
 #zero two
-    if message.content.startswith("%zerotwo"):
-        lucky_num = random.randint(0,len(zerotwo_list) - 1)
-        embed=discord.Embed(title='Awww', color=0xff9efc)
+    if message.content.startswith((prefix) + "zerotwo"):
+        lucky_num = random.randint(0,len(zerotwo_list)-1)
+        embed=discord.Embed(title='Awww', color=(color))
         embed.set_image(url=(zerotwo_list[lucky_num]))
         embed.set_footer(text=(description))
         embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-AMqGqMLEBnFQkD3l-w1370.gif')
         await message.reply(embed=embed, mention_author=True)
 
 #todoroki
-    if message.content.startswith("%todoroki"):
-        lucky_num = random.randint(0,len(todoroki_list) - 1)
-        embed=discord.Embed(title='Awww', color=0xff9efc)
+    if message.content.startswith((prefix) + "todoroki"):
+        lucky_num = random.randint(0,len(todoroki_list)-1)
+        embed=discord.Embed(title='Awww', color=(color))
         embed.set_image(url=(todoroki_list[lucky_num]))
         embed.set_footer(text=(description))
         embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-AMqGqMLEBnFQkD3l-w1370.gif')
         await message.reply(embed=embed, mention_author=True)
 
 #ichigo
-    if message.content.startswith("%ichigo"):
-        lucky_num = random.randint(0,len(ichigo_list) - 1)
-        embed=discord.Embed(title='Awww', color=0xff9efc)
+    if message.content.startswith((prefix) + "ichigo"):
+        lucky_num = random.randint(0,len(ichigo_list)-1)
+        embed=discord.Embed(title='Awww', color=(color))
         embed.set_image(url=(ichigo_list[lucky_num]))
         embed.set_footer(text=(description))
         embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-AMqGqMLEBnFQkD3l-w1370.gif')
@@ -179,110 +182,126 @@ async def on_message(message):
 #anime end
 
 #slap
-    if message.content.startswith("%slap "):
-        lucky_num = random.randint(0,len(slap_list) - 1)
-        lucky_num = random.randint(0,len(slapresponse_list) - 1)
-        embed=discord.Embed(title=(slapresponse_list[lucky_num]), color=0xff9efc)
+    if message.content.startswith((prefix) + "slap "):
+        lucky_num = random.randint(0,len(slap_list)-1)
+        lucky_num = random.randint(0,len(slapresponse_list)-1)
+        embed=discord.Embed(title=(slapresponse_list[lucky_num]), color=(color))
         embed.set_image(url=(slap_list[lucky_num]))
         embed.set_footer(text=(description))
         embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-AMqGqMLEBnFQkD3l-w1370.gif')
         await message.reply(embed=embed, mention_author=True)
 
 #hug
-    if message.content.startswith("%hug "):
-        lucky_num = random.randint(0,len(hug_list) - 1)
-        lucky_num = random.randint(0,len(hugresponse_list) - 1)
-        embed=discord.Embed(title=(hugresponse_list[lucky_num]), color=0xff9efc)
+    if message.content.startswith((prefix) + "hug "):
+        lucky_num = random.randint(0,len(hug_list)-1)
+        lucky_num = random.randint(0,len(hugresponse_list)-1)
+        embed=discord.Embed(title=(hugresponse_list[lucky_num]), color=(color))
         embed.set_image(url=(hug_list[lucky_num]))
         embed.set_footer(text=(description))
         embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-AMqGqMLEBnFQkD3l-w1370.gif')
         await message.reply(embed=embed, mention_author=True)
 
 #kiss
-    if message.content.startswith("%kiss "):
-        lucky_num = random.randint(0,len(kiss_list) - 1)
-        lucky_num = random.randint(0,len(kissresponse_list) - 1)
-        embed=discord.Embed(title=(kissresponse_list[lucky_num]), color=0xff9efc)
+    if message.content.startswith((prefix) + "kiss "):
+        lucky_num = random.randint(0,len(kiss_list)-1)
+        lucky_num = random.randint(0,len(kissresponse_list)-1)
+        embed=discord.Embed(title=(kissresponse_list[lucky_num]), color=(color))
         embed.set_image(url=(kiss_list[lucky_num]))
         embed.set_footer(text=(description))
         embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-AMqGqMLEBnFQkD3l-w1370.gif')
         await message.reply(embed=embed, mention_author=True) 
 
 #head out
-    if message.content.startswith("%headout"):
-        lucky_num = random.randint(0,len(headout_list) - 1)
-        embed=discord.Embed(title=(headout_list[lucky_num]), color=0xff9efc)
+    if message.content.startswith((prefix) + "headout"):
+        lucky_num = random.randint(0,len(headout_list)-1)
+        embed=discord.Embed(title=(headout_list[lucky_num]), color=(color))
         embed.set_image(url='https://media1.tenor.com/images/c57c8725cfdb74251c392e0ca46753ba/tenor.gif?itemid=15194343')
         embed.set_footer(text=(description))
         embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-AMqGqMLEBnFQkD3l-w1370.gif')
         await message.reply(embed=embed, mention_author=True)
 
+#head out
+    if message.content.startswith((prefix) + "hamster"):
+        lucky_num = random.randint(0,len(hamster_list)-1)
+        embed=discord.Embed(title='Awww', color=(color))
+        embed.set_image(url=(hamster_list[lucky_num]))
+        embed.set_footer(text=(description))
+        embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-AMqGqMLEBnFQkD3l-w1370.gif')
+        await message.reply(embed=embed, mention_author=True)
+
 #how sus
-    if message.content == ('%howsus'):
+    if message.content == ((prefix) + 'howsus'):
           sus = random.randint(0, 100)
-          embed=discord.Embed(title=(str(sus)) + "% sus!", color=0xff9efc)
+          embed=discord.Embed(title=(str(sus)) + "% sus!", color=(color))
           embed.set_footer(text=(description))
           embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
           await message.reply(embed=embed, mention_author=True)
 
 #how gay
-    if message.content.startswith('%howgay'):
+    if message.content.startswith((prefix) + 'howgay'):
           gay = random.randint(0, 100)
-          embed=discord.Embed(title=(str(gay)) + "% gay :gay_pride_flag:", color=0xff9efc)
+          embed=discord.Embed(title=(str(gay)) + "% gay :gay_pride_flag:", color=(color))
+          embed.set_footer(text=(description))
+          embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
+          await message.reply(embed=embed, mention_author=True)
+
+#iq
+    if message.content.startswith((prefix) + 'iq'):
+          iq = random.randint(0, 500)
+          embed=discord.Embed(title=(str(iq)) + " IQ", color=(color))
           embed.set_footer(text=(description))
           embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
           await message.reply(embed=embed, mention_author=True)
 
 #inspire
-    if message.content.startswith("%inspire"):
+    if message.content.startswith((prefix) + "inspire"):
         quote = get_quote()
-        embed=discord.Embed(title=(quote), color=0xff9efc)
+        embed=discord.Embed(title=(quote), color=(color))
         embed.set_footer(text=(description))
         embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
         await message.reply(embed=embed, mention_author=True)
 
 #randomimage
-    if message.content.startswith("%randomimage"):
+    if message.content.startswith((prefix) + "randomimage"):
         picgen = random.randint(0, 999999999999999999999999999999999999999999999999999999)
-        embed=discord.Embed(title=' ', color=0xff9efc)
+        embed=discord.Embed(title=' ', color=(color))
         embed.set_image(url='https://picsum.photos/seed/' + (str(picgen)) + '/3840/2160')
         embed.set_footer(text=(description))
         embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-AMqGqMLEBnFQkD3l-w1370.gif')
         await message.reply(embed=embed, mention_author=True)
 
 #frog
-    if message.content.startswith("%frog"):
-        lucky_num = random.randint(0,len(frog_list) - 1)
-        embed=discord.Embed(title='Awww', color=0xff9efc)
+    if message.content.startswith((prefix) + "frog"):
+        lucky_num = random.randint(0,len(frog_list)-1)
+        embed=discord.Embed(title='Awww', color=(color))
         embed.set_image(url=(frog_list[lucky_num]))
         embed.set_footer(text=(description))
         embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-AMqGqMLEBnFQkD3l-w1370.gif')
         await message.reply(embed=embed, mention_author=True)
 
 #randomfact
-    if message.content.startswith("%randomfact"):
-        lucky_num = random.randint(0,len(facts_list) - 1)
-        embed=discord.Embed(title=(facts_list[lucky_num]), color=0xff9efc)
+    if message.content.startswith((prefix) + "randomfact"):
+        lucky_num = random.randint(0,len(facts_list)-1)
+        embed=discord.Embed(title=(facts_list[lucky_num]), color=(color))
         embed.set_footer(text=(description))
         embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
         await message.reply(embed=embed, mention_author=True)
         fact = requests.get("https://useless-facts.sameerkumar.website/api.json")
 
-
 #help
-    if message.content == '%help' or message.content == '%help':
-        embed=discord.Embed(title=("NULL. Help."), color=0xff9efc)
+    if message.content == (prefix) + 'help' or message.content == (prefix) + 'help ':
+        embed=discord.Embed(title=("NULL. Help."), color=(color))
         embed.add_field(name="🎮 ``Fun commands``", value="Use these commands when you're bored!", inline=False)
         embed.add_field(name="ℹ️ ``Info``", value="Get miscelanious info on various topics!", inline=False)
         embed.add_field(name="To get commands use ``%help.fun`` or ``%help.info``", value="Commands are case sensitive", inline=False)
-        embed.add_field(name="More commands coming soon!", value="|| Coded with :heart: by Muphs#8148 ||", inline=False)
+        embed.add_field(name="More commands coming soon!", value="|| Coded with :heart: by VOKSEL#8148 ||", inline=False)
         embed.set_footer(text=(description))
         embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
         await message.reply(embed=embed, mention_author=True)
         await message.add_reaction(emoji=check)
 
-    if message.content.startswith('%help.fun'):
-        embed=discord.Embed(title=("NULL. Help: Fun commands."), color=0xff9efc)
+    if message.content.startswith((prefix) + 'help.fun'):
+        embed=discord.Embed(title=("NULL. Help: Fun commands."), color=(color))
         embed.add_field(name="%8ball (question)", value="Ask the magic 8ball!", inline=False)
         embed.add_field(name="%compliment", value="Feeling sad? <:apple_plead:812381767432536125> get a compliment from me!", inline=False)
         embed.add_field(name="%pickupline", value="Meeting someone new? say a pickup line :smirk:", inline=False)
@@ -299,24 +318,36 @@ async def on_message(message):
         embed.add_field(name="%frog", value="Cute frog images!", inline=False)
         embed.add_field(name="%randomfact", value="Random fun facts!", inline=False)
         embed.add_field(name="Notice:", value="Commands are case sensitive", inline=False)
-        embed.add_field(name="More commands coming soon!", value="|| Coded with :heart: by Muphs#8148 ||", inline=False)
+        embed.add_field(name="More commands coming soon!", value="|| Coded with :heart: by VOKSEL#8148 ||", inline=False)
         embed.set_footer(text=(description))
         embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
         await message.reply(embed=embed, mention_author=True)
         await message.add_reaction(emoji=check)
 
-    if message.content.startswith('%help.info'):
-        embed=discord.Embed(title=("NULL. Help: Info commands."), color=0xff9efc)
+    if message.content.startswith((prefix) + 'help.info'):
+        embed=discord.Embed(title=("NULL. Help: Info commands."), color=(color))
         embed.add_field(name="%ping", value="Tells you my current ping in miliseconds", inline=False)
         embed.add_field(name="%addbot", value="Add me to your server by running this command and clicking the link!", inline=False)
         embed.add_field(name="%joinserver", value="Join my official server by running this command and clicking the link!", inline=False)
         embed.add_field(name="%botver", value="Tells you my current Software version!", inline=False)
         embed.add_field(name="Notice:", value="Commands are case sensitive", inline=False)
-        embed.add_field(name="More commands coming soon!", value="|| Coded with :heart: by Muphs#8148 ||", inline=False)
+        embed.add_field(name="More commands coming soon!", value="|| Coded with :heart: by VOKSEL#8148 ||", inline=False)
         embed.set_footer(text=(description))
         embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
         await message.reply(embed=embed, mention_author=True)
         await message.add_reaction(emoji=check)
+#help end
+
+#themes
+    if message.content == (prefix) + 'theme' or message.content == (prefix) + 'themes':
+        embed=discord.Embed(title="Here are my available themes!", color=(color))
+        embed.add_field(name="Paint", value="‎‎‎‎‎‎‎The default theme!", inline=False)
+        embed.add_field(name="Mavericks", value="‎‎‎‎‎‎‎ ", inline=False)
+        embed.add_field(name="Galaxy", value="‎‎‎‎‎‎‎ ", inline=False)
+        embed.add_field(name="Void", value="‎‎‎‎‎‎‎ ", inline=False)
+        embed.set_footer(text=(description))
+        embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
+        await message.reply(embed=embed, mention_author=True)
 
 response_list = ['100% sure!', 'definitely not', 'no :(', 'yes :)', 'hmmmmmm, idk', 'maybe ask again', 'maybe ask someone else', "definitely!", "As I see it, yes!", "Yes!", "No!", "Very likely!", "Not even close!", "Maybe!", "Very unlikely!", "Ask again later!", "Better not tell you now!", " It is certain!", "My sources say no", "Outlook good!", "Very Doubtful!", "Without a doubt!", 'no:heart:']
 
@@ -328,21 +359,23 @@ ichigo_list = ['https://media.tenor.com/images/d1fc46f2d0fd52740711b80b80a3c081/
 
 todoroki_list = ['https://pa1.narvii.com/6894/c584fe56b8dde82ac901aeb8e359cb2e157c3bdfr1-533-300_hq.gif', 'https://media1.tenor.com/images/30638e057d7c84c963619c3f9ab2a3df/tenor.gif?itemid=18024441', 'https://img.wattpad.com/e366789b1d68a2190987c27b2378395b6c0c7d66/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f776174747061642d6d656469612d736572766963652f53746f7279496d6167652f3152537645325f4f32366f6155673d3d2d3736373439353134382e313562376137353763303434343138363934363130373235393332302e676966?s=fit&w=720&h=720', 'https://i.pinimg.com/originals/2e/31/93/2e31935a326bdff0e6d1b91ae03d607f.gif', 'https://p.favim.com/orig/2018/08/01/boku-no-hero-academia-my-hero-academia-todoroki-shouto-Favim.com-6107451.gif']
 
+hamster_list = ['https://wallpaperaccess.com/full/1646379.jpg', 'https://i.pinimg.com/736x/f4/44/e7/f444e7650cfec94d5b4b8a3b4e5736f3.jpg', 'https://www.irishtimes.com/polopoly_fs/1.3521320.1528297311!/image/image.jpg_gen/derivatives/ratio_1x1_w1200/image.jpg', 'https://s7d2.scene7.com/is/image/PetSmart/5081325', 'https://www.vin.com/AppUtil/Image/handler.ashx?imgid=4476518&w=325&h=323', 'https://static.maskokotas.com/blog/wp-content/uploads/2020/01/hamster-cuidados-manejo.jpg', 'https://i.natgeofe.com/n/bc0b53c1-e57e-4708-b592-f11e6ef855c0/european-hamsters-1.jpg?w=636&h=424', 'https://www.wittemolen.com/sites/default/files/styles/full_width/public/slides/SLIDER-Hamster.jpg?itok=t7h_LCJE', 'https://i.pinimg.com/originals/7e/b7/45/7eb745f90461e87655b755eaea1c1d41.jpg', 'https://www.parksidevets.com/pets/wp-content/uploads/sites/2/2019/05/parksite-vets-Hamster-care.jpg', 'https://www.omlet.com/images/originals/Russian_winter_white_pouches.jpg', 'https://www.burgesspetcare.com/wp-content/uploads/2020/02/hamster-diets.jpg']
+
 headout_list = ['cya', 'peace out', 'stay safe', 'ttyl', 'have fun', 'see you later', 'be happy :)']
 
 roast_list = ['You’re the reason God created the middle finger.', 'You’re a grey sprinkle on a rainbow cupcake.', 'If your brain was dynamite, there wouldn’t be enough to blow your hat off.', 'You are more disappointing than an unsalted pretzel.', 'someday you’ll go far, stay there', 'Light travels faster than sound which is why you seemed bright until you spoke.', 'You have so many gaps in your teeth it looks like your tongue is in jail.', 'I wasn’t born with enough middle fingers to let you know how I feel about you', 'If I wanted to kill myself id climb your ego and jump to your IQ', 'Your face makes onions cry.', 'I would love to insult you, but I’m afraid I won’t do as well as nature did', 'If you’re going to be two-faced, at least make one of them pretty.', 'whenever you swim, you just add another piece of trash to the ocean', 'Zombies eat brains, you’re safe']
 
-pickup_list = ["Even if there was no gravity, i'd still fall for you", "Do you like raisins? How do you feel about a date?", "If I could rearrange the alphabet, I’d put ‘U’ and ‘I’ together.", "If you were a Transformer… you’d be Optimus Fine.", "Are you a parking ticket? Because you’ve got FINE written all over you.", "I'm no photographer, but I can picture us together.", "Are you related to Jean-Claude Van Damme? Because Jean-Claude Van Damme you’re sexy!", "are you from Tenesse? cus you are the only 10 i see", "Baby, if you were words on a page, you’d be fine print.", "You must be a high test score, because I want to take you home and show you to my mother", "I was blinded by your beauty; I’m going to need your name and phone number for insurance purposes.", "I was wondering if you had an extra heart. Because mine was just stolen.", "Is your name Google? Because you have everything I’ve been searching for.", "You’re so gorgeous you made me forget what my pick up line was", "Im learning of important dates in history, wanna be one?", "i must be in a museum, because you are truly a work of art"]
+pickup_list = ["Even if there was no gravity, i'd still fall for you", "Do you like raisins? How do you feel about a date?", "If I could rearrange the alphabet, I’d put ‘U’ and ‘I’ together.", "If you were a Transformer… you’d be Optimus Fine.", "Are you a parking ticket? Because you’ve got FINE written all over you.", "I'm no photographer, but I can picture us together.", "Are you related to Jean-Claude Van Damme? Because Jean-Claude Van Damme you’re sexy!", "are you from Tenesse? cus you are the only 10 i see", "Baby, if you were words on a page, you’d be fine print.", "You must be a high test score, because I want to take you home and show you to my mother", "I was blinded by your beauty; I’m going to need your name and phone number for insurance purposes.", "I was wondering if you had an extra heart. Because mine was just stolen.", "Is your name Google? Because you have everything I’ve been searching for.", "You’re so gorgeous you made me forget what my pick up line was", "Im learning of important dates in history, wanna be one?", "i must be in a museum, because you are truly a work of art", "If you cant live without something, it should be free. I can't live without you, so, when are you free?"]
 
-slap_list = ['https://image.myanimelist.net/ui/BQM6jEZ-UJLgGUuvrNkYUFk2Ae92E1tAeAfjk_pGLpKnHfWiikue5-m1fMe8_1TjRXlLKNwbrQTs1EfUN5ol3A', 'https://i.pinimg.com/originals/cd/13/ad/cd13adaeb8b4208db2270d7c94963101.gif', 'https://i.pinimg.com/originals/fe/39/cf/fe39cfc3be04e3cbd7ffdcabb2e1837b.gif', 'https://i.imgur.com/fm49srQ.gif', 'https://steamuserimages-a.akamaihd.net/ugc/850473950842117246/8C83635F86CE09C683D511622D7ED2B85BAD3ADD/', 'https://static.fjcdn.com/gifs/Mm_966fc2_1916375.gif', 'https://hosting.photobucket.com/images/b292/Animeniac206/e078aebe-6803-436b-9ffd-9c9f223c849b-original.gif?width=450&height=278&fit=bounds&crop=fill', 'https://i.gifer.com/7zBH.gif', 'https://i.pinimg.com/originals/b6/e3/9e/b6e39e693be3968d212b0fe5754f85db.gif', 'https://i.gifer.com/CXfX.gif', 'https://i.pinimg.com/originals/b0/a7/8b/b0a78b527317430cee98d326c85d1572.gif', 'https://static.fjcdn.com/gifs/Epic++slap_325276_4981364.gif', 'https://media1.tenor.com/images/419415702d1d29724279e5e8bfc68742/tenor.gif?itemid=18043240']
+slap_list = []
 
 slapresponse_list = ['oof, that must hurt', 'they must be dead', 'looks like someone got slapped lol']
 
-hug_list = ['https://media0.giphy.com/media/PHZ7v9tfQu0o0/200w.gif?cid=ecf05e47lagiw826g9lr1a60d6a1frd11f6bh5cnt3samaxd&rid=200w.gif', 'https://images-ext-1.discordapp.net/external/zfTmUclRCaQAeo_v62brRN8AsnHzlkGIofGl4VUwQvk/https/images-ext-2.discordapp.net/external/0p2eRsKxLrbNp1uZZuahOgiRHz9iJb8q9LxXuLnDg9g/https/cdn.nekos.life/hug/hug_048.gif', 'https://images-ext-2.discordapp.net/external/QnaGwn2BN9MQEhgcsJPOmy5m4flEfZo_cx_jm7B18Fk/https/images-ext-2.discordapp.net/external/EyWWm7WeNRrBCRiUouzg-8VXhaLz1bw4VfQ97MVH24U/https/cdn.nekos.life/hug/hug_017.gif', 'https://images-ext-2.discordapp.net/external/_7twWfy-TMtbZlc5aoy750PDkum9YloffrNRWElpYTc/https/images-ext-1.discordapp.net/external/wTmUey-cirkws20qMOhjmCmYCFrwtc6K_Lnx08gFQL8/https/cdn.nekos.life/hug/hug_005.gif']
+hug_list = []
 
 hugresponse_list = ['Awwwww, what a cute hug', 'i feel lonely <:apple_plead:812381767432536125>']
 
-kiss_list = ['https://image.myanimelist.net/ui/7TVWLJ4cRvwHjFyWCI7sZ5Zm3qFTI-ckzFGm08U0toC8AOuDQONqmz3hltQtOr1CDb1-nuL9gmMlBJ7hZ5GtaqGKS9iHtgy3XBAVTSl2ytf2eHAsrbSK1opFqEiwMOmz', 'https://images-ext-2.discordapp.net/external/bjyo-I2QPOO5_nGeclBpwwoCJmNuI-tjeq1W_W7nXvc/https/cdn.nekos.life/kiss/kiss_018.gif', 'https://images-ext-2.discordapp.net/external/Jou1gjEcIeRTasJpWe9fsGFI35usWd7sJGiAQ_yVw3I/https/cdn.nekos.life/kiss/kiss_117.gif', 'https://media1.tenor.com/images/d307db89f181813e0d05937b5feb4254/tenor.gif?itemid=16371489', 'https://media1.tenor.com/images/a1f7d43752168b3c1dbdfb925bda8a33/tenor.gif?itemid=10356314', 'https://media1.tenor.com/images/503bb007a3c84b569153dcfaaf9df46a/tenor.gif?itemid=17382412', 'https://media1.tenor.com/images/d0cd64030f383d56e7edc54a484d4b8d/tenor.gif?itemid=17382422', 'https://media1.tenor.com/images/ea9a07318bd8400fbfbd658e9f5ecd5d/tenor.gif?itemid=12612515', 'https://media1.tenor.com/images/b8d0152fbe9ecc061f9ad7ff74533396/tenor.gif?itemid=5372258', 'https://media1.tenor.com/images/4c66d14c58838d05376b5d2712655d91/tenor.gif?itemid=15009390']
+kiss_list = []
 
 kissresponse_list = ['I feel lonely <:apple_plead:812381767432536125>', 'I really need a gf <:apple_plead:812381767432536125>']
 
@@ -354,9 +387,9 @@ ad_list = ["Qntm's server"]
 
 adimage_list = [""]
 
-greetings_list = ['Hi!', 'Hey!', 'Sup!', 'Hello!']
+greetings_list = ['Hi', 'Hey', 'Sup', 'Hello']
 
-facts_list = ["The name Wendy was made up for the book 'Peter Pan.'",
+facts_list =     ["The name Wendy was made up for the book 'Peter Pan.'",
     "Barbie's full name is Barbara Millicent Roberts.",
     "Every time you lick a stamp, you consume 1/10 of a calorie.",
     "The average person falls asleep in seven minutes.",
