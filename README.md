@@ -19,7 +19,7 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 [https://bit.ly/null-bot-join](https://bit.ly/null-bot-join)
 
 ## Credits
-Designed and programmed by Muphs#8148
+Designed and programmed by VOKSEL#8148
 
 Co Designed by qntm#8209
 
