@@ -1,3 +1,4 @@
+
 #imports
 import discord
 from discord import user
@@ -18,6 +19,7 @@ import requests
 from discord import member
 from discord import Embed
 from discord.utils import get
+import string
 
 #variables
 check = '☑️'
@@ -34,23 +36,23 @@ def get_quote():
   quote = json_data[0]['q'] + " -" + json_data[0]['a']
   return(quote)
 
+#covid
+covid = requests.get('https://api.covid19api.com/world/total')
+json_data = json.loads(covid.text)
+CovidConfirmed = json_data['TotalConfirmed']
+CovidDeaths = json_data['TotalDeaths']
+CovidRecovered = json_data['TotalRecovered']
+
 #client
 client = discord.Client()
-client = commands.Bot(command_prefix = '%', case_insensitive=True)
-bot = commands.Bot(command_prefix='%', case_insensitive=True)
-Bot = commands.Bot(command_prefix = '%', case_insensitive=True)
-
-class MyClient(discord.Client):
-    def init(self, *args, **kwargs):
-        super().init(*args, **kwargs)
+client = commands.Bot(command_prefix = '%%', case_insensitive=True)
+bot = commands.Bot(command_prefix='%%', case_insensitive=True)
+Bot = commands.Bot(command_prefix = '%%', case_insensitive=True)
 
 @client.event
 async def on_ready():
     print('logged in as {0.user}'.format(client))
-    #status
-    await client.change_presence(status=discord.Status.online, activity=discord.Game('Back online!'))
-    asyncio.wait(5)
-    await client.change_presence(status=discord.Status.online, activity=discord.Game('bit.ly/null-discord'))
+    await client.change_presence(activity=discord.Streaming(name='%help', url='https://www.twitch.tv/add_null/about'))
 
 @client.event
 async def on_message(message):
@@ -58,6 +60,7 @@ async def on_message(message):
         return
     async def avatar(client, *,  avamember : discord.Member=None):
         userAvatarUrl = avamember.avatar_url
+        
 
 
 #commands
@@ -220,7 +223,7 @@ async def on_message(message):
         embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-AMqGqMLEBnFQkD3l-w1370.gif')
         await message.reply(embed=embed, mention_author=True)
 
-#head out
+#hamster
     if message.content.startswith((prefix) + "hamster"):
         lucky_num = random.randint(0,len(hamster_list)-1)
         embed=discord.Embed(title='Awww', color=(color))
@@ -237,17 +240,38 @@ async def on_message(message):
           embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
           await message.reply(embed=embed, mention_author=True)
 
+    if message.content.startswith((prefix) + 'howsus '):
+          sus = random.randint(30, 100)
+          embed=discord.Embed(title=(str(sus)) + "% sus!", color=(color))
+          embed.set_footer(text=(description))
+          embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
+          await message.reply(embed=embed, mention_author=True)
+
 #how gay
-    if message.content.startswith((prefix) + 'howgay'):
+    if message.content == ((prefix) + 'howgay'):
           gay = random.randint(0, 100)
           embed=discord.Embed(title=(str(gay)) + "% gay :gay_pride_flag:", color=(color))
           embed.set_footer(text=(description))
           embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
           await message.reply(embed=embed, mention_author=True)
 
+    if message.content.startswith((prefix) + 'howgay '):
+          gay = random.randint(30, 100)
+          embed=discord.Embed(title=(str(gay)) + "% gay :gay_pride_flag:", color=(color))
+          embed.set_footer(text=(description))
+          embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
+          await message.reply(embed=embed, mention_author=True)
+
 #iq
-    if message.content.startswith((prefix) + 'iq'):
-          iq = random.randint(0, 500)
+    if message.content == ((prefix) + 'iq'):
+          iq = random.randint(0, 1000)
+          embed=discord.Embed(title=(str(iq)) + " IQ", color=(color))
+          embed.set_footer(text=(description))
+          embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
+          await message.reply(embed=embed, mention_author=True)
+
+    if message.content.startswith((prefix) + 'iq '):
+          iq = random.randint(0, 200)
           embed=discord.Embed(title=(str(iq)) + " IQ", color=(color))
           embed.set_footer(text=(description))
           embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
@@ -279,6 +303,15 @@ async def on_message(message):
         embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-AMqGqMLEBnFQkD3l-w1370.gif')
         await message.reply(embed=embed, mention_author=True)
 
+#randomjdm
+    if message.content.startswith((prefix) + "jdm") or message.content.startswith((prefix) + 'randomjdm'):
+        lucky_num = random.randint(0,len(jdm_list)-1)
+        embed=discord.Embed(title=' ', color=(color))
+        embed.set_image(url=(jdm_list[lucky_num]))
+        embed.set_footer(text=(description))
+        embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-AMqGqMLEBnFQkD3l-w1370.gif')
+        await message.reply(embed=embed, mention_author=True)
+
 #randomfact
     if message.content.startswith((prefix) + "randomfact"):
         lucky_num = random.randint(0,len(facts_list)-1)
@@ -286,7 +319,17 @@ async def on_message(message):
         embed.set_footer(text=(description))
         embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
         await message.reply(embed=embed, mention_author=True)
-        fact = requests.get("https://useless-facts.sameerkumar.website/api.json")
+
+#Covid
+    if message.content.startswith((prefix) + "covid"):
+        embed=discord.Embed(title='COVID19 Info.', color=(color))
+        embed.set_thumbnail(url=(thumbnail))
+        embed.add_field(name=("{:,}".format(CovidConfirmed)), value="Confirmed cases.", inline=False)
+        embed.add_field(name=("{:,}".format(CovidRecovered)), value="Recovered cases.", inline=False)
+        embed.add_field(name=("{:,}".format(CovidDeaths)), value="Deaths.", inline=False)
+        embed.set_footer(text=(description))
+        await message.reply(embed=embed, mention_author=True)
+        
 
 #help
     if message.content == (prefix) + 'help' or message.content == (prefix) + 'help ':
@@ -298,7 +341,6 @@ async def on_message(message):
         embed.set_footer(text=(description))
         embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
         await message.reply(embed=embed, mention_author=True)
-        await message.add_reaction(emoji=check)
 
     if message.content.startswith((prefix) + 'help.fun'):
         embed=discord.Embed(title=("NULL. Help: Fun commands."), color=(color))
@@ -317,12 +359,13 @@ async def on_message(message):
         embed.add_field(name="%randomimage", value="Need visual inspiration? try this command", inline=False)
         embed.add_field(name="%frog", value="Cute frog images!", inline=False)
         embed.add_field(name="%randomfact", value="Random fun facts!", inline=False)
+        embed.add_field(name="%hamster", value="cute hamsters <:apple_plead:812381767432536125>", inline=False)
+        embed.add_field(name="%jdm", value="Random JDM car images :hot_face:", inline=False)
         embed.add_field(name="Notice:", value="Commands are case sensitive", inline=False)
         embed.add_field(name="More commands coming soon!", value="|| Coded with :heart: by VOKSEL#8148 ||", inline=False)
         embed.set_footer(text=(description))
         embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
         await message.reply(embed=embed, mention_author=True)
-        await message.add_reaction(emoji=check)
 
     if message.content.startswith((prefix) + 'help.info'):
         embed=discord.Embed(title=("NULL. Help: Info commands."), color=(color))
@@ -335,19 +378,8 @@ async def on_message(message):
         embed.set_footer(text=(description))
         embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
         await message.reply(embed=embed, mention_author=True)
-        await message.add_reaction(emoji=check)
 #help end
 
-#themes
-    if message.content == (prefix) + 'theme' or message.content == (prefix) + 'themes':
-        embed=discord.Embed(title="Here are my available themes!", color=(color))
-        embed.add_field(name="Paint", value="‎‎‎‎‎‎‎The default theme!", inline=False)
-        embed.add_field(name="Mavericks", value="‎‎‎‎‎‎‎ ", inline=False)
-        embed.add_field(name="Galaxy", value="‎‎‎‎‎‎‎ ", inline=False)
-        embed.add_field(name="Void", value="‎‎‎‎‎‎‎ ", inline=False)
-        embed.set_footer(text=(description))
-        embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
-        await message.reply(embed=embed, mention_author=True)
 
 response_list = ['100% sure!', 'definitely not', 'no :(', 'yes :)', 'hmmmmmm, idk', 'maybe ask again', 'maybe ask someone else', "definitely!", "As I see it, yes!", "Yes!", "No!", "Very likely!", "Not even close!", "Maybe!", "Very unlikely!", "Ask again later!", "Better not tell you now!", " It is certain!", "My sources say no", "Outlook good!", "Very Doubtful!", "Without a doubt!", 'no:heart:']
 
@@ -383,9 +415,7 @@ compliment_list = ['You have the best laugh.', 'Our system of inside jokes is so
 
 frog_list = ["https://ih1.redbubble.net/image.1448785672.7225/st,small,507x507-pad,600x600,f8f8f8.jpg", "https://media.istockphoto.com/vectors/cute-frog-cartoon-hand-drawn-style-vector-id1146849256", "https://reneelertzman.com/wp-content/uploads/2016/03/cute-little-green-frog-peeking-out-from-behind-PT9JUFJ.jpg", "https://ih1.redbubble.net/image.1490694325.8717/fposter,small,wall_texture,product,750x1000.jpg", "https://www.crushpixel.com/big-static12/preview4/cute-frog-seamless-pattern-background-1094038.jpg", "https://www.crushpixel.com/big-static12/preview4/cute-frog-seamless-pattern-background-1094038.jpg", "https://media.discordapp.net/attachments/791400172209963058/812447792114827274/IMG_20210217_180127_963.jpg", "http://onebigphoto.com/uploads/2014/09/hello-i-am-cute-frog.jpg", "https://imagesvc.meredithcorp.io/v3/mm/image?q=85&c=sc&poi=face&w=1503&h=1503&url=https%3A%2F%2Fstatic.onecms.io%2Fwp-content%2Fuploads%2Fsites%2F20%2F2020%2F01%2Ffrog-trio-6.jpg", "https://media.discordapp.net/attachments/791400172209963058/812448117622046720/2lqtt9abx4561.png?width=371&height=500", "https://i.pinimg.com/originals/5c/a6/18/5ca6189bfca950c74ad266c30e587bb9.jpg", "http://1.bp.blogspot.com/-BkUS1SGdmLA/TpEiyhFFC4I/AAAAAAAAB3c/91Rh3vtHNT8/s1600/Cute-Frog-1.jpg", "https://media.discordapp.net/attachments/791400172209963058/812449043791085598/8mi859yc14251.png"]
 
-ad_list = ["Qntm's server"]
-
-adimage_list = [""]
+jdm_list = ['https://images-ext-1.discordapp.net/external/52h-vS9a2mw65Fl7ITo7TuD0wdiGeneuTi0WlqIKays/https/soymotor.com/sites/default/files/imagenes/noticia/toyota-supra.jpg', 'https://images-ext-2.discordapp.net/external/kDofouMxYFqVGrwlHX3ZSy8l1d1L28zyKD6evy-EFMA/https/besthqwallpapers.com/Uploads/16-11-2019/111977/thumb2-nissan-s30-nissan-fairlady-z-tuning-datsun-240z-japanese-cars.jpg', 'https://images-ext-2.discordapp.net/external/OvGDRXylwLmqiccdMXBuPB76YlNE3eEpCJIC33AfgJc/https/www.motorbiscuit.com/wp-content/uploads/2020/10/1986-JDM-Toyota-AE86-Sprinter-Trueno-GT-Apex.jpg', 'https://images-ext-1.discordapp.net/external/mWPXDCBHCJPP-BPzgy10u-hefrtGcwI6QoJg405nTD0/https/i.pinimg.com/originals/88/83/bd/8883bd844c3046df557c7381d0633626.jpg', 'https://images-ext-2.discordapp.net/external/XCCVt9Kwv25RQV68Ad_1F4QnvbsELNGPvxrv9jpI_20/https/i.pinimg.com/originals/67/ff/ea/67ffeab000d8e7033e60360ea0a3bcce.jpg', 'https://images-ext-1.discordapp.net/external/ymHMBTo2uS6Ujq3okVeB2MEN6HLMmaTF3CavIAhJkXA/https/frenomotor.com/files/2015/04/skyline-paul-walker.jpg']
 
 greetings_list = ['Hi', 'Hey', 'Sup', 'Hello']
 
