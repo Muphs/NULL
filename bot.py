@@ -22,12 +22,16 @@ from discord.utils import get
 import string
 
 #variables
+load_dotenv('.env')
 check = '☑️'
-description = 'NULL. Prefix: %'
+description = (os.getenv('DESCRIPTION'))
 color = 0xff9efc
 thumbnail = 'https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif'
 thumbnail_small = 'https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif'
-prefix = '%'
+prefix = (os.getenv('PREFIX'))
+prefix2 = (os.getenv('PREFIX2'))
+
+
 
 #quote
 def get_quote():
@@ -35,13 +39,6 @@ def get_quote():
   json_data = json.loads(response.text)
   quote = json_data[0]['q'] + " -" + json_data[0]['a']
   return(quote)
-
-#covid
-covid = requests.get('https://api.covid19api.com/world/total')
-json_data = json.loads(covid.text)
-CovidConfirmed = json_data['TotalConfirmed']
-CovidDeaths = json_data['TotalDeaths']
-CovidRecovered = json_data['TotalRecovered']
 
 #client
 client = discord.Client()
@@ -52,7 +49,7 @@ Bot = commands.Bot(command_prefix = '%%', case_insensitive=True)
 @client.event
 async def on_ready():
     print('logged in as {0.user}'.format(client))
-    await client.change_presence(activity=discord.Streaming(name='%help', url='https://www.twitch.tv/add_null/about'))
+    await client.change_presence(activity=discord.Streaming(name=(os.getenv('STREAM')), url=(os.getenv('STREAM_URL'))))
 
 @client.event
 async def on_message(message):
@@ -65,7 +62,7 @@ async def on_message(message):
 
 #commands
 #hello
-    if message.content.startswith((prefix) + 'hello'):
+    if message.content.startswith((prefix) + 'hello') or message.content.startswith((prefix2) + 'hello'):
         lucky_num = random.randint(0,len(greetings_list) - 1)
         embed=discord.Embed(title=((greetings_list[lucky_num]) + '!'), color=(color))
         embed.set_footer(text=(description))
@@ -74,14 +71,14 @@ async def on_message(message):
 
 #info
 #ping
-    if message.content.startswith((prefix) + 'ping'):
+    if message.content.startswith((prefix) + 'ping') or message.content.startswith((prefix2) + 'ping'):
         embed=discord.Embed(title="Pong! :ping_pong:", color=(color), description=(f'Ponged back in ``{round(client.latency * 1000)}ms``'))
         embed.set_footer(text=(description))
         embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
         await message.reply(embed=embed, mention_author=True)
 
 #add bot
-    if message.content.startswith((prefix) + 'addbot'):
+    if message.content.startswith((prefix) + 'addbot') or message.content.startswith((prefix2) + 'addbot'):
         embed=discord.Embed(title="Add me to your server by clicking this link!", color=(color))
         embed.add_field(name="https://bit.ly/null-bot-add", value="‎‎‎‎‎‎‎ ", inline=False)
         embed.add_field(name="Notice:", value="NULL. Is still in the development, which may cause commands to not work and the bot to be offline from now and then with no schedule.", inline=False)
@@ -90,7 +87,7 @@ async def on_message(message):
         await message.reply(embed=embed, mention_author=True)
 
 #join server
-    if message.content.startswith((prefix) + 'joinserver'):
+    if message.content.startswith((prefix) + 'joinserver') or message.content.startswith((prefix2) + 'joinserver'):
         embed=discord.Embed(title="Join my server by clicking this link", color=(color))
         embed.add_field(name="https://bit.ly/null-bot-join", value="‎‎‎‎‎‎‎ ", inline=False)
         embed.set_footer(text=(description))
@@ -98,8 +95,8 @@ async def on_message(message):
         await message.reply(embed=embed, mention_author=True)
 
 #botver
-    if message.content.startswith((prefix) + 'botver'):
-        embed=discord.Embed(title="I am currently on Development version 1.5 Open Beta!", color=(color))
+    if message.content.startswith((prefix) + 'botver') or message.content.startswith((prefix2) + 'botver'):
+        embed=discord.Embed(title="I am currently on Development version 1.75 Open Beta!", color=(color))
         embed.set_footer(text=(description))
         embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
         await message.reply(embed=embed, mention_author=True)
@@ -107,7 +104,7 @@ async def on_message(message):
 
 
 #8ball
-    if message.content.startswith((prefix) + "8ball"):
+    if message.content.startswith((prefix) + "8ball") or message.content.startswith((prefix2) + '8ball'):
         lucky_num = random.randint(0,len(response_list)-1)
         embed=discord.Embed(title=(response_list[lucky_num]), color=(color))
         embed.set_footer(text=(description))
@@ -115,7 +112,7 @@ async def on_message(message):
         await message.reply(embed=embed, mention_author=True)
 
 #compliment
-    if message.content.startswith((prefix) + "compliment"):
+    if message.content.startswith((prefix) + "compliment") or message.content.startswith((prefix2) + 'compliment'):
         lucky_num = random.randint(0,len(compliment_list)-1)
         embed=discord.Embed(title=(compliment_list[lucky_num]), color=(color))
         embed.set_footer(text=(description))
@@ -123,7 +120,7 @@ async def on_message(message):
         await message.reply(embed=embed, mention_author=True)
 
 #pickupline
-    if message.content.startswith((prefix) + "pickupline"):
+    if message.content.startswith((prefix) + "pickupline") or message.content.startswith((prefix2) + 'pickupline'):
         lucky_num = random.randint(0,len(pickup_list)-1)
         embed=discord.Embed(title=(pickup_list[lucky_num]), color=(color))
         embed.set_footer(text=(description))
@@ -131,7 +128,7 @@ async def on_message(message):
         await message.reply(embed=embed, mention_author=True)
 
 #roast
-    if message.content.startswith((prefix) + "roast"):
+    if message.content.startswith((prefix) + "roast") or message.content.startswith((prefix2) + 'roast'):
         lucky_num = random.randint(0,len(roast_list)-1)
         embed=discord.Embed(title=(roast_list[lucky_num]), color=(color))
         embed.set_footer(text=(description))
@@ -139,7 +136,7 @@ async def on_message(message):
         await message.reply(embed=embed, mention_author=True)
 
 #mario judah
-    if message.content.startswith((prefix) + "milkyeet"):
+    if message.content.startswith((prefix) + "milkyeet") or message.content.startswith((prefix2) + 'milkyeet'):
         embed=discord.Embed(title='YEEEEEEEEEEEEEEEEEEEEET', color=(color))
         embed.set_image(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/mario-judah-throws-milk-_-m2WjP9Gx6yHOB0J1-w1370.gif')
         embed.set_footer(text=(description))
@@ -148,7 +145,7 @@ async def on_message(message):
 
 #anime
 #cuteanime
-    if message.content.startswith((prefix) + "cuteanime"):
+    if message.content.startswith((prefix) + "cuteanime") or message.content.startswith((prefix2) + 'cuteanime'):
         lucky_num = random.randint(0,len(anime_list)-1)
         embed=discord.Embed(title='Awww', color=(color))
         embed.set_image(url=(anime_list[lucky_num]))
@@ -157,7 +154,7 @@ async def on_message(message):
         await message.reply(embed=embed, mention_author=True)
 
 #zero two
-    if message.content.startswith((prefix) + "zerotwo"):
+    if message.content.startswith((prefix) + "zerotwo") or message.content.startswith((prefix2) + 'zerotwo'):
         lucky_num = random.randint(0,len(zerotwo_list)-1)
         embed=discord.Embed(title='Awww', color=(color))
         embed.set_image(url=(zerotwo_list[lucky_num]))
@@ -166,7 +163,7 @@ async def on_message(message):
         await message.reply(embed=embed, mention_author=True)
 
 #todoroki
-    if message.content.startswith((prefix) + "todoroki"):
+    if message.content.startswith((prefix) + "todoroki") or message.content.startswith((prefix2) + 'todoroki'):
         lucky_num = random.randint(0,len(todoroki_list)-1)
         embed=discord.Embed(title='Awww', color=(color))
         embed.set_image(url=(todoroki_list[lucky_num]))
@@ -175,7 +172,7 @@ async def on_message(message):
         await message.reply(embed=embed, mention_author=True)
 
 #ichigo
-    if message.content.startswith((prefix) + "ichigo"):
+    if message.content.startswith((prefix) + "ichigo") or message.content.startswith((prefix2) + 'ichigo'):
         lucky_num = random.randint(0,len(ichigo_list)-1)
         embed=discord.Embed(title='Awww', color=(color))
         embed.set_image(url=(ichigo_list[lucky_num]))
@@ -185,7 +182,7 @@ async def on_message(message):
 #anime end
 
 #slap
-    if message.content.startswith((prefix) + "slap "):
+    if message.content.startswith((prefix) + "slap ") or message.content.startswith((prefix2) + 'slap'):
         lucky_num = random.randint(0,len(slap_list)-1)
         lucky_num = random.randint(0,len(slapresponse_list)-1)
         embed=discord.Embed(title=(slapresponse_list[lucky_num]), color=(color))
@@ -195,7 +192,7 @@ async def on_message(message):
         await message.reply(embed=embed, mention_author=True)
 
 #hug
-    if message.content.startswith((prefix) + "hug "):
+    if message.content.startswith((prefix) + "hug ") or message.content.startswith((prefix2) + 'hug'):
         lucky_num = random.randint(0,len(hug_list)-1)
         lucky_num = random.randint(0,len(hugresponse_list)-1)
         embed=discord.Embed(title=(hugresponse_list[lucky_num]), color=(color))
@@ -205,7 +202,7 @@ async def on_message(message):
         await message.reply(embed=embed, mention_author=True)
 
 #kiss
-    if message.content.startswith((prefix) + "kiss "):
+    if message.content.startswith((prefix) + "kiss ") or message.content.startswith((prefix2) + 'kiss'):
         lucky_num = random.randint(0,len(kiss_list)-1)
         lucky_num = random.randint(0,len(kissresponse_list)-1)
         embed=discord.Embed(title=(kissresponse_list[lucky_num]), color=(color))
@@ -215,7 +212,7 @@ async def on_message(message):
         await message.reply(embed=embed, mention_author=True) 
 
 #head out
-    if message.content.startswith((prefix) + "headout"):
+    if message.content.startswith((prefix) + "headout") or message.content.startswith((prefix2) + 'headout'):
         lucky_num = random.randint(0,len(headout_list)-1)
         embed=discord.Embed(title=(headout_list[lucky_num]), color=(color))
         embed.set_image(url='https://media1.tenor.com/images/c57c8725cfdb74251c392e0ca46753ba/tenor.gif?itemid=15194343')
@@ -224,7 +221,7 @@ async def on_message(message):
         await message.reply(embed=embed, mention_author=True)
 
 #hamster
-    if message.content.startswith((prefix) + "hamster"):
+    if message.content.startswith((prefix) + "hamster") or message.content.startswith((prefix2) + 'hamster'):
         lucky_num = random.randint(0,len(hamster_list)-1)
         embed=discord.Embed(title='Awww', color=(color))
         embed.set_image(url=(hamster_list[lucky_num]))
@@ -233,14 +230,14 @@ async def on_message(message):
         await message.reply(embed=embed, mention_author=True)
 
 #how sus
-    if message.content == ((prefix) + 'howsus'):
+    if message.content == ((prefix) + 'howsus') or message.content.startswith((prefix2) + 'howsus'):
           sus = random.randint(0, 100)
           embed=discord.Embed(title=(str(sus)) + "% sus!", color=(color))
           embed.set_footer(text=(description))
           embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
           await message.reply(embed=embed, mention_author=True)
 
-    if message.content.startswith((prefix) + 'howsus '):
+    if message.content.startswith((prefix) + 'howsus ') or message.content.startswith((prefix2) + 'howsus '):
           sus = random.randint(30, 100)
           embed=discord.Embed(title=(str(sus)) + "% sus!", color=(color))
           embed.set_footer(text=(description))
@@ -248,14 +245,14 @@ async def on_message(message):
           await message.reply(embed=embed, mention_author=True)
 
 #how gay
-    if message.content == ((prefix) + 'howgay'):
+    if message.content == ((prefix) + 'howgay') or message.content.startswith((prefix2) + 'howgay'):
           gay = random.randint(0, 100)
           embed=discord.Embed(title=(str(gay)) + "% gay :gay_pride_flag:", color=(color))
           embed.set_footer(text=(description))
           embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
           await message.reply(embed=embed, mention_author=True)
 
-    if message.content.startswith((prefix) + 'howgay '):
+    if message.content.startswith((prefix) + 'howgay ')  or message.content.startswith((prefix2) + 'howgay '):
           gay = random.randint(30, 100)
           embed=discord.Embed(title=(str(gay)) + "% gay :gay_pride_flag:", color=(color))
           embed.set_footer(text=(description))
@@ -263,14 +260,14 @@ async def on_message(message):
           await message.reply(embed=embed, mention_author=True)
 
 #iq
-    if message.content == ((prefix) + 'iq'):
+    if message.content == ((prefix) + 'iq') or message.content.startswith((prefix2) + 'iq'):
           iq = random.randint(0, 1000)
           embed=discord.Embed(title=(str(iq)) + " IQ", color=(color))
           embed.set_footer(text=(description))
           embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
           await message.reply(embed=embed, mention_author=True)
 
-    if message.content.startswith((prefix) + 'iq '):
+    if message.content.startswith((prefix) + 'iq ') or message.content.startswith((prefix2) + 'iq '):
           iq = random.randint(0, 200)
           embed=discord.Embed(title=(str(iq)) + " IQ", color=(color))
           embed.set_footer(text=(description))
@@ -278,7 +275,7 @@ async def on_message(message):
           await message.reply(embed=embed, mention_author=True)
 
 #inspire
-    if message.content.startswith((prefix) + "inspire"):
+    if message.content.startswith((prefix) + "inspire") or message.content.startswith((prefix2) + 'inspire'):
         quote = get_quote()
         embed=discord.Embed(title=(quote), color=(color))
         embed.set_footer(text=(description))
@@ -286,7 +283,7 @@ async def on_message(message):
         await message.reply(embed=embed, mention_author=True)
 
 #randomimage
-    if message.content.startswith((prefix) + "randomimage"):
+    if message.content.startswith((prefix) + "randomimage") or message.content.startswith((prefix2) + 'randomimage'):
         picgen = random.randint(0, 999999999999999999999999999999999999999999999999999999)
         embed=discord.Embed(title=' ', color=(color))
         embed.set_image(url='https://picsum.photos/seed/' + (str(picgen)) + '/3840/2160')
@@ -295,7 +292,7 @@ async def on_message(message):
         await message.reply(embed=embed, mention_author=True)
 
 #frog
-    if message.content.startswith((prefix) + "frog"):
+    if message.content.startswith((prefix) + "frog") or message.content.startswith((prefix2) + 'frog'):
         lucky_num = random.randint(0,len(frog_list)-1)
         embed=discord.Embed(title='Awww', color=(color))
         embed.set_image(url=(frog_list[lucky_num]))
@@ -304,7 +301,7 @@ async def on_message(message):
         await message.reply(embed=embed, mention_author=True)
 
 #randomjdm
-    if message.content.startswith((prefix) + "jdm") or message.content.startswith((prefix) + 'randomjdm'):
+    if message.content.startswith((prefix) + "jdm") or message.content.startswith((prefix) + 'randomjdm') or message.content.startswith((prefix2) + 'jdm')  or message.content.startswith((prefix2) + 'randomjdm'):
         lucky_num = random.randint(0,len(jdm_list)-1)
         embed=discord.Embed(title=' ', color=(color))
         embed.set_image(url=(jdm_list[lucky_num]))
@@ -313,7 +310,7 @@ async def on_message(message):
         await message.reply(embed=embed, mention_author=True)
 
 #randomfact
-    if message.content.startswith((prefix) + "randomfact"):
+    if message.content.startswith((prefix) + "randomfact") or message.content.startswith((prefix2) + 'randomfact'):
         lucky_num = random.randint(0,len(facts_list)-1)
         embed=discord.Embed(title=(facts_list[lucky_num]), color=(color))
         embed.set_footer(text=(description))
@@ -321,28 +318,94 @@ async def on_message(message):
         await message.reply(embed=embed, mention_author=True)
 
 #Covid
-    if message.content.startswith((prefix) + "covid"):
+    if message.content.startswith((prefix) + "covid") or message.content.startswith((prefix2) + 'covid'):
+        covid = requests.get('https://api.covid19api.com/world/total')
+        json_data = json.loads(covid.text)
+        CovidConfirmed = json_data['TotalConfirmed']
+        CovidDeaths = json_data['TotalDeaths']
+        CovidRecovered = json_data['TotalRecovered']
         embed=discord.Embed(title='COVID19 Info.', color=(color))
         embed.set_thumbnail(url=(thumbnail))
-        embed.add_field(name=("{:,}".format(CovidConfirmed)), value="Confirmed cases.", inline=False)
-        embed.add_field(name=("{:,}".format(CovidRecovered)), value="Recovered cases.", inline=False)
-        embed.add_field(name=("{:,}".format(CovidDeaths)), value="Deaths.", inline=False)
+        embed.add_field(name=("{:,}".format(CovidConfirmed)), value="Confirmed cases.", inline=True)
+        embed.add_field(name=("{:,}".format(CovidRecovered)), value="Recovered cases.", inline=True)
+        embed.add_field(name=("{:,}".format(CovidDeaths)), value="Deaths.", inline=True)
         embed.set_footer(text=(description))
         await message.reply(embed=embed, mention_author=True)
-        
+
+#meme
+    if message.content.startswith((prefix) + 'meme') or message.content.startswith((prefix2) + 'meme'):
+        meme = requests.get('https://meme-api.herokuapp.com/gimme')
+        json_data = json.loads(meme.text)
+        memeurl = json_data['url']
+        memetitle = json_data['title']
+        memensfw = json_data['nsfw']
+        embed=discord.Embed(title=(memetitle), color=(color))
+        embed.set_image(url=(memeurl))
+        embed.set_footer(text=(description))
+        embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-AMqGqMLEBnFQkD3l-w1370.gif')
+        await message.reply(embed=embed, mention_author=True)
+        if memensfw == 'true':
+            return    
+
+#weather
+    if message.content.startswith((prefix) + 'weather') or message.content.startswith((prefix) + 'randomweather') or message.content.startswith((prefix2) + 'weather') or message.content.startswith((prefix2) + 'randomweather'):
+        city_list = ['Mexico', 'London', 'Norway', 'Sydney', 'India', 'Shanghai', 'Tokyo', 'Dubai', 'Argentina', 'Ecuador', 'Egypt']
+        lucky_num = random.randint(0,len(city_list) - 1)
+        weatherapi = requests.get('https://api.weatherapi.com/v1/current.json?key=' + (os.getenv('API_KEY')) + '&q=' + (city_list[lucky_num]))# + '&aqi=yes'
+        json_data = json.loads(weatherapi.text)
+        temp_c = json_data['current']['temp_c']
+        temp_f = json_data['current']['temp_f']
+        condition = json_data['current']['condition']['text']
+        icon = json_data['current']['condition']['icon']
+        wind_mph = json_data['current']['wind_mph']
+        wind_kph = json_data['current']['wind_kph']
+        wind_degree = json_data['current']['wind_degree']
+        wind_dir = json_data['current']['wind_dir']
+        pressure_in = json_data['current']['pressure_in']
+        precip_mm = json_data['current']['precip_mm']
+        feelslike_c = json_data['current']['feelslike_c']
+        feelslike_f = json_data['current']['feelslike_f']
+        vis_km = json_data['current']['vis_km']
+        vis_miles = json_data['current']['vis_miles']
+        uv = json_data['current']['uv']
+        tz = json_data['location']['tz_id']
+        country = json_data['location']['country']
+        city = json_data['location']['name']
+        embed=discord.Embed(title=(city), color=(color))
+        embed.add_field(name="Country", value=(country), inline=True)
+        embed.add_field(name="Time Zone", value=(tz), inline=True)
+        embed.add_field(name="Temperature °C", value=(temp_c), inline=True)
+        embed.add_field(name="Temperature °F", value=(temp_f), inline=True)
+        embed.add_field(name="Feels like °C", value=(feelslike_c), inline=True)
+        embed.add_field(name="Feels like °F", value=(feelslike_f), inline=True)
+        embed.add_field(name="Wind MPH", value=(wind_mph), inline=True)
+        embed.add_field(name="Wind KMPH", value=(wind_kph), inline=True)
+        embed.add_field(name="Wind Degree", value=(wind_degree), inline=True)
+        embed.add_field(name="Wind Direction", value=(wind_dir), inline=True)
+        embed.add_field(name="Pressure In", value=(pressure_in), inline=True)
+        embed.add_field(name="Precipitation mm", value=(precip_mm), inline=True)
+        embed.add_field(name="Visibility KM", value=(vis_km), inline=True)
+        embed.add_field(name="Visibility Miles", value=(vis_miles), inline=True)
+        embed.add_field(name="UV index", value=(uv), inline=True)
+        embed.add_field(name="Condition", value=(condition), inline=False)
+        embed.set_image(url='https:' + (icon))
+        embed.set_footer(text=(description))
+        embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
+        await message.reply(embed=embed, mention_author=True)
+
 
 #help
-    if message.content == (prefix) + 'help' or message.content == (prefix) + 'help ':
+    if message.content == (prefix) + 'help' or message.content == (prefix) + 'help ' or message.content == (prefix2) + 'help' or message.content == 'help ':
         embed=discord.Embed(title=("NULL. Help."), color=(color))
-        embed.add_field(name="🎮 ``Fun commands``", value="Use these commands when you're bored!", inline=False)
-        embed.add_field(name="ℹ️ ``Info``", value="Get miscelanious info on various topics!", inline=False)
-        embed.add_field(name="To get commands use ``%help.fun`` or ``%help.info``", value="Commands are case sensitive", inline=False)
+        embed.add_field(name="``Fun commands``", value="Use these commands when you're bored!", inline=False)
+        embed.add_field(name="``Info``", value="Get miscelanious info on various topics!", inline=False)
+        embed.add_field(name="To get commands use ``%help.fun`` or ``%help.info``", value="Commands are case sensitive and lowercase.", inline=False)
         embed.add_field(name="More commands coming soon!", value="|| Coded with :heart: by VOKSEL#8148 ||", inline=False)
         embed.set_footer(text=(description))
         embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
         await message.reply(embed=embed, mention_author=True)
 
-    if message.content.startswith((prefix) + 'help.fun'):
+    if message.content.startswith((prefix) + 'help.fun') or message.content.startswith((prefix2) + 'help.fun'):
         embed=discord.Embed(title=("NULL. Help: Fun commands."), color=(color))
         embed.add_field(name="%8ball (question)", value="Ask the magic 8ball!", inline=False)
         embed.add_field(name="%compliment", value="Feeling sad? <:apple_plead:812381767432536125> get a compliment from me!", inline=False)
@@ -361,19 +424,19 @@ async def on_message(message):
         embed.add_field(name="%randomfact", value="Random fun facts!", inline=False)
         embed.add_field(name="%hamster", value="cute hamsters <:apple_plead:812381767432536125>", inline=False)
         embed.add_field(name="%jdm", value="Random JDM car images :hot_face:", inline=False)
-        embed.add_field(name="Notice:", value="Commands are case sensitive", inline=False)
+        embed.add_field(name="Notice:", value="Commands are case sensitive and lowercase.", inline=False)
         embed.add_field(name="More commands coming soon!", value="|| Coded with :heart: by VOKSEL#8148 ||", inline=False)
         embed.set_footer(text=(description))
         embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
         await message.reply(embed=embed, mention_author=True)
 
-    if message.content.startswith((prefix) + 'help.info'):
+    if message.content.startswith((prefix) + 'help.info') or message.content.startswith((prefix2) + 'help.info'):
         embed=discord.Embed(title=("NULL. Help: Info commands."), color=(color))
         embed.add_field(name="%ping", value="Tells you my current ping in miliseconds", inline=False)
         embed.add_field(name="%addbot", value="Add me to your server by running this command and clicking the link!", inline=False)
         embed.add_field(name="%joinserver", value="Join my official server by running this command and clicking the link!", inline=False)
         embed.add_field(name="%botver", value="Tells you my current Software version!", inline=False)
-        embed.add_field(name="Notice:", value="Commands are case sensitive", inline=False)
+        embed.add_field(name="Notice:", value="Commands are case sensitive and lowercase.", inline=False)
         embed.add_field(name="More commands coming soon!", value="|| Coded with :heart: by VOKSEL#8148 ||", inline=False)
         embed.set_footer(text=(description))
         embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
@@ -974,9 +1037,5 @@ facts_list =     ["The name Wendy was made up for the book 'Peter Pan.'",
     "Rainbows that appear at night are called 'moonbows.'",
     "100 million years ago, crocodiles had long legs and could gallop after their prey.",
     "The real Top Gun school give a $5 fine to any staff member that quotes the movie."]
-
-#credentials
-load_dotenv('.env')
-
 #run client
 client.run(os.getenv('BOT_TOKEN'))
