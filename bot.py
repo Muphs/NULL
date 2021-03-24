@@ -442,6 +442,62 @@ async def on_message(message):
         embed.set_footer(text=(description))
         embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
         await message.reply(embed=embed, mention_author=True)
+        
+#ik theres better ways to do this but dont come at me >:(
+
+#dice roll
+    if message.content.startswith((prefix) + 'dice') or message.content.startswith((prefix2) + 'dice'):
+        dice = random.randint(1, 6)
+        if (str(dice)) == '1':
+            embed=discord.Embed(title='You rolled a ' + (str(dice)) + '!', color=(color))
+            embed.set_footer(text=(description))
+            embed.set_thumbnail(url='https://cdn.discordapp.com/emojis/824330739248005160.png?size=64')
+            await message.reply(embed=embed, mention_author=True)
+
+        elif (str(dice)) == '2':
+            embed=discord.Embed(title='You rolled a ' + (str(dice)) + '!', color=(color))
+            embed.set_footer(text=(description))
+            embed.set_thumbnail(url='https://cdn.discordapp.com/emojis/824330526671765504.png?size=64')
+            await message.reply(embed=embed, mention_author=True)
+
+        elif (str(dice)) == '3':
+            embed=discord.Embed(title='You rolled a ' + (str(dice)) + '!', color=(color))
+            embed.set_footer(text=(description))
+            embed.set_thumbnail(url='https://cdn.discordapp.com/emojis/824330652173729793.png?size=64')
+            await message.reply(embed=embed, mention_author=True)
+
+        elif (str(dice)) == '4':
+            embed=discord.Embed(title='You rolled a ' + (str(dice)) + '!', color=(color))
+            embed.set_footer(text=(description))
+            embed.set_thumbnail(url='https://cdn.discordapp.com/emojis/824330571408474112.png?size=64')
+            await message.reply(embed=embed, mention_author=True)
+
+        elif (str(dice)) == '5':
+            embed=discord.Embed(title='You rolled a ' + (str(dice)) + '!', color=(color))
+            embed.set_footer(text=(description))
+            embed.set_thumbnail(url='https://cdn.discordapp.com/emojis/824330607776759828.png?size=64')
+            await message.reply(embed=embed, mention_author=True)
+
+        elif (str(dice)) == '6':
+            embed=discord.Embed(title='You rolled a ' + (str(dice)) + '!', color=(color))
+            embed.set_footer(text=(description))
+            embed.set_thumbnail(url='https://cdn.discordapp.com/emojis/824330708973518918.png?size=64')
+            await message.reply(embed=embed, mention_author=True)
+    
+#coin flip
+    if message.content.startswith((prefix) + 'coin') or message.content.startswith((prefix2) + 'coin'):
+        lucky_num = random.randint(0,len(coin_list)-1)
+        if (coin_list[lucky_num]) == 'Heads!':
+            embed=discord.Embed(title=(coin_list[lucky_num]), color=(color))
+            embed.set_footer(text=(description))
+            embed.set_thumbnail(url='https://media.discordapp.net/attachments/785926282696196106/824366377975414844/rsz_obverse.jpg')
+            await message.reply(embed=embed, mention_author=True)
+        if (coin_list[lucky_num]) == 'Tails!':
+            embed=discord.Embed(title=(coin_list[lucky_num]), color=(color))
+            embed.set_footer(text=(description))
+            embed.set_thumbnail(url='https://media.discordapp.net/attachments/785926282696196106/824366580204175370/rsz_reverse.jpg')
+            await message.reply(embed=embed, mention_author=True)
+
 
     if message.content.startswith((prefix) + 'help') or message.content.startswith((prefix2) + 'help'):
         embed=discord.Embed(title='NULL Help.', color=(color))
@@ -449,6 +505,8 @@ async def on_message(message):
         embed.set_footer(text=(description))
         embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
         await message.reply(embed=embed, mention_author=True)
+
+                
 
 
 
@@ -493,6 +551,8 @@ jdm_list = ['https://images-ext-1.discordapp.net/external/52h-vS9a2mw65Fl7ITo7Tu
 shrug_list = ['https://media1.tenor.com/images/34b67ecddde773b30dbe962d14ff27c7/tenor.gif?itemid=20668021', ]
 
 clap_list = ['https://media1.tenor.com/images/7460a26a07ef24d696eaac0b0ff4d5bf/tenor.gif?itemid=16461487', 'https://media.tenor.com/images/ba246f4d3f2845cac07466ab3d013279/tenor.gif', 'https://media.tenor.com/images/657f0c243282921245c0b9f4b1525c1b/tenor.gif', 'https://media.tenor.com/images/2cf9843ed2489b97be6ca65acd40b55f/tenor.gif', 'https://media.tenor.com/images/07908bbd4b8336d826c733de9b2f2988/tenor.gif', 'https://media.tenor.com/images/18ae86fcb295c6d30028dedf7a946970/tenor.gif', 'https://media.tenor.com/images/9f94b89d628518c67808ebadba924306/tenor.gif', 'https://media.tenor.com/images/bd235c84724d5eb04b5cfe39028e936c/tenor.gif']
+
+coin_list = ['Heads!', 'Tails!', 'Heads!', 'Tails!', 'Heads!', 'Tails!', 'Heads!', 'Tails!', 'Heads!', 'Tails!', 'Heads!', 'Tails!', 'Heads!', 'Tails!', 'Heads!', 'Tails!', 'Heads!', 'Tails!', 'Heads!', 'Tails!', 'Heads!', 'Tails!', 'Heads!', 'Tails!', 'Heads!', 'Tails!', 'Heads!', 'Tails!', 'Heads!', 'Tails!', 'Heads!', 'Tails!', 'Heads!', 'Tails!', 'Heads!', 'Tails!', 'Heads!', 'Tails!']
 
 greetings_list = ['Hi', 'Hey', 'Sup', 'Hello']
 
