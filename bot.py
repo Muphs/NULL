@@ -74,6 +74,8 @@ Bot = commands.Bot(command_prefix = '%%', case_insensitive=True)
 @client.event
 async def on_ready():
     print('logged in as {0.user}'.format(client))
+    await client.change_presence(activity=discord.Streaming(name='Back Online!', url=(os.getenv('STREAM_URL'))))
+    time.sleep(5)
     await client.change_presence(activity=discord.Streaming(name=(os.getenv('STREAM')), url=(os.getenv('STREAM_URL'))))
 
 @client.event
@@ -87,7 +89,7 @@ async def on_message(message):
         lucky_num = random.randint(0,len(greetings_list) - 1)
         embed=discord.Embed(title=((greetings_list[lucky_num]) + '!'), color=(color))
         embed.set_footer(text=(description))
-        embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
+        embed.set_thumbnail(url=(thumbnail))
         await message.reply(embed=embed, mention_author=True)
 
 #info
@@ -95,7 +97,7 @@ async def on_message(message):
     if message.content.startswith((prefix) + 'ping') or message.content.startswith((prefix2) + 'ping'):
         embed=discord.Embed(title="Pong! :ping_pong:", color=(color), description=(f'Ponged back in ``{round(client.latency * 1000)}ms``'))
         embed.set_footer(text=(description))
-        embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
+        embed.set_thumbnail(url=(thumbnail))
         await message.reply(embed=embed, mention_author=True)
 
 #add bot
@@ -104,7 +106,7 @@ async def on_message(message):
         embed.add_field(name="https://bit.ly/null-bot-add", value="‎‎‎‎‎‎‎ ", inline=False)
         embed.add_field(name="Notice:", value="NULL. Is still in the development, which may cause commands to not work and the bot to be offline from now and then with no schedule.", inline=False)
         embed.set_footer(text=(description))
-        embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
+        embed.set_thumbnail(url=(thumbnail))
         await message.reply(embed=embed, mention_author=True)
 
 #join server
@@ -112,14 +114,14 @@ async def on_message(message):
         embed=discord.Embed(title="Join my server by clicking this link", color=(color))
         embed.add_field(name="https://bit.ly/null-bot-join", value="‎‎‎‎‎‎‎ ", inline=False)
         embed.set_footer(text=(description))
-        embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
+        embed.set_thumbnail(url=(thumbnail))
         await message.reply(embed=embed, mention_author=True)
 
 #botver
     if message.content.startswith((prefix) + 'botver') or message.content.startswith((prefix2) + 'botver'):
         embed=discord.Embed(title="I am currently on Development version 2.0 Open Beta!", color=(color))
         embed.set_footer(text=(description))
-        embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
+        embed.set_thumbnail(url=(thumbnail))
         await message.reply(embed=embed, mention_author=True)
 #info end
 
@@ -129,7 +131,7 @@ async def on_message(message):
         lucky_num = random.randint(0,len(response_list)-1)
         embed=discord.Embed(title=(response_list[lucky_num]), color=(color))
         embed.set_footer(text=(description))
-        embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
+        embed.set_thumbnail(url=(thumbnail))
         await message.reply(embed=embed, mention_author=True)
 
 #compliment
@@ -137,7 +139,7 @@ async def on_message(message):
         lucky_num = random.randint(0,len(compliment_list)-1)
         embed=discord.Embed(title=(compliment_list[lucky_num]), color=(color))
         embed.set_footer(text=(description))
-        embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
+        embed.set_thumbnail(url=(thumbnail))
         await message.reply(embed=embed, mention_author=True)
 
 #pickupline
@@ -145,7 +147,7 @@ async def on_message(message):
         lucky_num = random.randint(0,len(pickup_list)-1)
         embed=discord.Embed(title=(pickup_list[lucky_num]), color=(color))
         embed.set_footer(text=(description))
-        embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
+        embed.set_thumbnail(url=(thumbnail))
         await message.reply(embed=embed, mention_author=True)
 
 #roast
@@ -153,7 +155,7 @@ async def on_message(message):
         lucky_num = random.randint(0,len(roast_list)-1)
         embed=discord.Embed(title=(roast_list[lucky_num]), color=(color))
         embed.set_footer(text=(description))
-        embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
+        embed.set_thumbnail(url=(thumbnail))
         await message.reply(embed=embed, mention_author=True)
 
 #mario judah
@@ -161,7 +163,7 @@ async def on_message(message):
         embed=discord.Embed(title='YEEEEEEEEEEEEEEEEEEEEET', color=(color))
         embed.set_image(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/mario-judah-throws-milk-_-m2WjP9Gx6yHOB0J1-w1370.gif')
         embed.set_footer(text=(description))
-        embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-AMqGqMLEBnFQkD3l-w1370.gif')
+        embed.set_thumbnail(url=(thumbnail))
         await message.reply(embed=embed, mention_author=True)
 
 #anime
@@ -171,7 +173,7 @@ async def on_message(message):
         embed=discord.Embed(title='Awww', color=(color))
         embed.set_image(url=(anime_list[lucky_num]))
         embed.set_footer(text=(description))
-        embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-AMqGqMLEBnFQkD3l-w1370.gif')
+        embed.set_thumbnail(url=(thumbnail))
         await message.reply(embed=embed, mention_author=True)
 
 #zero two
@@ -180,7 +182,7 @@ async def on_message(message):
         embed=discord.Embed(title='Awww', color=(color))
         embed.set_image(url=(zerotwo_list[lucky_num]))
         embed.set_footer(text=(description))
-        embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-AMqGqMLEBnFQkD3l-w1370.gif')
+        embed.set_thumbnail(url=(thumbnail))
         await message.reply(embed=embed, mention_author=True)
 
 #todoroki
@@ -189,7 +191,7 @@ async def on_message(message):
         embed=discord.Embed(title='Awww', color=(color))
         embed.set_image(url=(todoroki_list[lucky_num]))
         embed.set_footer(text=(description))
-        embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-AMqGqMLEBnFQkD3l-w1370.gif')
+        embed.set_thumbnail(url=(thumbnail))
         await message.reply(embed=embed, mention_author=True)
 
 #ichigo
@@ -198,7 +200,7 @@ async def on_message(message):
         embed=discord.Embed(title='Awww', color=(color))
         embed.set_image(url=(ichigo_list[lucky_num]))
         embed.set_footer(text=(description))
-        embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-AMqGqMLEBnFQkD3l-w1370.gif')
+        embed.set_thumbnail(url=(thumbnail))
         await message.reply(embed=embed, mention_author=True)
 
 #bunnygirl
@@ -207,7 +209,7 @@ async def on_message(message):
         embed=discord.Embed(title='Awww', color=(color))
         embed.set_image(url=(bunnygirl_list[lucky_num]))
         embed.set_footer(text=(description))
-        embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-AMqGqMLEBnFQkD3l-w1370.gif')
+        embed.set_thumbnail(url=(thumbnail))
         await message.reply(embed=embed, mention_author=True)
 #anime end
 
@@ -218,7 +220,7 @@ async def on_message(message):
         embed=discord.Embed(title=(slapresponse_list[lucky_num]), color=(color))
         embed.set_image(url=(slap_list[lucky_num]))
         embed.set_footer(text=(description))
-        embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-AMqGqMLEBnFQkD3l-w1370.gif')
+        embed.set_thumbnail(url=(thumbnail))
         await message.reply(embed=embed, mention_author=True)
 
 #hug
@@ -228,7 +230,7 @@ async def on_message(message):
         embed=discord.Embed(title=(hugresponse_list[lucky_num]), color=(color))
         embed.set_image(url=(hug_list[lucky_num]))
         embed.set_footer(text=(description))
-        embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-AMqGqMLEBnFQkD3l-w1370.gif')
+        embed.set_thumbnail(url=(thumbnail))
         await message.reply(embed=embed, mention_author=True)
 
 #kiss
@@ -238,7 +240,7 @@ async def on_message(message):
         embed=discord.Embed(title=(kissresponse_list[lucky_num]), color=(color))
         embed.set_image(url=(kiss_list[lucky_num]))
         embed.set_footer(text=(description))
-        embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-AMqGqMLEBnFQkD3l-w1370.gif')
+        embed.set_thumbnail(url=(thumbnail))
         await message.reply(embed=embed, mention_author=True) 
 
 #shrug
@@ -247,7 +249,7 @@ async def on_message(message):
         embed=discord.Embed(title='`*shrugs*`', color=(color))
         embed.set_image(url=(shrug_list[lucky_num]))
         embed.set_footer(text=(description))
-        embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-AMqGqMLEBnFQkD3l-w1370.gif')
+        embed.set_thumbnail(url=(thumbnail))
         await message.reply(embed=embed, mention_author=True) 
 
 #clap
@@ -256,7 +258,7 @@ async def on_message(message):
         embed=discord.Embed(title='`*clap*` `*clap*` `*clap*`', color=(color))
         embed.set_image(url=(clap_list[lucky_num]))
         embed.set_footer(text=(description))
-        embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-AMqGqMLEBnFQkD3l-w1370.gif')
+        embed.set_thumbnail(url=(thumbnail))
         await message.reply(embed=embed, mention_author=True) 
 
 #head out
@@ -265,7 +267,7 @@ async def on_message(message):
         embed=discord.Embed(title=(headout_list[lucky_num]), color=(color))
         embed.set_image(url='https://media1.tenor.com/images/c57c8725cfdb74251c392e0ca46753ba/tenor.gif?itemid=15194343')
         embed.set_footer(text=(description))
-        embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-AMqGqMLEBnFQkD3l-w1370.gif')
+        embed.set_thumbnail(url=(thumbnail))
         await message.reply(embed=embed, mention_author=True)
 
 #hamster
@@ -274,7 +276,7 @@ async def on_message(message):
         embed=discord.Embed(title='Awww', color=(color))
         embed.set_image(url=(hamster_list[lucky_num]))
         embed.set_footer(text=(description))
-        embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-AMqGqMLEBnFQkD3l-w1370.gif')
+        embed.set_thumbnail(url=(thumbnail))
         await message.reply(embed=embed, mention_author=True)
 
 #how sus
@@ -282,14 +284,14 @@ async def on_message(message):
           sus = random.randint(0, 100)
           embed=discord.Embed(title=(str(sus)) + "% sus!", color=(color))
           embed.set_footer(text=(description))
-          embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
+          embed.set_thumbnail(url=(thumbnail))
           await message.reply(embed=embed, mention_author=True)
 
     if message.content.startswith((prefix) + 'howsus ') or message.content.startswith((prefix2) + 'howsus '):
           sus = random.randint(30, 100)
           embed=discord.Embed(title=(str(sus)) + "% sus!", color=(color))
           embed.set_footer(text=(description))
-          embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
+          embed.set_thumbnail(url=(thumbnail))
           await message.reply(embed=embed, mention_author=True)
 
 #how gay
@@ -297,14 +299,14 @@ async def on_message(message):
           gay = random.randint(0, 100)
           embed=discord.Embed(title=(str(gay)) + "% gay :gay_pride_flag:", color=(color))
           embed.set_footer(text=(description))
-          embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
+          embed.set_thumbnail(url=(thumbnail))
           await message.reply(embed=embed, mention_author=True)
 
     if message.content.startswith((prefix) + 'howgay ')  or message.content.startswith((prefix2) + 'howgay '):
           gay = random.randint(30, 100)
           embed=discord.Embed(title=(str(gay)) + "% gay :gay_pride_flag:", color=(color))
           embed.set_footer(text=(description))
-          embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
+          embed.set_thumbnail(url=(thumbnail))
           await message.reply(embed=embed, mention_author=True)
 
 #iq
@@ -312,14 +314,14 @@ async def on_message(message):
           iq = random.randint(0, 1000)
           embed=discord.Embed(title=(str(iq)) + " IQ", color=(color))
           embed.set_footer(text=(description))
-          embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
+          embed.set_thumbnail(url=(thumbnail))
           await message.reply(embed=embed, mention_author=True)
 
     if message.content.startswith((prefix) + 'iq ') or message.content.startswith((prefix2) + 'iq '):
           iq = random.randint(0, 200)
           embed=discord.Embed(title=(str(iq)) + " IQ", color=(color))
           embed.set_footer(text=(description))
-          embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
+          embed.set_thumbnail(url=(thumbnail))
           await message.reply(embed=embed, mention_author=True)
 
 #inspire
@@ -327,7 +329,7 @@ async def on_message(message):
         quote = get_quote()
         embed=discord.Embed(title=(quote), color=(color))
         embed.set_footer(text=(description))
-        embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
+        embed.set_thumbnail(url=(thumbnail))
         await message.reply(embed=embed, mention_author=True)
 
 #randomimage
@@ -336,7 +338,7 @@ async def on_message(message):
         embed=discord.Embed(title=' ', color=(color))
         embed.set_image(url='https://picsum.photos/seed/' + (str(picgen)) + '/3840/2160')
         embed.set_footer(text=(description))
-        embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-AMqGqMLEBnFQkD3l-w1370.gif')
+        embed.set_thumbnail(url=(thumbnail))
         await message.reply(embed=embed, mention_author=True)
 
 #frog
@@ -345,7 +347,7 @@ async def on_message(message):
         embed=discord.Embed(title='Awww', color=(color))
         embed.set_image(url=(frog_list[lucky_num]))
         embed.set_footer(text=(description))
-        embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-AMqGqMLEBnFQkD3l-w1370.gif')
+        embed.set_thumbnail(url=(thumbnail))
         await message.reply(embed=embed, mention_author=True)
 
 #randomjdm
@@ -354,7 +356,7 @@ async def on_message(message):
         embed=discord.Embed(title=' ', color=(color))
         embed.set_image(url=(jdm_list[lucky_num]))
         embed.set_footer(text=(description))
-        embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-AMqGqMLEBnFQkD3l-w1370.gif')
+        embed.set_thumbnail(url=(thumbnail))
         await message.reply(embed=embed, mention_author=True)
 
 #randomfact
@@ -364,7 +366,7 @@ async def on_message(message):
         fact = json_data['data']
         embed=discord.Embed(title=(fact), color=(color))
         embed.set_footer(text=(description))
-        embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
+        embed.set_thumbnail(url=(thumbnail))
         await message.reply(embed=embed, mention_author=True)
 
 #Covid
@@ -392,7 +394,7 @@ async def on_message(message):
         embed=discord.Embed(title=(memetitle), color=(color))
         embed.set_image(url=(memeurl))
         embed.set_footer(text=(description))
-        embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-AMqGqMLEBnFQkD3l-w1370.gif')
+        embed.set_thumbnail(url=(thumbnail))
         await message.reply(embed=embed, mention_author=True)
         if memensfw == 'true':
             return    
@@ -440,7 +442,7 @@ async def on_message(message):
         embed.add_field(name="Condition", value=(condition), inline=False)
         embed.set_image(url='https:' + (icon))
         embed.set_footer(text=(description))
-        embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
+        embed.set_thumbnail(url=(thumbnail))
         await message.reply(embed=embed, mention_author=True)
         
 #ik theres better ways to do this but dont come at me >:(
@@ -453,31 +455,26 @@ async def on_message(message):
             embed.set_footer(text=(description))
             embed.set_thumbnail(url='https://cdn.discordapp.com/emojis/824330739248005160.png?size=64')
             await message.reply(embed=embed, mention_author=True)
-
         elif (str(dice)) == '2':
             embed=discord.Embed(title='You rolled a ' + (str(dice)) + '!', color=(color))
             embed.set_footer(text=(description))
             embed.set_thumbnail(url='https://cdn.discordapp.com/emojis/824330526671765504.png?size=64')
             await message.reply(embed=embed, mention_author=True)
-
         elif (str(dice)) == '3':
             embed=discord.Embed(title='You rolled a ' + (str(dice)) + '!', color=(color))
             embed.set_footer(text=(description))
             embed.set_thumbnail(url='https://cdn.discordapp.com/emojis/824330652173729793.png?size=64')
             await message.reply(embed=embed, mention_author=True)
-
         elif (str(dice)) == '4':
             embed=discord.Embed(title='You rolled a ' + (str(dice)) + '!', color=(color))
             embed.set_footer(text=(description))
             embed.set_thumbnail(url='https://cdn.discordapp.com/emojis/824330571408474112.png?size=64')
             await message.reply(embed=embed, mention_author=True)
-
         elif (str(dice)) == '5':
             embed=discord.Embed(title='You rolled a ' + (str(dice)) + '!', color=(color))
             embed.set_footer(text=(description))
             embed.set_thumbnail(url='https://cdn.discordapp.com/emojis/824330607776759828.png?size=64')
             await message.reply(embed=embed, mention_author=True)
-
         elif (str(dice)) == '6':
             embed=discord.Embed(title='You rolled a ' + (str(dice)) + '!', color=(color))
             embed.set_footer(text=(description))
@@ -498,15 +495,26 @@ async def on_message(message):
             embed.set_thumbnail(url='https://media.discordapp.net/attachments/785926282696196106/824366580204175370/rsz_reverse.jpg')
             await message.reply(embed=embed, mention_author=True)
 
-
+#dad joke
+    if message.content.startswith((prefix) + 'dadjoke') or message.content.startswith((prefix2) + 'dadjoke'):
+        dad_joke = requests.get('https://official-joke-api.appspot.com/random_joke')
+        json_data = json.loads(dad_joke.text)
+        dadjoke_buildup = json_data['setup']
+        dadjoke_punchline = json_data['punchline']
+        embed=discord.Embed(title=(dadjoke_buildup) + ' ' + (dadjoke_punchline),  color=(color))
+        embed.set_footer(text=(description))
+        embed.set_thumbnail(url=(thumbnail))
+        await message.reply(embed=embed, mention_author=True)
+        
+#help
     if message.content.startswith((prefix) + 'help') or message.content.startswith((prefix2) + 'help'):
         embed=discord.Embed(title='NULL Help.', color=(color))
         embed.add_field(name='Go here for a list of all commands https://bit.ly/null-bot-help', value='‎‎‎‎‎‎‎Prefix: % or N.', inline=False)
         embed.set_footer(text=(description))
-        embed.set_thumbnail(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/ezgif-com-gif-maker-mePBN4Q8D4Cb9WZE-w1370.gif')
+        embed.set_thumbnail(url=(thumbnail))
         await message.reply(embed=embed, mention_author=True)
 
-                
+
 
 
 
