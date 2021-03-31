@@ -123,6 +123,20 @@ async def on_message(message):
         embed.set_footer(text=(description))
         embed.set_thumbnail(url=(thumbnail))
         await message.reply(embed=embed, mention_author=True)
+
+#rick and morty reference
+    if message.content.startswith((prefix) + 'whatisyourpurpose') or message.content.startswith((prefix2) + 'whatisyourpurpose'):
+        embed=discord.Embed(title="I pass butter", color=(color))
+        embed.set_footer(text=(description))
+        embed.set_thumbnail(url='https://media.discordapp.net/attachments/785926282696196106/826859652007329822/unknown.png')
+        await message.reply(embed=embed, mention_author=True)
+
+#who's ypur daddy
+    if message.content.startswith((prefix) + 'whoisyourdaddy') or message.content.startswith((prefix2) + 'whoisyourdaddy') or message.content.startswith((prefix) + "who'syourdaddy") or message.content.startswith((prefix2) + "who'syourdaddy"):
+        embed=discord.Embed(title="VOKSEL#8148 Is my dad", url='https://github.com/VOKSEL0', color=(color))
+        embed.set_footer(text=(description))
+        embed.set_thumbnail(url=(thumbnail))
+        await message.reply(embed=embed, mention_author=True)
 #info end
 
 
@@ -502,6 +516,26 @@ async def on_message(message):
         dadjoke_buildup = json_data['setup']
         dadjoke_punchline = json_data['punchline']
         embed=discord.Embed(title=(dadjoke_buildup) + ' ' + (dadjoke_punchline),  color=(color))
+        embed.set_footer(text=(description))
+        embed.set_thumbnail(url=(thumbnail))
+        await message.reply(embed=embed, mention_author=True)
+
+#kanye
+    if message.content.startswith((prefix) + 'kanye') or message.content.startswith((prefix2) + 'kanye'):
+        kanye = requests.get('https://api.kanye.rest/')
+        json_data = json.loads(kanye.text)
+        kanye_quote = json_data['quote']
+        embed=discord.Embed(title=(kanye_quote), description='- Kanye West',  color=(color))
+        embed.set_footer(text=(description))
+        embed.set_thumbnail(url=(thumbnail))
+        await message.reply(embed=embed, mention_author=True)
+
+    #yo mama
+    if message.content.startswith((prefix) + 'yomama') or message.content.startswith((prefix2) + 'yomama'):
+        yomama = requests.get('https://api.yomomma.info/')
+        json_data = json.loads(yomama.text)
+        yomama_joke = json_data['joke']
+        embed=discord.Embed(title=(yomama_joke),  color=(color))
         embed.set_footer(text=(description))
         embed.set_thumbnail(url=(thumbnail))
         await message.reply(embed=embed, mention_author=True)
