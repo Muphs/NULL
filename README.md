@@ -18,12 +18,12 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 ## Join the official server
 [https://bit.ly/null-bot-join](https://bit.ly/null-bot-join)
 
+##More info on NULL's official website.
+https://null-bot.webflow.io (Currently under construction)
+
 ## Credits
 Designed and programmed by VOKSEL#8148
 
 Co Designed by qntm#8209
-
-
-Photo credits to:
 
 Pawel Czerwinski - Logo
