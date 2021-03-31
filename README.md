@@ -27,3 +27,5 @@ Designed and programmed by VOKSEL#8148
 Co Designed by qntm#8209
 
 Pawel Czerwinski - Logo
+
+###### Made with ❤️ by [VOKSEL0](https://github.com/VOKSEL0)
