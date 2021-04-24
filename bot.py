@@ -673,7 +673,7 @@ async def iplookup(ctx, arg):
     embed=discord.Embed(title=(arg) + ' Lookup result.', color=(color))
     embed.add_field(name="IP address type:", value=(ipType), inline=True)
     embed.add_field(name="Continent:", value=(continent), inline=True)
-    embed.add_field(name="Country:", value=':flag_' + (country) + ':', inline=True)
+    embed.add_field(name="Country:", value=':flag_' + (country).lower() + ':', inline=True)
     embed.add_field(name="ZIP code:", value=(zipcode), inline=True)
     embed.add_field(name="Capital:", value=(capital), inline=True)
     embed.set_footer(text=(description))
