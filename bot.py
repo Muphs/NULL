@@ -3,6 +3,7 @@ import discord
 from discord import user
 from discord import embeds
 from discord import message
+from discord import reaction
 from discord.ext import commands
 import aiohttp
 import asyncio
@@ -18,7 +19,14 @@ import requests
 from discord import member
 from discord import Embed
 from discord.utils import get
-import string
+from async_timeout import timeout
+from functools import partial
+import youtube_dl
+from googleapiclient.discovery import build
+import re
+import parser
+from youtubesearchpython import VideosSearch
+from youtube_search import YoutubeSearch
 
 #variables
 load_dotenv('.env')
@@ -26,11 +34,16 @@ description = (os.getenv('DESCRIPTION'))
 thumbnail = (os.getenv('THUMBNAIL'))
 thumbnail_small = (os.getenv('THUMBNAIL_SMALL'))
 prefix = (os.getenv('PREFIX'))
+fapikey = (os.getenv('FAPI_KEY'))
+ipapi_key = (os.getenv('IPAPI_KEY'))
 color = 0xff9efc
-bot = commands.Bot(command_prefix=(prefix))
+intents = discord.Intents.default()
+intents.members = True
+bot = commands.Bot(command_prefix=(prefix), help_command=None, intents=intents, case_insensitive=True)
+bot.remove_command('help')
 client = discord.Client()
 response_list = ['100% sure!', 'definitely not', 'no :(', 'yes :)', 'hmmmmmm, idk', 'maybe ask again', 'maybe ask someone else', "definitely!", "As I see it, yes!", "Yes!", "No!", "Very likely!", "Not even close!", "Maybe!", "Very unlikely!", "Ask again later!", "Better not tell you now!", " It is certain!", "My sources say no", "Outlook good!", "Very Doubtful!", "Without a doubt!", 'no:heart:']
-anime_list = ["https://media1.tenor.com/images/c925511d32350cc04411756d623ebad6/tenor.gif?itemid=13462237", "https://media1.tenor.com/images/89289af19b7dab4e21f28f03ec0faaff/tenor.gif?itemid=12801687", "https://media1.tenor.com/images/e1f44b9d914ba61cc60efd8d3cf439a5/tenor.gif?itemid=9975267", "https://media.tenor.com/images/1d37a873edfeb81a1f5403f4a3bfa185/tenor.gif", "https://media.tenor.com/images/8f711b12e00bc1816694bf51909f8b8f/tenor.gif", "https://media.tenor.com/images/84e609c97fc79323c572baa4e8486473/tenor.gif", "https://media.tenor.com/images/c67648bdadbece24eed182a401abf576/tenor.gif", "https://media.tenor.com/images/46a74ce6228e7bc535263e1464cce46b/tenor.gif", "https://media.tenor.com/images/a173f1c95d81855afd10d51f3fa277ab/tenor.gif", "https://media.tenor.com/images/e1c9ad053d4aa0471727fbf36c3a3868/tenor.gif", "https://media.tenor.com/images/3f6457f7235edf481d542b8074740401/tenor.gif"]
+anime_list = ["https://cdn.discordapp.com/emojis/814696607974031400.gif", "https://media1.tenor.com/images/c925511d32350cc04411756d623ebad6/tenor.gif?itemid=13462237", "https://media1.tenor.com/images/89289af19b7dab4e21f28f03ec0faaff/tenor.gif?itemid=12801687", "https://media1.tenor.com/images/e1f44b9d914ba61cc60efd8d3cf439a5/tenor.gif?itemid=9975267", "https://media.tenor.com/images/1d37a873edfeb81a1f5403f4a3bfa185/tenor.gif", "https://media.tenor.com/images/8f711b12e00bc1816694bf51909f8b8f/tenor.gif", "https://media.tenor.com/images/84e609c97fc79323c572baa4e8486473/tenor.gif", "https://media.tenor.com/images/c67648bdadbece24eed182a401abf576/tenor.gif", "https://media.tenor.com/images/46a74ce6228e7bc535263e1464cce46b/tenor.gif", "https://media.tenor.com/images/a173f1c95d81855afd10d51f3fa277ab/tenor.gif", "https://media.tenor.com/images/e1c9ad053d4aa0471727fbf36c3a3868/tenor.gif", "https://media.tenor.com/images/3f6457f7235edf481d542b8074740401/tenor.gif"]
 zerotwo_list = ['https://media.tenor.com/images/4632e943653b0ad278a1fa7b8f49d82c/tenor.gif', 'https://media.tenor.com/images/3e7d551f4edbc139f1372a494eccd01d/tenor.gif', 'https://media.tenor.com/images/e046bd4175889014749d008bef023f25/tenor.gif', 'https://media.tenor.com/images/500953247d7ddda4d87908fa0bb2c7bc/tenor.gif', 'https://media.tenor.com/images/2e094b3c1f5bf047698dea434416d080/tenor.gif', 'https://media.tenor.com/images/09df52e29a5506287cd76fb4abafa2cc/tenor.gif', 'https://media.tenor.com/images/4f5f2d78f721fc36e10f4e5e2c340f47/tenor.gif', 'https://media.tenor.com/images/7691590d6ac021b483c39dfa794e2a1c/tenor.gif', 'https://64.media.tumblr.com/d03212d8697607c82bb85db886ee92af/tumblr_p2z0hgMv3g1wd81ruo1_540.gifv']
 ichigo_list = ['https://media.tenor.com/images/d1fc46f2d0fd52740711b80b80a3c081/tenor.gif', 'https://media.tenor.com/images/b7687ce05975ad1d5c7ed52717e62f09/tenor.gif', 'https://data.whicdn.com/images/325037756/original.gif']
 bunnygirl_list = ['https://media1.tenor.com/images/be4bfaaa1458ec4d4231938851cf085b/tenor.gif?itemid=19678646', 'https://media1.tenor.com/images/37439858992a315486549b6136f8d74f/tenor.gif?itemid=17742393', 'https://media1.tenor.com/images/58a14f9ec0549c516134ab9940e871cd/tenor.gif?itemid=19611956', 'https://media1.tenor.com/images/567ba9e70f306c5ce6432377840437d3/tenor.gif?itemid=14746195', 'https://media1.tenor.com/images/24408dbd5bf503ba838e5b9a65bd14e7/tenor.gif?itemid=13458967', 'https://media1.tenor.com/images/5f3d0649a01125104a08894fa673af35/tenor.gif?itemid=15988113', 'https://media1.tenor.com/images/64b2de700d17667c45d3bf34e316a29c/tenor.gif?itemid=20119299', 'https://media1.tenor.com/images/d3b0bf5cda58616be62ec013ca75a38e/tenor.gif?itemid=15988109']
@@ -48,10 +61,12 @@ kissresponse_list = ['I feel lonely <:apple_plead:812381767432536125>', 'I reall
 compliment_list = ['You have the best laugh.', 'Our system of inside jokes is so advanced that only you and I get it. And I like that.', 'Your perspective is refreshing.', 'You deserve a hug right now.', 'You’re more helpful than you realize.', 'You have a great sense of humor.', 'On a scale from 1 to 10, you’re an 11.', 'You’re even more beautiful on the inside than you are on the outside.', 'If cartoon bluebirds were real, a bunch of them would be sitting on your shoulders singing right now.', 'Your ability to recall random factoids at just the right time is impressive.', 'You may dance like no one’s watching, but everyone’s watching because you’re an amazing dancer!', 'You’re more fun than a ball pit filled with candy. (And seriously, what could be more fun than that?)', 'Everyday is just BLAH when I don’t see you fr! ', 'If you were a box of crayons, you’d be the giant name-brand one with the built-in sharpener.', 'Everyone gets knocked down sometimes, but you always get back up and keep going.', 'You’re gorgeous — and that’s the least interesting thing about you, too.', 'If you were a scented candle they’d call it Perfectly Imperfect (and it would smell like summer).']
 frog_list = ["https://ih1.redbubble.net/image.1448785672.7225/st,small,507x507-pad,600x600,f8f8f8.jpg", "https://media.istockphoto.com/vectors/cute-frog-cartoon-hand-drawn-style-vector-id1146849256", "https://reneelertzman.com/wp-content/uploads/2016/03/cute-little-green-frog-peeking-out-from-behind-PT9JUFJ.jpg", "https://ih1.redbubble.net/image.1490694325.8717/fposter,small,wall_texture,product,750x1000.jpg", "https://www.crushpixel.com/big-static12/preview4/cute-frog-seamless-pattern-background-1094038.jpg", "https://www.crushpixel.com/big-static12/preview4/cute-frog-seamless-pattern-background-1094038.jpg", "https://media.discordapp.net/attachments/791400172209963058/812447792114827274/IMG_20210217_180127_963.jpg", "http://onebigphoto.com/uploads/2014/09/hello-i-am-cute-frog.jpg", "https://imagesvc.meredithcorp.io/v3/mm/image?q=85&c=sc&poi=face&w=1503&h=1503&url=https%3A%2F%2Fstatic.onecms.io%2Fwp-content%2Fuploads%2Fsites%2F20%2F2020%2F01%2Ffrog-trio-6.jpg", "https://media.discordapp.net/attachments/791400172209963058/812448117622046720/2lqtt9abx4561.png?width=371&height=500", "https://i.pinimg.com/originals/5c/a6/18/5ca6189bfca950c74ad266c30e587bb9.jpg", "http://1.bp.blogspot.com/-BkUS1SGdmLA/TpEiyhFFC4I/AAAAAAAAB3c/91Rh3vtHNT8/s1600/Cute-Frog-1.jpg", "https://media.discordapp.net/attachments/791400172209963058/812449043791085598/8mi859yc14251.png"]
 jdm_list = ['https://images-ext-1.discordapp.net/external/52h-vS9a2mw65Fl7ITo7TuD0wdiGeneuTi0WlqIKays/https/soymotor.com/sites/default/files/imagenes/noticia/toyota-supra.jpg', 'https://images-ext-2.discordapp.net/external/kDofouMxYFqVGrwlHX3ZSy8l1d1L28zyKD6evy-EFMA/https/besthqwallpapers.com/Uploads/16-11-2019/111977/thumb2-nissan-s30-nissan-fairlady-z-tuning-datsun-240z-japanese-cars.jpg', 'https://images-ext-2.discordapp.net/external/OvGDRXylwLmqiccdMXBuPB76YlNE3eEpCJIC33AfgJc/https/www.motorbiscuit.com/wp-content/uploads/2020/10/1986-JDM-Toyota-AE86-Sprinter-Trueno-GT-Apex.jpg', 'https://images-ext-1.discordapp.net/external/mWPXDCBHCJPP-BPzgy10u-hefrtGcwI6QoJg405nTD0/https/i.pinimg.com/originals/88/83/bd/8883bd844c3046df557c7381d0633626.jpg', 'https://images-ext-2.discordapp.net/external/XCCVt9Kwv25RQV68Ad_1F4QnvbsELNGPvxrv9jpI_20/https/i.pinimg.com/originals/67/ff/ea/67ffeab000d8e7033e60360ea0a3bcce.jpg', 'https://images-ext-1.discordapp.net/external/ymHMBTo2uS6Ujq3okVeB2MEN6HLMmaTF3CavIAhJkXA/https/frenomotor.com/files/2015/04/skyline-paul-walker.jpg']
-shrug_list = ['https://media1.tenor.com/images/34b67ecddde773b30dbe962d14ff27c7/tenor.gif?itemid=20668021', ]
+sigh_list = ['https://media1.tenor.com/images/34b67ecddde773b30dbe962d14ff27c7/tenor.gif?itemid=20668021', ]
 clap_list = ['https://media1.tenor.com/images/7460a26a07ef24d696eaac0b0ff4d5bf/tenor.gif?itemid=16461487', 'https://media.tenor.com/images/ba246f4d3f2845cac07466ab3d013279/tenor.gif', 'https://media.tenor.com/images/657f0c243282921245c0b9f4b1525c1b/tenor.gif', 'https://media.tenor.com/images/2cf9843ed2489b97be6ca65acd40b55f/tenor.gif', 'https://media.tenor.com/images/07908bbd4b8336d826c733de9b2f2988/tenor.gif', 'https://media.tenor.com/images/18ae86fcb295c6d30028dedf7a946970/tenor.gif', 'https://media.tenor.com/images/9f94b89d628518c67808ebadba924306/tenor.gif', 'https://media.tenor.com/images/bd235c84724d5eb04b5cfe39028e936c/tenor.gif']
 coin_list = ['Heads!', 'Tails!', 'Heads!', 'Tails!', 'Heads!', 'Tails!', 'Heads!', 'Tails!', 'Heads!', 'Tails!', 'Heads!', 'Tails!', 'Heads!', 'Tails!', 'Heads!', 'Tails!', 'Heads!', 'Tails!', 'Heads!', 'Tails!', 'Heads!', 'Tails!', 'Heads!', 'Tails!', 'Heads!', 'Tails!', 'Heads!', 'Tails!', 'Heads!', 'Tails!', 'Heads!', 'Tails!', 'Heads!', 'Tails!', 'Heads!', 'Tails!', 'Heads!', 'Tails!']
-greetings_list = ['Hi', 'Hey', 'Sup', 'Hello', 'Hemlo', 'Hai']
+dababy_list = ['https://media.tenor.com/images/57440c61f7c098edcf19e89064fcbbf7/tenor.gif', 'https://media1.tenor.com/images/c8edfdc06ef1c0cd01f03eaa20d8f8b7/tenor.gif?itemid=20883016', 'https://media1.tenor.com/images/fb4990d28060529e74d53b24fa9fa012/tenor.gif?itemid=15748120', 'https://media1.tenor.com/images/44e37453e27d700edbae6f112b9acd41/tenor.gif?itemid=20757217', 'https://cdn.discordapp.com/emojis/818521259125112893.gif?v=1', 'https://media.tenor.com/images/57440c61f7c098edcf19e89064fcbbf7/tenor.gif', 'https://media1.tenor.com/images/c8edfdc06ef1c0cd01f03eaa20d8f8b7/tenor.gif?itemid=20883016', 'https://media1.tenor.com/images/fb4990d28060529e74d53b24fa9fa012/tenor.gif?itemid=15748120', 'https://media1.tenor.com/images/44e37453e27d700edbae6f112b9acd41/tenor.gif?itemid=20757217', 'https://cdn.discordapp.com/emojis/818521259125112893.gif?v=1', 'https://media.tenor.com/images/57440c61f7c098edcf19e89064fcbbf7/tenor.gif', 'https://media1.tenor.com/images/c8edfdc06ef1c0cd01f03eaa20d8f8b7/tenor.gif?itemid=20883016', 'https://media1.tenor.com/images/fb4990d28060529e74d53b24fa9fa012/tenor.gif?itemid=15748120', 'https://media1.tenor.com/images/44e37453e27d700edbae6f112b9acd41/tenor.gif?itemid=20757217', 'https://cdn.discordapp.com/emojis/818521259125112893.gif?v=1']
+greetings_list = ['Hi', 'Hey!', 'Sup', 'Hello!', 'Hemlo :)', 'Hai', 'Hey, how are you? :)', "Hi, how are you doing?"]
+rock_list = ['https://static.onecms.io/wp-content/uploads/sites/6/2016/11/dwayne-johnson.jpg', 'https://media.discordapp.net/attachments/791400172209963058/833880348143779840/Z.png', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNniGFdkhKMp8dqSGYjDtnHnoF7IwH2nDSOiGuvk3JHj-Wt_VehhGHqIoZ6OiMNBmuR1I&usqp=CAU', 'https://media.discordapp.net/attachments/791400172209963058/833880832317718538/xqkvbXm.png', 'https://i.redd.it/d1qb1dqby73z.jpg', 'https://pics.me.me/dwayne-the-block-johnson-it-ain%E2%80%99t-butter-but-it%E2%80%99s-hard-62078044.png', 'https://media.discordapp.net/attachments/791400172209963058/833881114120159282/image0.jpg', 'https://pics.me.me/dwayne-the-log-johnson-me-irl-22713272.png', 'https://media.discordapp.net/attachments/791400172209963058/833881332651524157/image0.jpg', 'https://i.redd.it/pyd4r36xhcd41.jpg', 'https://i.imgur.com/o3hJf5H.jpg', 'https://i.pinimg.com/originals/4e/04/62/4e04622da507fcf31886b1dbc4da339a.png', 'https://pics.me.me/dwane-the-bop-johnson-spiy-fltk-it-twist-very-funny-51837846.png', 'https://pics.onsizzle.com/144p-1080p-4k-evolution-of-the-rock-23053816.png', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTe2M5nD9tqjFtdRdi91LgW3wi9T8X-m-UJmg&usqp=CAU', 'https://i.pinimg.com/originals/6c/82/5d/6c825d1140b2e2e4f7129ac0a015e3b0.png']
 
 #Print loged in as (bot name) and set stream status
 @bot.event
@@ -65,18 +80,26 @@ async def on_ready():
 @bot.command()
 async def hello(ctx):
     lucky_num = random.randint(0,len(greetings_list) - 1)
-    embed=discord.Embed(title=((greetings_list[lucky_num]) + '!'), color=(color))
+    embed=discord.Embed(title=((greetings_list[lucky_num])), color=(color))
     embed.set_footer(text=(description))
     embed.set_thumbnail(url=(thumbnail))
-    await ctx.reply(embed=embed, mention_author=True)
+    message = await ctx.reply(embed=embed, mention_author=True)
+
+#say command
+@bot.command()
+async def say(ctx, *, arg):
+    embed=discord.Embed(title=(arg), color=(color))
+    embed.set_footer(text=(description))
+    embed.set_thumbnail(url=(thumbnail_small))
+    message = await ctx.reply(embed=embed, mention_author=True)
 
 #ping command
 @bot.command()
 async def ping(ctx):
-    embed=discord.Embed(title="Pong! :ping_pong:", color=(color), description=(f'Ponged back in ``{round(bot.latency * 1000)}ms``'))
+    embed=discord.Embed(title="Pong! :ping_pong:", color=(color), description=(f'Ponged back in `{round(bot.latency * 1000)}ms`'))
     embed.set_footer(text=(description))
     embed.set_thumbnail(url=(thumbnail))
-    await ctx.reply(embed=embed, mention_author=True)
+    message = await ctx.reply(embed=embed, mention_author=True)
 
 #add bot link
 @bot.command()
@@ -86,24 +109,24 @@ async def addbot(ctx):
     embed.add_field(name="Notice:", value="NULL. Is still in the development, which may cause commands to not work and the bot to be offline from now and then with no schedule.", inline=False)
     embed.set_footer(text=(description))
     embed.set_thumbnail(url=(thumbnail))
-    await ctx.reply(embed=embed, mention_author=True)
+    message = await ctx.reply(embed=embed, mention_author=True)
 
 #join server link
 @bot.command()
-async def join(ctx):
+async def joinserver(ctx):
     embed=discord.Embed(title="Join my server by clicking this link", color=(color))
     embed.add_field(name="https://bit.ly/null-bot-join", value="‎‎‎‎‎‎‎ ", inline=False)
     embed.set_footer(text=(description))
     embed.set_thumbnail(url=(thumbnail))
-    await ctx.reply(embed=embed, mention_author=True)
+    message = await ctx.reply(embed=embed, mention_author=True)
 
 #bot version
 @bot.command()
 async def botver(ctx):
-    embed=discord.Embed(title="I am currently on Development version 3.2.5 Rewrite Open Beta!", color=(color))
+    embed=discord.Embed(title="I am currently on Development version 2.5 Rewrite Open Beta!", color=(color))
     embed.set_footer(text=(description))
     embed.set_thumbnail(url=(thumbnail))
-    await ctx.reply(embed=embed, mention_author=True)
+    message = await ctx.reply(embed=embed, mention_author=True)
 
 #8ball
 @bot.command()
@@ -112,7 +135,7 @@ async def m8b(ctx):
     embed=discord.Embed(title=(response_list[lucky_num]), color=(color))
     embed.set_footer(text=(description))
     embed.set_thumbnail(url=(thumbnail))
-    await ctx.reply(embed=embed, mention_author=True)
+    message = await ctx.reply(embed=embed, mention_author=True)
 
 #compliment command
 @bot.command()
@@ -121,16 +144,16 @@ async def compliment(ctx):
     embed=discord.Embed(title=(compliment_list[lucky_num]), color=(color))
     embed.set_footer(text=(description))
     embed.set_thumbnail(url=(thumbnail))
-    await ctx.reply(embed=embed, mention_author=True)
+    message = await ctx.reply(embed=embed, mention_author=True)
 
 #pickup line
 @bot.command()
-async def pickup(ctx):
+async def pickupline(ctx):
     lucky_num = random.randint(0,len(pickup_list)-1)
     embed=discord.Embed(title=(pickup_list[lucky_num]), color=(color))
     embed.set_footer(text=(description))
     embed.set_thumbnail(url=(thumbnail))
-    await ctx.reply(embed=embed, mention_author=True)
+    message = await ctx.reply(embed=embed, mention_author=True)
 
 #roast
 @bot.command()
@@ -139,7 +162,7 @@ async def roast(ctx):
     embed=discord.Embed(title=(roast_list[lucky_num]), color=(color))
     embed.set_footer(text=(description))
     embed.set_thumbnail(url=(thumbnail))
-    await ctx.reply(embed=embed, mention_author=True)
+    message = await ctx.reply(embed=embed, mention_author=True)
 
 #mario judah
 @bot.command()
@@ -147,28 +170,37 @@ async def milk(ctx):
     embed=discord.Embed(title='YEEEEEEEEEEEEEEEEEEEEET', color=(color))
     embed.set_image(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/mario-judah-throws-milk-_-m2WjP9Gx6yHOB0J1-w1370.gif')
     embed.set_footer(text=(description))
-    embed.set_thumbnail(url=(thumbnail))
-    await ctx.reply(embed=embed, mention_author=True)
+    embed.set_thumbnail(url=(thumbnail_small))
+    message = await ctx.reply(embed=embed, mention_author=True)
+
+#mario judah
+@bot.command()
+async def milkyeet(ctx):
+    embed=discord.Embed(title='YEEEEEEEEEEEEEEEEEEEEET', color=(color))
+    embed.set_image(url='https://assets.zyrosite.com/YbNGxlQMyaf5ag5P/mario-judah-throws-milk-_-m2WjP9Gx6yHOB0J1-w1370.gif')
+    embed.set_footer(text=(description))
+    embed.set_thumbnail(url=(thumbnail_small))
+    message = await ctx.reply(embed=embed, mention_author=True)
 
 #cute anime
 @bot.command()
-async def cute(ctx):
+async def cuteanime(ctx):
     lucky_num = random.randint(0,len(anime_list)-1)
     embed=discord.Embed(title='Awww', color=(color))
     embed.set_image(url=(anime_list[lucky_num]))
     embed.set_footer(text=(description))
-    embed.set_thumbnail(url=(thumbnail))
-    await ctx.reply(embed=embed, mention_author=True)
+    embed.set_thumbnail(url=(thumbnail_small))
+    message = await ctx.reply(embed=embed, mention_author=True)
 
 #zero two
 @bot.command()
-async def zero(ctx):
+async def zerotwo(ctx):
     lucky_num = random.randint(0,len(zerotwo_list)-1)
     embed=discord.Embed(title='Boku no darling!', color=(color))
     embed.set_image(url=(zerotwo_list[lucky_num]))
     embed.set_footer(text=(description))
-    embed.set_thumbnail(url=(thumbnail))
-    await ctx.reply(embed=embed, mention_author=True)
+    embed.set_thumbnail(url=(thumbnail_small))
+    message = await ctx.reply(embed=embed, mention_author=True)
 
 #todoroki
 @bot.command()
@@ -177,8 +209,8 @@ async def todoroki(ctx):
     embed=discord.Embed(title='Awww', color=(color))
     embed.set_image(url=(todoroki_list[lucky_num]))
     embed.set_footer(text=(description))
-    embed.set_thumbnail(url=(thumbnail))
-    await ctx.reply(embed=embed, mention_author=True)
+    embed.set_thumbnail(url=(thumbnail_small))
+    message = await ctx.reply(embed=embed, mention_author=True)
 
 #ichigo
 @bot.command()
@@ -187,18 +219,18 @@ async def ichigo(ctx):
     embed=discord.Embed(title='Awww', color=(color))
     embed.set_image(url=(ichigo_list[lucky_num]))
     embed.set_footer(text=(description))
-    embed.set_thumbnail(url=(thumbnail))
-    await ctx.reply(embed=embed, mention_author=True)
+    embed.set_thumbnail(url=(thumbnail_small))
+    message = await ctx.reply(embed=embed, mention_author=True)
 
 #bunny girl
 @bot.command()
-async def bunnyg(ctx):
+async def bunnygirl(ctx):
     lucky_num = random.randint(0,len(bunnygirl_list)-1)
     embed=discord.Embed(title='Awww', color=(color))
     embed.set_image(url=(bunnygirl_list[lucky_num]))
     embed.set_footer(text=(description))
-    embed.set_thumbnail(url=(thumbnail))
-    await ctx.reply(embed=embed, mention_author=True)
+    embed.set_thumbnail(url=(thumbnail_small))
+    message = await ctx.reply(embed=embed, mention_author=True)
 
 #slap
 @bot.command()
@@ -208,8 +240,8 @@ async def slap(ctx):
     embed=discord.Embed(title=(slapresponse_list[lucky_num]), color=(color))
     embed.set_image(url=(slap_list[lucky_num]))
     embed.set_footer(text=(description))
-    embed.set_thumbnail(url=(thumbnail))
-    await ctx.reply(embed=embed, mention_author=True)
+    embed.set_thumbnail(url=(thumbnail_small))
+    message = await ctx.reply(embed=embed, mention_author=True)
 
 #hug
 @bot.command()
@@ -219,8 +251,8 @@ async def hug(ctx):
     embed=discord.Embed(title=(hugresponse_list[lucky_num]), color=(color))
     embed.set_image(url=(hug_list[lucky_num]))
     embed.set_footer(text=(description))
-    embed.set_thumbnail(url=(thumbnail))
-    await ctx.reply(embed=embed, mention_author=True)
+    embed.set_thumbnail(url=(thumbnail_small))
+    message = await ctx.reply(embed=embed, mention_author=True)
 
 #kiss
 @bot.command()
@@ -230,18 +262,18 @@ async def kiss(ctx):
     embed=discord.Embed(title=(kissresponse_list[lucky_num]), color=(color))
     embed.set_image(url=(kiss_list[lucky_num]))
     embed.set_footer(text=(description))
-    embed.set_thumbnail(url=(thumbnail))
-    await ctx.reply(embed=embed, mention_author=True)
+    embed.set_thumbnail(url=(thumbnail_small))
+    message = await ctx.reply(embed=embed, mention_author=True)
 
-#shrug
+#sigh
 @bot.command()
-async def hug(ctx):
-    lucky_num = random.randint(0,len(shrug_list)-1)
-    embed=discord.Embed(title='`*shrugs*`', color=(color))
-    embed.set_image(url=(shrug_list[lucky_num]))
+async def sigh(ctx):
+    lucky_num = random.randint(0,len(sigh_list)-1)
+    embed=discord.Embed(title='`*sighs*`', color=(color))
+    embed.set_image(url=(sigh_list[lucky_num]))
     embed.set_footer(text=(description))
-    embed.set_thumbnail(url=(thumbnail))
-    await ctx.reply(embed=embed, mention_author=True)
+    embed.set_thumbnail(url=(thumbnail_small))
+    message = await ctx.reply(embed=embed, mention_author=True)
 
 #clap
 @bot.command()
@@ -250,18 +282,27 @@ async def clap(ctx):
     embed=discord.Embed(title='`*clap*` `*clap*` `*clap*`', color=(color))
     embed.set_image(url=(clap_list[lucky_num]))
     embed.set_footer(text=(description))
-    embed.set_thumbnail(url=(thumbnail))
-    await ctx.reply(embed=embed, mention_author=True) 
+    embed.set_thumbnail(url=(thumbnail_small))
+    message = await ctx.reply(embed=embed, mention_author=True) 
 
 #head out
 @bot.command()
-async def head(ctx):
+async def headout(ctx):
     lucky_num = random.randint(0,len(headout_list)-1)
     embed=discord.Embed(title=(headout_list[lucky_num]), color=(color))
     embed.set_image(url='https://media1.tenor.com/images/c57c8725cfdb74251c392e0ca46753ba/tenor.gif?itemid=15194343')
     embed.set_footer(text=(description))
-    embed.set_thumbnail(url=(thumbnail))
-    await ctx.reply(embed=embed, mention_author=True)
+    embed.set_thumbnail(url=(thumbnail_small))
+    message = await ctx.reply(embed=embed, mention_author=True)
+
+@bot.command()
+async def dababy(ctx):
+    lucky_num = random.randint(0,len(dababy_list)-1)
+    embed=discord.Embed(title='LESSSS GOOOOO :smiling_imp: :cold_face: :hot_face: :exclamation::exclamation: ', color=(color))
+    embed.set_image(url=(dababy_list[lucky_num]))
+    embed.set_footer(text=(description))
+    embed.set_thumbnail(url=(thumbnail_small))
+    message = await ctx.reply(embed=embed, mention_author=True)
 
 #hamster
 @bot.command()
@@ -270,8 +311,8 @@ async def hamster(ctx):
     embed=discord.Embed(title='Awww', color=(color))
     embed.set_image(url=(hamster_list[lucky_num]))
     embed.set_footer(text=(description))
-    embed.set_thumbnail(url=(thumbnail))
-    await ctx.reply(embed=embed, mention_author=True)
+    embed.set_thumbnail(url=(thumbnail_small))
+    message = await ctx.reply(embed=embed, mention_author=True)
 
 #how sus
 @bot.command()
@@ -280,7 +321,7 @@ async def howsus(ctx):
     embed=discord.Embed(title=(str(sus)) + "% sus!", color=(color))
     embed.set_footer(text=(description))
     embed.set_thumbnail(url=(thumbnail))
-    await ctx.reply(embed=embed, mention_author=True)
+    message = await ctx.reply(embed=embed, mention_author=True)
 
 #how gay
 @bot.command()
@@ -289,7 +330,7 @@ async def howgay(ctx):
     embed=discord.Embed(title=(str(gay)) + "% gay :gay_pride_flag:", color=(color))
     embed.set_footer(text=(description))
     embed.set_thumbnail(url=(thumbnail))
-    await ctx.reply(embed=embed, mention_author=True)
+    message = await ctx.reply(embed=embed, mention_author=True)
 
 #iq
 @bot.command()
@@ -298,7 +339,7 @@ async def iq(ctx):
     embed=discord.Embed(title=(str(iq)) + " IQ", color=(color))
     embed.set_footer(text=(description))
     embed.set_thumbnail(url=(thumbnail))
-    await ctx.reply(embed=embed, mention_author=True)
+    message = await ctx.reply(embed=embed, mention_author=True)
 
 #inspire
 @bot.command()
@@ -312,36 +353,27 @@ async def inspire(ctx):
     embed=discord.Embed(title=(quote), color=(color))
     embed.set_footer(text=(description))
     embed.set_thumbnail(url=(thumbnail))
-    await ctx.reply(embed=embed, mention_author=True)
-
-#random image
-async def randomimg(ctx):
-    picgen = random.randint(0, 999999999999999999999999999999999999999999999999999999)
-    embed=discord.Embed(title=' ', color=(color))
-    embed.set_image(url='https://picsum.photos/seed/' + (str(picgen)) + '/3840/2160')
-    embed.set_footer(text=(description))
-    embed.set_thumbnail(url=(thumbnail))
-    await ctx.reply(embed=embed, mention_author=True)
+    message = await ctx.reply(embed=embed, mention_author=True)
 
 #frog
-@bot.command
+@bot.command()
 async def frog(ctx):
     lucky_num = random.randint(0,len(frog_list)-1)
     embed=discord.Embed(title='Awww', color=(color))
     embed.set_image(url=(frog_list[lucky_num]))
     embed.set_footer(text=(description))
-    embed.set_thumbnail(url=(thumbnail))
-    await ctx.reply(embed=embed, mention_author=True)
+    embed.set_thumbnail(url=(thumbnail_small))
+    message = await ctx.reply(embed=embed, mention_author=True)
 
 #jdm
-@bot.command
+@bot.command()
 async def jdm(ctx):
     lucky_num = random.randint(0,len(jdm_list)-1)
-    embed=discord.Embed(title=' ', color=(color))
+    embed=discord.Embed(title=':smirk:', color=(color))
     embed.set_image(url=(jdm_list[lucky_num]))
     embed.set_footer(text=(description))
-    embed.set_thumbnail(url=(thumbnail))
-    await ctx.reply(embed=embed, mention_author=True)
+    embed.set_thumbnail(url=(thumbnail_small))
+    message = await ctx.reply(embed=embed, mention_author=True)
 
 #random fact
 @bot.command()
@@ -352,7 +384,24 @@ async def fact(ctx):
     embed=discord.Embed(title=(fact), color=(color))
     embed.set_footer(text=(description))
     embed.set_thumbnail(url=(thumbnail))
-    await ctx.reply(embed=embed, mention_author=True)
+    message = await ctx.reply(embed=embed, mention_author=True)
+
+#random commands
+@bot.command()
+async def rand(ctx, arg1, arg2, arg3):
+    if arg1 == '-num' or arg1 == '-number' or arg1 == '-n':
+        rng = random.randint((int(arg2)), (int(arg3)))
+        embed=discord.Embed(title='Your random number is **' + (str(rng)) + '**', color=(color))
+        embed.set_footer(text=(description))
+        embed.set_thumbnail(url=(thumbnail))
+        message = await ctx.reply(embed=embed, mention_author=True)
+    elif arg1 == '-img' or arg1 == '-image':
+        picgen = random.randint(0, 999999999999999999999999999999999999999999999999999999)
+        embed=discord.Embed(title=' ', color=(color))
+        embed.set_image(url='https://picsum.photos/seed/' + (str(picgen)) + '/3840/2160')
+        embed.set_footer(text=(description))
+        embed.set_thumbnail(url=(thumbnail_small))
+        message = await ctx.reply(embed=embed, mention_author=True)
 
 #covid
 @bot.command()
@@ -363,12 +412,28 @@ async def covid(ctx):
     CovidDeaths = json_data['TotalDeaths']
     CovidRecovered = json_data['TotalRecovered']
     embed=discord.Embed(title='COVID19 Info.', color=(color))
-    embed.set_thumbnail(url=(thumbnail))
+    embed.set_thumbnail(url=(thumbnail_small))
     embed.add_field(name=("{:,}".format(CovidConfirmed)), value="Confirmed cases.", inline=True)
     embed.add_field(name=("{:,}".format(CovidRecovered)), value="Recovered cases.", inline=True)
     embed.add_field(name=("{:,}".format(CovidDeaths)), value="Deaths.", inline=True)
     embed.set_footer(text=(description))
-    await ctx.reply(embed=embed, mention_author=True)
+    message = await ctx.reply(embed=embed, mention_author=True)
+
+#covid
+@bot.command()
+async def covid19(ctx):
+    covid = requests.get('https://api.covid19api.com/world/total')
+    json_data = json.loads(covid.text)
+    CovidConfirmed = json_data['TotalConfirmed']
+    CovidDeaths = json_data['TotalDeaths']
+    CovidRecovered = json_data['TotalRecovered']
+    embed=discord.Embed(title='COVID19 Info.', color=(color))
+    embed.set_thumbnail(url=(thumbnail_small))
+    embed.add_field(name=("{:,}".format(CovidConfirmed)), value="Confirmed cases.", inline=True)
+    embed.add_field(name=("{:,}".format(CovidRecovered)), value="Recovered cases.", inline=True)
+    embed.add_field(name=("{:,}".format(CovidDeaths)), value="Deaths.", inline=True)
+    embed.set_footer(text=(description))
+    message = await ctx.reply(embed=embed, mention_author=True)
 
 #meme
 @bot.command()
@@ -381,60 +446,68 @@ async def meme(ctx):
     embed=discord.Embed(title=(memetitle), color=(color))
     embed.set_image(url=(memeurl))
     embed.set_footer(text=(description))
-    embed.set_thumbnail(url=(thumbnail))
-    await ctx.reply(embed=embed, mention_author=True)
+    embed.set_thumbnail(url=(thumbnail_small))
+    message = await ctx.reply(embed=embed, mention_author=True)
     if memensfw == 'true':
         return    
 
+#telcel
+@bot.command()
+async def telcel(ctx):
+    embed=discord.Embed(title="Telcel :smiling_imp:", color=(color), description=':cloud_tornado:MARAVILLA:smiling_imp: DE ESA BOCA:flushed:ILUMINA :stuck_out_tongue:TODO:money_mouth: COMO :triumph:EL:hot_face:SOL:clown:UNA :sleepy:COSA:metal:LLEGA:heart_eyes:A OTRA:scream:Y:pleading_face:LA:no_mouth: VIDA :flag_mx:PINTA:thinking:MUCHO:neutral_face:MEJOR:nauseated_face:')
+    embed.set_footer(text=(description))
+    embed.set_thumbnail(url=(thumbnail))
+    message = await ctx.reply(embed=embed, mention_author=True)
+
 #diceroll
 @bot.command()
-async def dice(ctx):
+async def diceroll(ctx):
     dice = random.randint(1, 6)
     if (str(dice)) == '1':
         embed=discord.Embed(title='You rolled a ' + (str(dice)) + '!', color=(color))
         embed.set_footer(text=(description))
         embed.set_thumbnail(url='https://cdn.discordapp.com/emojis/824330739248005160.png?size=64')
-        await ctx.reply(embed=embed, mention_author=True)
+        message = await ctx.reply(embed=embed, mention_author=True)
     elif (str(dice)) == '2':
         embed=discord.Embed(title='You rolled a ' + (str(dice)) + '!', color=(color))
         embed.set_footer(text=(description))
         embed.set_thumbnail(url='https://cdn.discordapp.com/emojis/824330526671765504.png?size=64')
-        await ctx.reply(embed=embed, mention_author=True)
+        message = await ctx.reply(embed=embed, mention_author=True)
     elif (str(dice)) == '3':
         embed=discord.Embed(title='You rolled a ' + (str(dice)) + '!', color=(color))
         embed.set_footer(text=(description))
         embed.set_thumbnail(url='https://cdn.discordapp.com/emojis/824330652173729793.png?size=64')
-        await ctx.reply(embed=embed, mention_author=True)
+        message = await ctx.reply(embed=embed, mention_author=True)
     elif (str(dice)) == '4':
         embed=discord.Embed(title='You rolled a ' + (str(dice)) + '!', color=(color))
         embed.set_footer(text=(description))
         embed.set_thumbnail(url='https://cdn.discordapp.com/emojis/824330571408474112.png?size=64')
-        await ctx.reply(embed=embed, mention_author=True)
+        message = await ctx.reply(embed=embed, mention_author=True)
     elif (str(dice)) == '5':
         embed=discord.Embed(title='You rolled a ' + (str(dice)) + '!', color=(color))
         embed.set_footer(text=(description))
         embed.set_thumbnail(url='https://cdn.discordapp.com/emojis/824330607776759828.png?size=64')
-        await ctx.reply(embed=embed, mention_author=True)
+        message = await ctx.reply(embed=embed, mention_author=True)
     elif (str(dice)) == '6':
         embed=discord.Embed(title='You rolled a ' + (str(dice)) + '!', color=(color))
         embed.set_footer(text=(description))
         embed.set_thumbnail(url='https://cdn.discordapp.com/emojis/824330708973518918.png?size=64')
-        await ctx.reply(embed=embed, mention_author=True)
+        message = await ctx.reply(embed=embed, mention_author=True)
 
 #coin
 @bot.command()
-async def coin(ctx):
+async def coinflip(ctx):
     lucky_num = random.randint(0,len(coin_list)-1)
     if (coin_list[lucky_num]) == 'Heads!':
         embed=discord.Embed(title=(coin_list[lucky_num]), color=(color))
         embed.set_footer(text=(description))
         embed.set_thumbnail(url='https://media.discordapp.net/attachments/785926282696196106/824366377975414844/rsz_obverse.jpg')
-        await ctx.reply(embed=embed, mention_author=True)
+        message = await ctx.reply(embed=embed, mention_author=True)
     if (coin_list[lucky_num]) == 'Tails!':
         embed=discord.Embed(title=(coin_list[lucky_num]), color=(color))
         embed.set_footer(text=(description))
         embed.set_thumbnail(url='https://media.discordapp.net/attachments/785926282696196106/824366580204175370/rsz_reverse.jpg')
-        await ctx.reply(embed=embed, mention_author=True)
+        message = await ctx.reply(embed=embed, mention_author=True)
 
 #joke
 @bot.command()
@@ -446,7 +519,7 @@ async def joke(ctx):
     embed=discord.Embed(title=(dadjoke_buildup) + ' ' + (dadjoke_punchline),  color=(color))
     embed.set_footer(text=(description))
     embed.set_thumbnail(url=(thumbnail))
-    await ctx.reply(embed=embed, mention_author=True)
+    message = await ctx.reply(embed=embed, mention_author=True)
 
 #kanye
 @bot.command()
@@ -457,7 +530,7 @@ async def kanye(ctx):
     embed=discord.Embed(title=(kanye_quote), description='- Kanye West',  color=(color))
     embed.set_footer(text=(description))
     embed.set_thumbnail(url=(thumbnail))
-    await ctx.reply(embed=embed, mention_author=True)
+    message = await ctx.reply(embed=embed, mention_author=True)
 
 #yomama
 @bot.command()
@@ -468,7 +541,80 @@ async def yomama(ctx):
     embed=discord.Embed(title=(yomama_joke),  color=(color))
     embed.set_footer(text=(description))
     embed.set_thumbnail(url=(thumbnail))
-    await ctx.reply(embed=embed, mention_author=True)
+    message = await ctx.reply(embed=embed, mention_author=True)
+
+#stock
+@bot.command()
+async def stock(ctx, arg):
+    url = "https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-profile"
+    querystring = {"symbol":(arg)}
+    headers = {'x-rapidapi-key': (fapikey),'x-rapidapi-host': "apidojo-yahoo-finance-v1.p.rapidapi.com"}
+    response = requests.request("GET", url, headers=headers, params=querystring)
+    print(response.text)
+    json_data = json.loads(response.text)
+    longName = json_data['price']['longName']
+    stockPriceFmt = json_data['price']['regularMarketPrice']['fmt']
+    stockPriceRaw = json_data['price']['regularMarketPrice']['raw']
+    currencySymbol = json_data['price']['currencySymbol']
+    embed=discord.Embed(title=(longName), color=(color))
+    embed.add_field(name='Raw stock price', value=(currencySymbol) + (str(stockPriceRaw)), inline=True)
+    embed.add_field(name='Stock price FMT', value=(currencySymbol) + (stockPriceFmt), inline=True)
+    embed.set_footer(text=(description))
+    embed.set_thumbnail(url=(thumbnail))
+    message = await ctx.reply(embed=embed, mention_author=True)
+
+#mcskin command
+@bot.command()
+async def mcskin(ctx, arg):
+    uuidAPI = requests.get('https://api.mojang.com/users/profiles/minecraft/' + (arg))
+    uuidjson_data = json.loads(uuidAPI.text)
+    uuid = uuidjson_data['id']
+    name = uuidjson_data['name']
+    embed=discord.Embed(title=(name), color=(color))
+    embed.set_image(url='https://crafatar.com/renders/body/' + (uuid) + '?overlay=true&size=1920x1080')
+    embed.set_footer(text=(description))
+    embed.set_thumbnail(url='https://crafatar.com/renders/head/' + (uuid) + '?overlay=true&size=1080x1080')
+    message = await ctx.reply(embed=embed, mention_author=True)
+
+#avatar command
+@bot.command()
+async def avatar(ctx, *,  user: discord.Member=None):
+    try:
+        userAvatarUrl =  user.avatar_url
+        embed=discord.Embed(title="Avatar", color=(color))
+        embed.set_image(url=(userAvatarUrl))
+        embed.set_footer(text=(description))
+        embed.set_thumbnail(url=(thumbnail_small))
+        message = await ctx.reply(embed=embed, mention_author=True)
+    except:
+        userAvatarUrl = ctx.author.avatar_url
+        embed=discord.Embed(title="Avatar", color=(color))
+        embed.set_image(url=(userAvatarUrl))
+        embed.set_footer(text=(description))
+        embed.set_thumbnail(url=(thumbnail_small))
+        message = await ctx.reply(embed=embed, mention_author=True)
+
+#datetime command
+@bot.command()
+async def datetime(ctx, arg):
+    response = requests.get('http://worldclockapi.com/api/json/' + (arg) + '/now')
+    json_data = json.loads(response.text)
+    timeZoneName = json_data['timeZoneName']
+    currentDateTime = json_data['currentDateTime']
+    embed=discord.Embed(title=(timeZoneName), description=(currentDateTime),color=(color))
+    embed.set_footer(text=(description))
+    embed.set_thumbnail(url=(thumbnail))
+    message = await ctx.reply(embed=embed, mention_author=True)
+
+#the rock
+@bot.command()
+async def therock(ctx):
+    lucky_num = random.randint(0,len(rock_list)-1)
+    embed=discord.Embed(title=':smirk:', color=(color))
+    embed.set_image(url=(rock_list[lucky_num]))
+    embed.set_footer(text=(description))
+    embed.set_thumbnail(url=(thumbnail_small))
+    message = await ctx.reply(embed=embed, mention_author=True)
 
 #weather command
 @bot.command()
@@ -513,16 +659,275 @@ async def weather(ctx, arg):
     embed.set_image(url='https:' + (icon))
     embed.set_footer(text=(description))
     embed.set_thumbnail(url=(thumbnail))
-    await ctx.reply(embed=embed, mention_author=True)
+    message = await ctx.reply(embed=embed, mention_author=True)
 
-#say command
 @bot.command()
-async def say(ctx, *, arg):
-    embed=discord.Embed(title=(arg), color=(color))
+async def iplookup(ctx, arg):
+    ip = requests.get('http://api.ipstack.com/' + (arg) + '?access_key=' + (ipapi_key))
+    json_data = json.loads(ip.text)
+    ipType = json_data['type']
+    continent = json_data['continent_name']
+    country = json_data['country_code']
+    zipcode = json_data['zip']
+    capital = json_data['location']['capital']
+    embed=discord.Embed(title=(arg) + ' Lookup result.', color=(color))
+    embed.add_field(name="IP address type:", value=(ipType), inline=True)
+    embed.add_field(name="Continent:", value=(continent), inline=True)
+    embed.add_field(name="Country:", value=':flag_' + (country) + ':', inline=True)
+    embed.add_field(name="ZIP code:", value=(zipcode), inline=True)
+    embed.add_field(name="Capital:", value=(capital), inline=True)
     embed.set_footer(text=(description))
     embed.set_thumbnail(url=(thumbnail))
-    await ctx.reply(embed=embed, mention_author=True)
+    message = await ctx.reply(embed=embed, mention_author=True)
 
+
+#youtube search command
+@bot.command()
+async def ytsearch(ctx, *, arg):
+    results = YoutubeSearch((arg), max_results=1).to_dict()
+    await ctx.reply('https://youtube.com' + (results[0]['url_suffix']))
+
+
+#spotify cover command
+@bot.command()
+async def playlist(ctx, arg1, arg2):
+    if arg1 == 'cover':
+        headers = {'Accept': 'application/json', 'Content-Type': 'application/json', 'Authorization': 'Bearer BQCtcJQjHtljGXaUlY8XJSyM4HPVkBmlngeiTngp0bpqchy0CgJTVLU6_p6mOkiOGMgt1wSemzkDFT-kiN3YwyFQ37WcRDqH7UbxunAJarJHBMa0lDNlWolY5xkzaRgUeCiWGrYaxajkoLwg9ItW6k493gYl5162VHAwSbA7mJEcJ_2PqG7m4R5bQdj6cH8G5hOI8m8VZG1OiIkxf_2ybqb2XlyYuT4Yn9B_TdpyLNQ7eoF8Z7hS4IIYP9EAILq6wPFDTPE5HiIgrXqM7RTvdH1fdjsE9SexzGqMU8he',}
+        playlist_id = (arg2)[34:-20]
+        response = requests.get('https://api.spotify.com/v1/playlists/' + (playlist_id) + '/images', headers=headers)
+        json_data = json.loads(response.text)
+        print(response.text)
+        url = json_data[0]['url']
+        embed=discord.Embed(title="Playlist Cover", color=(color))
+        embed.set_image(url=(url))
+        embed.set_footer(text=(description))
+        embed.set_thumbnail(url=(thumbnail_small))
+        message = await ctx.reply(embed=embed, mention_author=True)
+    elif arg1 == 'user':
+        embed=discord.Embed(title="You found a hidden command! We're still working on it though! :wink:", color=(color))
+        embed.set_footer(text=(description))
+        embed.set_thumbnail(url=(thumbnail_small))
+        message = await ctx.reply(embed=embed, mention_author=True)
+    else:
+        embed=discord.Embed(title="Please specify the type of info you want, for now the only option is " + '"cover"', color=(color))
+        embed.set_footer(text=(description))
+        embed.set_thumbnail(url=(thumbnail_small))
+        message = await ctx.reply(embed=embed, mention_author=True)
+
+#music command
+# Suppress noise about console usage from errors
+youtube_dl.utils.bug_reports_message = lambda: ''
+
+#yt dl formatting (used for video downloading)
+ytdl_format_options = {
+    'format': 'bestaudio/best',
+    'outtmpl': '%(extractor)s-%(id)s-%(title)s.%(ext)s',
+    'restrictfilenames': True,
+    'noplaylist': True,
+    'nocheckcertificate': True,
+    'ignoreerrors': False,
+    'logtostderr': False,
+    'quiet': True,
+    'no_warnings': True,
+    'default_search': 'auto',
+    'source_address': '0.0.0.0' # bind to ipv4 since ipv6 addresses cause issues sometimes
+}
+
+ffmpeg_options = {
+    'options': '-vn'
+}
+
+ytdl = youtube_dl.YoutubeDL(ytdl_format_options)
+
+
+class YTDLSource(discord.PCMVolumeTransformer):
+    def __init__(self, source, *, data, volume=0.5):
+        super().__init__(source, volume)
+        self.data = data
+        self.title = data.get('title')
+        self.url = data.get('url')
+
+    @classmethod
+    async def from_url(cls, url, *, loop=None, stream=False):
+        loop = loop or asyncio.get_event_loop()
+        data = await loop.run_in_executor(None, lambda: ytdl.extract_info(url, download=not stream))
+        if 'entries' in data:
+            # take first item from a playlist
+            data = data['entries'][0]
+        filename = data['url'] if stream else ytdl.prepare_filename(data)
+        return cls(discord.FFmpegPCMAudio(filename, **ffmpeg_options), data=data)
+
+
+class Music(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+
+    @commands.command()
+    async def join(self, ctx, *, channel: discord.VoiceChannel):
+        """Joins a voice channel"""
+        if ctx.voice_client is not None:
+            return await ctx.voice_client.move_to(channel)
+        await channel.connect(self_mute=False, self_deaf=True)
+
+    @commands.command()
+    async def play(self, ctx, *, arg):
+        """Streams from a url (same as yt, but doesn't predownload)"""
+        results = YoutubeSearch((arg), max_results=1).to_dict()
+        async with ctx.typing():
+            player = await YTDLSource.from_url(('https://youtube.com' + (results[0]['url_suffix'])), loop=self.bot.loop, stream=True)
+            ctx.voice_client.play(player, after=lambda e: print(f'Player error: {e}') if e else None)
+        embed=discord.Embed(title=f'Now playing: {player.title}', color=(color))
+        embed.set_footer(text=(description))
+        embed.set_image(url=(results[0]['thumbnails'][0]))
+        embed.set_thumbnail(url=(thumbnail_small))
+        message = await ctx.reply(embed=embed, mention_author=True)
+
+    @commands.command()
+    async def disconnect(self, ctx):
+        """Stops and disconnects the bot from voice"""
+        await ctx.voice_client.disconnect()
+        embed=discord.Embed(title='Disconnected from voice channel.', color=(color))
+        embed.set_footer(text=(description))
+        embed.set_thumbnail(url=(thumbnail))
+        message = await ctx.reply(embed=embed, mention_author=True)
+
+    @play.before_invoke
+    async def ensure_voice(self, ctx):
+        if ctx.voice_client is None:
+            if ctx.author.voice:
+                await ctx.author.voice.channel.connect()
+                embed=discord.Embed(title="Connected to voice channel!", color=(color))
+                embed.set_footer(text=(description))
+                embed.set_thumbnail(url=(thumbnail))
+                message = await ctx.reply(embed=embed, mention_author=True)
+            else:
+                embed=discord.Embed(title="You aren't connected to a voice channel!", color=(color))
+                embed.set_footer(text=(description))
+                embed.set_thumbnail(url=(thumbnail))
+                message = await ctx.reply(embed=embed, mention_author=True)
+                raise commands.CommandError("Author not connected to a voice channel.")
+        elif ctx.voice_client.is_playing():
+            ctx.voice_client.stop()
+
+@bot.command()
+async def help(ctx, *args):
+    if not args:
+        embed=discord.Embed(title='NULL Help Categories', color=(color))
+        embed.add_field(name='Fun commands.', value='`' + (prefix) + 'help -fun`')
+        embed.add_field(name='Info commands.', value='`' + (prefix) + 'help -info`')
+        embed.add_field(name='Anime commands.', value='`' + (prefix) + 'help -anime`')
+        embed.add_field(name='Utility commands.', value='`' + (prefix) + 'help -util`')
+        embed.add_field(name='Fun commands.', value='`' + (prefix) + 'help -rand`')
+        embed.set_footer(text=(description))
+        embed.set_thumbnail(url=(thumbnail))
+        message = await ctx.reply(embed=embed, mention_author=True)
+    elif args[0] == "-fun":
+        embed=discord.Embed(title='NULL Help. Fun commands.', color=(color))
+        embed.add_field(name=(prefix) + 'hello', value='Usually used as a test command ;)')
+        embed.add_field(name=(prefix) + 'say', value='Make me say whatever you want!')
+        embed.add_field(name=(prefix) + 'm8b', value='Magic 8 ball command.')
+        embed.add_field(name=(prefix) + 'compliment', value='Feeling down?')
+        embed.add_field(name=(prefix) + 'raost', value="Don't mean to hurt your feelings...")
+        embed.add_field(name=(prefix) + 'milkyeet', value='Pretty self explanarory.')
+        embed.add_field(name=(prefix) + 'slap', value='Domt you where just wanna slap someone?')
+        embed.add_field(name=(prefix) + 'hug', value='<:apple_plead:812381767432536125>')
+        embed.add_field(name=(prefix) + 'kiss', value='<:apple_plead:812381767432536125>')
+        embed.add_field(name=(prefix) + 'sigh', value=':neutral_face')
+        embed.add_field(name=(prefix) + 'clap', value='Proud of someone? Or just sarcastic?...')
+        embed.add_field(name=(prefix) + 'headout', value='Going AFK?')
+        embed.add_field(name=(prefix) + 'dababy', value='DaBaby lesss gooooo.')
+        embed.add_field(name=(prefix) + 'hamster', value='Cute hasmter pictures.')
+        embed.add_field(name=(prefix) + 'howsus', value='How sus are you? :flushed:')
+        embed.add_field(name=(prefix) + 'howgay', value='How gay are you? (we suport you)')
+        embed.add_field(name=(prefix) + 'iq', value="What's your IQ?")
+        embed.add_field(name=(prefix) + 'frog', value="Cute frog images :)")
+        embed.add_field(name=(prefix) + 'jdm', value="JDM Car images.")
+        embed.add_field(name=(prefix) + 'fact', value="Random facts.")
+        embed.add_field(name=(prefix) + 'meme', value="Memes from reddit.")
+        embed.add_field(name=(prefix) + 'telcel', value="Default Telcel ringtone :smiling_imp:")
+        embed.add_field(name=(prefix) + 'diceroll', value="Don't have a physical pair of dice?")
+        embed.add_field(name=(prefix) + 'coinflip', value="I'll flip a coin for you ;)")
+        embed.add_field(name=(prefix) + 'joke', value="Random dad joke.")
+        embed.add_field(name=(prefix) + 'kanye', value="Random kanye west quote")
+        embed.add_field(name=(prefix) + 'yomama', value="Random Yo Mama joke.")
+        embed.add_field(name=(prefix) + 'mcskin', value="Minecraft head and skin of a player.")
+        embed.add_field(name=(prefix) + 'avatar', value="Discord profile picture.")
+        embed.add_field(name=(prefix) + 'therock', value="Random Dwayne Johnson memes.")
+        embed.add_field(name=(prefix) + 'ytsearch', value="Search on youtube for a video.")
+        #embed.add_field(name=(prefix) + 'playlist', value="Playlist cover command") #commented out - Reason: still a work in progress and api breaks frequently
+        embed.set_footer(text=(description))
+        embed.set_thumbnail(url=(thumbnail))
+        message = await ctx.reply(embed=embed, mention_author=True)
+    elif args[0] == "-info":
+        embed=discord.Embed(title='NULL Help. Info commands.', color=(color))
+        embed.add_field(name=(prefix) + 'stock', value="Specific stock statistics.")
+        embed.add_field(name=(prefix) + 'covid/covid19', value="COVID19 Statistics.")
+        embed.add_field(name=(prefix) + 'ping', value="My current ping in milliseconds.")
+        embed.add_field(name=(prefix) + 'datetime', value="Current date and time of a time zone.")
+        embed.add_field(name=(prefix) + 'weather', value="Current weather of a specified city.")
+        embed.add_field(name=(prefix) + 'iplookup', value="Get current data of an IP address.")
+        embed.set_footer(text=(description))
+        embed.set_thumbnail(url=(thumbnail))
+        message = await ctx.reply(embed=embed, mention_author=True)
+    elif args[0] == "-rand":
+        embed=discord.Embed(title='NULL Help. Random commands commands.', color=(color))
+        embed.add_field(name=(prefix) + 'rand -num/number/n', value="Random number between specified limits.")
+        embed.add_field(name=(prefix) + 'rand -img/image', value="Random 4k image fron Unsplash.")
+        embed.set_footer(text=(description))
+        embed.set_thumbnail(url=(thumbnail))
+        message = await ctx.reply(embed=embed, mention_author=True)
+    elif args[0] == "-anime":
+        embed=discord.Embed(title='NULL Help. Anime commands.', color=(color))
+        embed.add_field(name=(prefix) + 'cuteanime', value='Cute anime gifs.')
+        embed.add_field(name=(prefix) + 'zerotwo', value='Zero Two gifs.')
+        embed.add_field(name=(prefix) + 'todoroki', value='Todoroki gifs.')
+        embed.add_field(name=(prefix) + 'ichigo', value='Ichigo gifs.')
+        embed.add_field(name=(prefix) + 'bunnygirl', value='Bunny Girl senpai gifs.')
+        embed.add_field(name=(prefix) + 'slap', value='Domt you where just wanna slap someone?')
+        embed.add_field(name=(prefix) + 'hug', value='<:apple_plead:812381767432536125>')
+        embed.add_field(name=(prefix) + 'kiss', value='<:apple_plead:812381767432536125>')
+        embed.add_field(name=(prefix) + 'sigh', value=':neutral_face')
+        embed.add_field(name=(prefix) + 'clap', value='Proud of someone? Or just sarcastic?...')
+        embed.set_footer(text=(description))
+        embed.set_thumbnail(url=(thumbnail))
+        message = await ctx.reply(embed=embed, mention_author=True)
+    elif args[0] == "-util":
+        embed=discord.Embed(title='NULL Help. Utility commands.', color=(color))
+        embed.add_field(name=(prefix) + 'inspire', value='Need an inspirational quote?')
+        embed.add_field(name=(prefix) + 'rand', value='Random commands.')
+        embed.add_field(name=(prefix) + 'stock', value="Specific stock statistics.")
+        embed.add_field(name=(prefix) + 'covid/covid19', value="COVID19 Statistics.")
+        embed.add_field(name=(prefix) + 'ping', value="My current ping in milliseconds.")
+        embed.add_field(name=(prefix) + 'datetime', value="Current date and time of a time zone.")
+        embed.add_field(name=(prefix) + 'iplookup', value="Get current data of an IP address.")
+        embed.set_footer(text=(description))
+        embed.set_thumbnail(url=(thumbnail))
+        message = await ctx.reply(embed=embed, mention_author=True)
+    elif args[0] == "-help":
+        embed=discord.Embed(title="HEY! This is an ilegal command, you shouldn't be seeing this...", color=(color))
+        embed.set_footer(text=(description))
+        embed.set_thumbnail(url=(thumbnail))
+        message = await ctx.reply(embed=embed, mention_author=True)
+        time.sleep(2.5)
+        await message.delete()
+    else:
+        embed=discord.Embed(title='NULL Help Categories', color=(color))
+        embed.add_field(name='Fun commands.', value='`' + (prefix) + 'help -fun`')
+        embed.add_field(name='Info commands.', value='`' + (prefix) + 'help -info`')
+        embed.add_field(name='Anime commands.', value='`' + (prefix) + 'help -anime`')
+        embed.add_field(name='Utility commands.', value='`' + (prefix) + 'help -util`')
+        embed.add_field(name='Fun commands.', value='`' + (prefix) + 'help -rand`')
+        embed.set_footer(text=(description))
+        embed.set_thumbnail(url=(thumbnail))
+        message = await ctx.reply(embed=embed, mention_author=True)
+
+""" Embed template
+embed=discord.Embed(title='Title Text', color=(color))
+embed.set_image(url='https://image-url')
+embed.set_footer(text=(description))
+embed.set_thumbnail(url=(thumbnail))
+message = await ctx.reply(embed=embed, mention_author=True)"""
 
 #run client
+bot.add_cog(Music(bot))
 bot.run((os.getenv('BOT_TOKEN')))
