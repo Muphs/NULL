@@ -10,7 +10,7 @@ NULL. Is a sophisticated and Elegantly designed Discord bot Programmed in Python
 
 Add NULL. To your server by clicking [this](https://bit.ly/null-bot-add) link
 
-Once you added it run the "%help" command to list the available bot commands
+Once you added it run the "N.help" command to list the available bot commands
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
@@ -22,9 +22,9 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 https://null-bot.webflow.io (Currently under construction)
 
 ## Credits
-Designed and programmed by VOKSEL#8148
+Designed and programmed by VOKSEL#3331
 
-Co Designed by qntm#8209
+Co Designed by qntm
 
 Pawel Czerwinski - Logo
 
