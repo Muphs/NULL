@@ -1,16 +1,143 @@
-<head>
-    <!--utilities-->
-    <title>NULL - COMING SOON.</title>
-    <link rel="icon" href="https://media.discordapp.net/attachments/819023119649079328/836951579554742332/favicon.png"/>
-    <!--discord embed-->
-    <meta property="og:site_name" content="NULL.">
-    <meta property="og:url" content="https://voksel0.github.io/NULL/">
-    <meta property="og:title" content="NULL. A simpler Discord with stunning design.">
-    <meta property="og:description" content="NULL is a multi-purpose discord bot aiming to achieve the most stunning design of a Discord bot.">
-    <meta property="og:type" content="website">
-    <meta name="og:image" itemprop="image" content="https://github.com/VOKSEL0/NULL/raw/website/NULL%20banner_rounded.png">
-    <!--import scripts-->
-    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@widgetbot/html-embed"></script>
-</head>
+<!DOCTYPE html>
+<html>
+    <title>NULL - Home</title>
+    <head>
+        <link rel="icon" href="https://media.discordapp.net/attachments/819023119649079328/836951579554742332/favicon.png"/>
+        <!--discord embed-->
+        <meta property="og:site_name" content="NULL.">
+        <meta property="og:url" content="https://voksel0.github.io/NULL/">
+        <meta property="og:title" content="NULL. A simpler Discord with stunning design.">
+        <meta property="og:description" content="NULL is a multi-purpose discord bot aiming to achieve the most stunning design of a Discord bot.">
+        <meta property="og:type" content="website">
+        <meta name="og:image" itemprop="image" content="https://github.com/VOKSEL0/NULL/raw/website/NULL%20banner_rounded.png">
+
+        <!--import scripts-->
+		<script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/@widgetbot/html-embed"></script>
+		<script src="https://cdn.jsdelivr.net/npm/luxy.js@0.1.0/dist/js/luxy.min.js"></script>
+        <script src="https://unpkg.com/@lottiefiles/lottie-interactivity@latest/dist/lottie-interactivity.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js" integrity="sha512-0QbL0ph8Tc8g5bLhfVzSqxe9GERORsKhIn1IrpxDAgUsbBGz/V7iSav2zzW325XGd1OMLdL4UiqRJj702IeqnQ==" crossorigin="anonymous"></script>
+
+        <!--javascript-->
+        <script>
+            //onload animations
+            function intro() {
+                setTimeout(function(){
+                    $('.preloader').addClass("preloader-out")
+                    //setTimeout(function(){$('.preloader').hide()}, 500);
+                    setTimeout(function(){$('#nav1').removeClass("navelement-out")}, 250);
+                    setTimeout(function(){$('#nav2').removeClass("navelement-out")}, 300);
+                    setTimeout(function(){$('#nav3').removeClass("navelement-out")}, 350);
+                    setTimeout(function(){$('#nav4').removeClass("navelement-out")}, 400);
+                    setTimeout(function(){$('#nav5').removeClass("navelement-out")}, 450);
+                    setTimeout(function(){$('#nav6').removeClass("navelement-out")}, 500);
+                }, 1500); //overall delay
+            }
+            //change title when user switches tabs
+            jQuery(document).ready(function($) {
+                (function() {
+                        var hidden = "hidden";
+                        var oldtitle = document.title;
+                        var currenttitle;
+                        if (hidden in document)
+                            document.addEventListener("visibilitychange", onchange);
+                        else if ((hidden = "mozHidden") in document)
+                            document.addEventListener("mozvisibilitychange", onchange);
+                        else if ((hidden = "webkitHidden") in document)
+                            document.addEventListener("webkitvisibilitychange", onchange);
+                        else if ((hidden = "msHidden") in document)
+                            document.addEventListener("msvisibilitychange", onchange);
+                        else if ("onfocusin" in document)
+                            document.onfocusin = document.onfocusout = onchange;
+                        else
+                            window.onpageshow = window.onpagehide
+                                = window.onfocus = window.onblur = onchange;
+                        function onchange (evt) {
+                            var v = "visible", h = "hidden",
+                                evtMap = {
+                                    focus:v, focusin:v, pageshow:v, blur:h, focusout:h, pagehide:h};
+                            evt = evt || window.event;
+                            if (evt.type in evtMap) {
+                                currenttitle = oldtitle;
+                                $(document).attr('title', currenttitle);}
+                            else {
+                                currenttitle = this[hidden] ? "NULL - Come back! :(" : oldtitle;
+                                $(document).attr('title', currenttitle);}}
+                        if( document[hidden] !== undefined )
+                            onchange({type: document[hidden] ? "blur" : "focus"});})();});
+
+            //init luxy on desktop and vice versa
+			let viewportWidth = window.innerWidth || document.documentElement.clientWidth;
+			if (viewportWidth > 1000) {
+				luxy.init();
+			} else {
+				console.log("no luxy")
+			}
+        </script>
+
+        <!--css-->
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300&display=swap');
+            .button {border-radius: 20px;background: #ffffff;box-shadow:  13px 13px 25px #d9d9d9, -13px -13px 25px #ffffff;border: none;outline: none;padding: 15px;color: black;font-size: 20px;font-family: 'Quicksand', sans-serif;font-weight: 800;height: auto;width: auto;transition: all 250ms cubic-bezier(0.230, 1.000, 0.320, 1.000);cursor: pointer;}
+            .button:hover {box-shadow:  13px 13px 25px #c0c0c0, -13px -13px 25px #ffffff;transition: all 250ms cubic-bezier(0.230, 1.000, 0.320, 1.000);}
+            .button:active {transform: scale(0.95);transition: all 250ms cubic-bezier(0.230, 1.000, 0.320, 1.000);}
+            #luxy {/*margin-left: 175px;*/display: flex;justify-content: center;}
+            .nav {position: fixed;margin-left: 15px; z-index: 100;}
+			a:link {color: rgb(0, 0, 0);background-color: transparent;text-decoration: none;font-family: 'Quicksand', sans-serif;}
+			.navelement-out {transition: all 500ms cubic-bezier(0.230, 1.000, 0.320, 1.000);transform: translateX(-250px);}
+			.navelement {color: black;transition: all 500ms cubic-bezier(0.230, 1.000, 0.320, 1.000);margin-bottom: 2px;}
+			.navelement:hover {transform: translateX(10px);transition: all 200ms cubic-bezier(0.230, 1.000, 0.320, 1.000);}
+		    .selector {height: 2.5px;width: 125px;background-color: black;border-radius: 500px;}
+			.preloader {
+                position: fixed;
+                top: 0%;
+                left: 0%;
+                right: 0%;
+                bottom: 0%;
+                background-color: rgb(255, 255, 255);
+                transition: all 500ms ease-in-out;
+                z-index: 1000000;display: flex;
+                align-items: center;
+                justify-content: center;}
+			.preloader-out {
+                transform: translateX(125vw);
+                transition: all 500ms ease-in-out;
+            }
+            .lottie-p {
+                width: 15vw;
+                height: 15vw;
+            }
+        </style>
+    </head>
+
+    <!--html-->
+    <body onload="intro()">
+        <div class="preloader">
+            <lottie-player src="https://assets1.lottiefiles.com/packages/lf20_flyfnxc8.json" background="transparent" speed="1" autoplay class="lottie-p" speed="1.75"></lottie-player>
+        </div>
+
+        <!--navigation panel-->
+		<div class="nav">
+			<a href="/"><h2 class="navelement navelement-out" id="nav1">Home.</h2></a>
+			<div class="selector selector1"></div>
+			<a href=""><h2 class="navelement navelement-out" id="nav2">Design.</h2></a>
+			<div class="selector selector2"></div>
+			<a href=""><h2 class="navelement navelement-out" id="nav3">Backend.</h2></a>
+			<div class="selector selector3"></div>
+			<a href="https://discord.com/api/oauth2/authorize?client_id=803459084619743282&permissions=8&redirect_uri=http%3A%2F%2F127.0.0.1%3A5500%2Ftemplates%2Findex.html&response_type=code&scope=guilds.join%20bot"><h2 class="navelement navelement-out" id="nav4">Add NULL.</h2></a>
+			<div class="selector selector4"></div>
+			<a href=""><h2 class="navelement navelement-out" id="nav5">Help.</h2></a>
+			<div class="selector selector5"></div>
+			<a href=""><h2 class="navelement navelement-out" id="nav6">Dashboard.</h2></a>
+			<div class="selector selector6"></div>
+		</div>
+        <!--nav panel end-->
+
+		<div id="luxy">
+            <button class="button">Sample Button</button>
+		</div>
+
+        
+    </body>
+</html>
