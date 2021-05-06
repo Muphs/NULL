@@ -19,7 +19,7 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 [https://bit.ly/null-bot-join](https://bit.ly/null-bot-join)
 
 ## More info on NULL's official website.
-https://null-bot.webflow.io (Currently under construction)
+voksel0.github.io/null/ (Currently under construction)
 
 ## Credits
 Designed and programmed by VOKSEL#3331
