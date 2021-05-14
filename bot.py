@@ -1,16 +1,18 @@
+"""
+█▄░█ █░█ █░░ █░░   █▄▄ █▀█ ▀█▀   █▀▀ █▀█ █▀▄ █▀▀
+█░▀█ █▄█ █▄▄ █▄▄   █▄█ █▄█ ░█░   █▄▄ █▄█ █▄▀ ██▄"""
+
+
+
 #imports
 import discord
-from discord import user
-from discord import embeds
-from discord import message
-from discord import reaction
+from discord import *
+from discord.ext import *
+from discord.utils import *
 from discord.ext import commands
-import aiohttp
 import asyncio
-import logging
 import time
 from discord import ext
-from discord.ext import tasks
 from dotenv import load_dotenv
 import os
 import random
@@ -19,27 +21,22 @@ import requests
 from discord import member
 from discord import Embed
 from discord.utils import get
-from async_timeout import timeout
-from functools import partial
 import youtube_dl
-from googleapiclient.discovery import build
-import re
-import parser
-from youtubesearchpython import VideosSearch
 from youtube_search import YoutubeSearch
+import sys
 
 #variables
+load_dotenv('.env')
+prefix = (os.getenv('PREFIX'))
+intents = discord.Intents.default()
+bot = commands.Bot(command_prefix=(prefix), help_command=None, intents=intents, case_insensitive=False)
 load_dotenv('.env')
 description = (os.getenv('DESCRIPTION'))
 thumbnail = (os.getenv('THUMBNAIL'))
 thumbnail_small = (os.getenv('THUMBNAIL_SMALL'))
-prefix = (os.getenv('PREFIX'))
 fapikey = (os.getenv('FAPI_KEY'))
 ipapi_key = (os.getenv('IPAPI_KEY'))
 color = 0xff9efc
-intents = discord.Intents.default()
-intents.members = True
-bot = commands.Bot(command_prefix=(prefix), help_command=None, intents=intents, case_insensitive=True)
 bot.remove_command('help')
 client = discord.Client()
 response_list = ['100% sure!', 'definitely not', 'no :(', 'yes :)', 'hmmmmmm, idk', 'maybe ask again', 'maybe ask someone else', "definitely!", "As I see it, yes!", "Yes!", "No!", "Very likely!", "Not even close!", "Maybe!", "Very unlikely!", "Ask again later!", "Better not tell you now!", " It is certain!", "My sources say no", "Outlook good!", "Very Doubtful!", "Without a doubt!", 'no:heart:']
@@ -71,7 +68,12 @@ rock_list = ['https://static.onecms.io/wp-content/uploads/sites/6/2016/11/dwayne
 #Print loged in as (bot name) and set stream status
 @bot.event
 async def on_ready():
-    print('logged in as {0.user}'.format(bot))
+    print("------------------------------------")
+    print("Bot Name: " + bot.user.name)
+    print("Bot ID: " + str(bot.user.id))
+    print("Servers: "+ str(len(bot.guilds)))
+    print("Discord.py Version: " + discord.__version__)
+    print("------------------------------------")
     await bot.change_presence(activity=discord.Streaming(name='Back Online!', url=(os.getenv('STREAM_URL'))))
     time.sleep(5)
     await bot.change_presence(activity=discord.Streaming(name=(os.getenv('STREAM')), url=(os.getenv('STREAM_URL'))))
@@ -91,7 +93,7 @@ async def say(ctx, *, arg):
     embed=discord.Embed(title=(arg), color=(color))
     embed.set_footer(text=(description))
     embed.set_thumbnail(url=(thumbnail_small))
-    message = await ctx.reply(embed=embed, mention_author=True)
+    await ctx.reply(embed=embed, mention_author=True)
 
 #ping command
 @bot.command()
@@ -123,7 +125,8 @@ async def joinserver(ctx):
 #bot version
 @bot.command()
 async def botver(ctx):
-    embed=discord.Embed(title="I am currently on Development version 2.5 Rewrite Open Beta!", color=(color))
+    embed=discord.Embed(title='I am currently on version 2.5 Open Beta!', color=(color))
+    embed.add_field(name='Discord.py version:', value=discord.__version__)
     embed.set_footer(text=(description))
     embed.set_thumbnail(url=(thumbnail))
     message = await ctx.reply(embed=embed, mention_author=True)
@@ -910,6 +913,57 @@ async def help(ctx, *args):
         message = await ctx.reply(embed=embed, mention_author=True)
         time.sleep(2.5)
         await message.delete()
+
+    #command specific commands
+    elif args[0] == '-hello':
+        embed=discord.Embed(title='Used mostly as a test command. Possible reply:', color=(color))
+        embed.set_image(url='https://media.discordapp.net/attachments/835659038649221191/835696830305796106/unknown.png')
+        embed.set_footer(text=(description))
+        embed.set_thumbnail(url=(thumbnail))
+        message = await ctx.reply(embed=embed, mention_author=True)
+
+    elif args[0] == '-say':
+        embed=discord.Embed(title='Make me say whatever you want! Reply:', color=(color))
+        embed.set_image(url='https://media.discordapp.net/attachments/835659038649221191/835697250872983573/unknown.png')
+        embed.set_footer(text=(description))
+        embed.set_thumbnail(url=(thumbnail))
+        message = await ctx.reply(embed=embed, mention_author=True)
+
+    elif args[0] == '-m8b':
+        embed=discord.Embed(title='Magic 8 ball! Reply:', color=(color))
+        embed.set_image(url='https://media.discordapp.net/attachments/835659038649221191/835697821570564116/unknown.png')
+        embed.set_footer(text=(description))
+        embed.set_thumbnail(url=(thumbnail))
+        message = await ctx.reply(embed=embed, mention_author=True)
+
+    elif args[0] == '-compliment':
+        embed=discord.Embed(title='Feeling down? Reply:', color=(color))
+        embed.set_image(url='https://media.discordapp.net/attachments/835659038649221191/835698136269848616/unknown.png')
+        embed.set_footer(text=(description))
+        embed.set_thumbnail(url=(thumbnail))
+        message = await ctx.reply(embed=embed, mention_author=True)
+
+    elif args[0] == '-compliment':
+        embed=discord.Embed(title='Feeling down? Reply:', color=(color))
+        embed.set_image(url='https://media.discordapp.net/attachments/835659038649221191/835698136269848616/unknown.png')
+        embed.set_footer(text=(description))
+        embed.set_thumbnail(url=(thumbnail))
+        message = await ctx.reply(embed=embed, mention_author=True)
+
+    elif args[0] == '-roast':
+        embed=discord.Embed(title="Don't mean to hurt your feelings... Reply:", color=(color))
+        embed.set_image(url='https://media.discordapp.net/attachments/835659038649221191/835701649703043133/unknown.png')
+        embed.set_footer(text=(description))
+        embed.set_thumbnail(url=(thumbnail))
+        message = await ctx.reply(embed=embed, mention_author=True)
+
+    elif args[0] == '-milkyeet':
+        embed=discord.Embed(title="Don't mean to hurt your feelings... Reply:", color=(color))
+        embed.set_image(url='https://media.discordapp.net/attachments/835659038649221191/835701649703043133/unknown.png')
+        embed.set_footer(text=(description))
+        embed.set_thumbnail(url=(thumbnail))
+        message = await ctx.reply(embed=embed, mention_author=True)
+
     else:
         embed=discord.Embed(title='NULL Help Categories', color=(color))
         embed.add_field(name='Fun commands.', value='`' + (prefix) + 'help -fun`')
@@ -921,13 +975,79 @@ async def help(ctx, *args):
         embed.set_thumbnail(url=(thumbnail))
         message = await ctx.reply(embed=embed, mention_author=True)
 
-""" Embed template
+@bot.command()
+async def math(ctx, *args):
+    if args[0] == '-area':
+        if args[1] == '-rectangle':
+            result = (int(args[2])) * (int(args[3]))
+            embed=discord.Embed(title='Rectangle area: ' + (str(result)) + 'u^2', color=(color))
+            embed.set_footer(text=(description))
+            embed.set_thumbnail(url=(thumbnail))
+            message = await ctx.reply(embed=embed, mention_author=True)
+        elif args[1] == '-triangle':
+            result = (int(args[2])) * (int(args[3])) / 2
+            embed=discord.Embed(title='Triangle area: ' + (str(result)) + 'u^2', color=(color))
+            embed.set_footer(text=(description))
+            embed.set_thumbnail(url=(thumbnail))
+            message = await ctx.reply(embed=embed, mention_author=True)
+        elif args[1] == '-circle':
+            rad_sq = (int(args[2]))**2
+            result = 3.141592653589793 * rad_sq
+            embed=discord.Embed(title='Circle area: ' + (str(result)) + 'u^2', color=(color))
+            embed.set_footer(text=(description))
+            embed.set_thumbnail(url=(thumbnail))
+            message = await ctx.reply(embed=embed, mention_author=True)
+        elif args[1] == '-trapezoid':
+            result = 1/4 * math.sqrt(5 * (5+2 * math.squrt(5))) * (int(args[2]))**2
+            embed=discord.Embed(title='Trapezoid area: ' + (str(result)), color=(color))
+            embed.set_footer(text=(description))
+            embed.set_thumbnail(url=(thumbnail))
+            message = await ctx.reply(embed=embed, mention_author=True)
+        elif args[1] == '-rhombus':
+            result = (int(args[2])) * (int(args[3])) / 2
+            embed=discord.Embed(title='Rhombus area: ' + (str(result)) + 'u^2', color=(color))
+            embed.set_footer(text=(description))
+            embed.set_thumbnail(url=(thumbnail))
+            message = await ctx.reply(embed=embed, mention_author=True)
+
+@bot.command()
+async def test(ctx):
+    embed=discord.Embed(title='Title Text', color=(color))
+    embed.set_footer(text=(description))
+    embed.set_thumbnail(url=(thumbnail))
+    message = await ctx.reply(embed=embed, mention_author=True)
+    emojis = ['<:leftnull:831220033647542302>', '<:rightnull:831220085518762024>']
+    for emoji in emojis:
+        await message.add_reaction(emoji)
+    time.sleep(1)
+    helpembed1=discord.Embed(title='Title Text', color=(color))
+    embed.set_footer(text=(description))
+    embed.set_thumbnail(url=(thumbnail))
+    await message.edit(embed=helpembed1)
+
+@bot.command()
+async def defrules(ctx):
+    embed=discord.Embed(color=(color))
+    embed.set_image(url='https://media.discordapp.net/attachments/828838646626910208/842506808807129148/ezgif.com-gif-maker_1.gif')
+    message = await ctx.send(embed=embed, mention_author=True)
+    embed=discord.Embed(color=(color))
+    embed.set_image(url='https://media.discordapp.net/attachments/819023119649079328/840781166462500864/rules-banner.png')
+    message = await ctx.send(embed=embed, mention_author=True)
+    embed=discord.Embed(title='Rules', description="**1.** Channels \n > Please use the designated channels appropriately.\n \n **2.** NSFW content \n > NSFW will be prohibited outside of the NSFW channel. \n \n **3.** Spamming, raids etc. \n > No spam, ear rape or mic spam inside text and voice channels will be premitted. \n \n **4.** Terms Of Service \n > Do not violate the discord ToS (https://discord.com/terms) or the server rules. Otherwise, this will result in a punishment. \n \n **5.** Race, religion, politics, etc. \n > These topics shall not be discussed in this server. \n \n **6.** Profiles \n > Do not: \n > -Have an unpingable name / nickname \n > -Have a profile picture with NSFW content", color=(color))
+    embed.set_footer(text=(description))
+    embed.set_thumbnail(url=(thumbnail))
+    message = await ctx.send(embed=embed, mention_author=True)
+    vokselid = '<@421506951269056522>'
+    embed=discord.Embed(title="{}".format(ctx.message.author.mention()), color=(color))
+    message = await ctx.send(embed=embed, mention_author=True)
+
+"""Embed template
 embed=discord.Embed(title='Title Text', color=(color))
 embed.set_image(url='https://image-url')
 embed.set_footer(text=(description))
 embed.set_thumbnail(url=(thumbnail))
 message = await ctx.reply(embed=embed, mention_author=True)"""
 
-#run client
+#run
 bot.add_cog(Music(bot))
 bot.run((os.getenv('BOT_TOKEN')))
